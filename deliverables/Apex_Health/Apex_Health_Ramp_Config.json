@@ -1,0 +1,420 @@
+{
+  "client_id": "client_c_apex_health",
+  "generated_at": "2026-08-30T00:00:00Z",
+  "base_currency": "USD",
+  "entities": [
+    {
+      "name": "Apex Health Partners",
+      "country": "US",
+      "currency": "USD",
+      "status": "existing"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Clinics"
+    },
+    {
+      "name": "Central Finance"
+    },
+    {
+      "name": "Procurement"
+    },
+    {
+      "name": "Facilities"
+    },
+    {
+      "name": "Compliance"
+    },
+    {
+      "name": "Regional Operations"
+    }
+  ],
+  "users": [
+    {
+      "email": "gordon.pryce@apexhealth.example",
+      "first_name": "Gordon",
+      "last_name": "Pryce",
+      "role": "BUSINESS_ADMIN",
+      "department": "Central Finance",
+      "direct_manager_email": null,
+      "notes": "CFO. Administers the account alongside the Controller. Compliance escalations route here. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+    },
+    {
+      "email": "dana.whitfield@apexhealth.example",
+      "first_name": "Dana",
+      "last_name": "Whitfield",
+      "role": "BUSINESS_ADMIN",
+      "department": "Central Finance",
+      "direct_manager_email": "gordon.pryce@apexhealth.example",
+      "notes": "Controller. Named as an account administrator. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+    },
+    {
+      "email": "millie.vance@apexhealth.example",
+      "first_name": "Millie",
+      "last_name": "Vance",
+      "role": "AUDITOR",
+      "department": "Compliance",
+      "direct_manager_email": "gordon.pryce@apexhealth.example",
+      "notes": "Director of Compliance. Auditor role gives read access across transactions, cards, limits and users with no spend or administrative capability, satisfying REQ-5. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+    },
+    {
+      "email": "sam.ionescu@apexhealth.example",
+      "first_name": "Sam",
+      "last_name": "Ionescu",
+      "role": "BUSINESS_USER",
+      "department": "Regional Operations",
+      "direct_manager_email": "gordon.pryce@apexhealth.example",
+      "notes": "Regional Operations Director. Travel limit of $3,000 per month. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+    },
+    {
+      "email": "karen.doyle@apexhealth.example",
+      "first_name": "Karen",
+      "last_name": "Doyle",
+      "role": "BUSINESS_USER",
+      "department": "Regional Operations",
+      "direct_manager_email": "gordon.pryce@apexhealth.example",
+      "notes": "Regional Operations Director. Travel limit of $3,000 per month. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+    },
+    {
+      "email": "bruno.surname-pending@apexhealth.example",
+      "first_name": "Bruno",
+      "last_name": "(surname pending roster)",
+      "role": "BUSINESS_USER",
+      "department": "Facilities",
+      "direct_manager_email": "gordon.pryce@apexhealth.example",
+      "notes": "Facilities lead, named by first name only in the packet. Surname required before this record can be issued. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+    }
+  ],
+  "spend_programs": [
+    {
+      "display_name": "Clinic Supplies",
+      "description": "Clinic manager purchasing: medical supplies, cleaning supplies, small equipment and emergency repairs. $4,000 per month with a $1,000 per-transaction cap; purchases above $1,000 route through procurement. The prohibited vendor is blocked at merchant level on this programme.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 400000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 100000,
+        "allowed_categories": [
+          "Medical",
+          "Office supplies and cleaning",
+          "General merchandise"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      }
+    },
+    {
+      "display_name": "Regional Travel",
+      "description": "Travel for the two regional operations directors: hotels, flights, rental cars and meals. $3,000 per month. The prohibited vendor is blocked at merchant level on this programme.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 300000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Lodging",
+          "Airlines",
+          "Car rental",
+          "Restaurants"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      }
+    },
+    {
+      "display_name": "Facilities",
+      "description": "Facilities repairs and contractors. $2,500 per month. The prohibited vendor is blocked at merchant level on this programme.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 250000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "General merchandise",
+          "Professional services"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      }
+    },
+    {
+      "display_name": "Contract Nursing",
+      "description": "Contract nurse assignment expenses: lodging near the clinic, meals and fuel. $1,500 per month. Each nurse limit carries a lock date set to the assignment end date, satisfying REQ-4. The prohibited vendor is blocked at merchant level on this programme.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Lodging",
+          "Restaurants",
+          "Fuel and gas"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      }
+    }
+  ],
+  "limits": [
+    {
+      "display_name": "Clinic manager monthly",
+      "assigned_to": {
+        "group": "Clinic Managers"
+      },
+      "spend_program": "Clinic Supplies",
+      "spending_restrictions": {
+        "limit_amount_cents": 400000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 100000,
+        "allowed_categories": [
+          "Medical",
+          "Office supplies and cleaning",
+          "General merchandise"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      },
+      "notes": "One per clinic manager (14 assumed, one per clinic; none are named in the packet). The $1,000 per-transaction cap is the operational figure from the discovery call. Transactions between $500 and $1,000 fall inside REQ-3's purchase order threshold and are covered by same-day reconciliation rather than by this cap — see conflicts."
+    },
+    {
+      "display_name": "Sam Ionescu — regional travel",
+      "assigned_to": {
+        "user_email": "sam.ionescu@apexhealth.example"
+      },
+      "spend_program": "Regional Travel",
+      "spending_restrictions": {
+        "limit_amount_cents": 300000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Lodging",
+          "Airlines",
+          "Car rental",
+          "Restaurants"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      }
+    },
+    {
+      "display_name": "Karen Doyle — regional travel",
+      "assigned_to": {
+        "user_email": "karen.doyle@apexhealth.example"
+      },
+      "spend_program": "Regional Travel",
+      "spending_restrictions": {
+        "limit_amount_cents": 300000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Lodging",
+          "Airlines",
+          "Car rental",
+          "Restaurants"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      }
+    },
+    {
+      "display_name": "Bruno — facilities",
+      "assigned_to": {
+        "user_email": "bruno.surname-pending@apexhealth.example"
+      },
+      "spend_program": "Facilities",
+      "spending_restrictions": {
+        "limit_amount_cents": 250000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "General merchandise",
+          "Professional services"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      },
+      "notes": "Cannot be issued until the facilities lead's surname and email address are confirmed."
+    },
+    {
+      "display_name": "Central finance monthly",
+      "assigned_to": {
+        "group": "Central Finance"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      },
+      "notes": "One per central finance team member. Team size is not stated in the packet; four assumed for planning only."
+    },
+    {
+      "display_name": "Contract nurse monthly",
+      "assigned_to": {
+        "group": "Contract Nurses"
+      },
+      "spend_program": "Contract Nursing",
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Lodging",
+          "Restaurants",
+          "Fuel and gas"
+        ],
+        "blocked_vendors": [
+          "Joe's Medical Supply",
+          "JMS Distribution"
+        ]
+      },
+      "notes": "One per nurse on assignment (eight to twelve at a time). Each issued limit must carry a lock date set to that nurse's assignment end date, which satisfies REQ-4. No end dates are supplied in the packet, so no lock date is set here."
+    }
+  ],
+  "approval_policies": [
+    {
+      "name": "Clinic manager spend",
+      "applies_to": "Clinic Supplies",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        }
+      ],
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO), [05:27]: \"Clinic managers' spend auto-approves within their limits — that's what the limits are for.\""
+    },
+    {
+      "name": "Central team spend",
+      "applies_to": "Central Finance",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 50000,
+          "approver": "DIRECT_MANAGER"
+        }
+      ],
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO), [05:27]: \"Central team, manager approval over five hundred.\""
+    },
+    {
+      "name": "Compliance escalation",
+      "applies_to": "all",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "Gordon Pryce (CFO, gordon.pryce@apexhealth.example)"
+        }
+      ],
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO), [05:27]: \"And anything Millie's team flags goes to me.\" Encoded at a zero threshold because Ramp approval rules are triggered by amount and cannot be triggered by a compliance flag — see the unsupported requests section."
+    }
+  ],
+  "mcc_controls": [
+    {
+      "applies_to": "Clinic Supplies",
+      "mechanism": "blocked_vendors",
+      "values": [
+        "Joe's Medical Supply",
+        "JMS Distribution"
+      ],
+      "translation_notes": "REQ-1. Blocked at individual merchant level, not by category, because the prohibited vendor is classified as a medical supplier — the category clinic managers must retain. Repeated on every programme because Ramp has no company-wide blocklist. Both trading names must resolve to Ramp merchant records for REQ-1 to be met."
+    },
+    {
+      "applies_to": "Regional Travel",
+      "mechanism": "blocked_vendors",
+      "values": [
+        "Joe's Medical Supply",
+        "JMS Distribution"
+      ],
+      "translation_notes": "REQ-1. Blocked at individual merchant level, not by category, because the prohibited vendor is classified as a medical supplier — the category clinic managers must retain. Repeated on every programme because Ramp has no company-wide blocklist. Both trading names must resolve to Ramp merchant records for REQ-1 to be met."
+    },
+    {
+      "applies_to": "Facilities",
+      "mechanism": "blocked_vendors",
+      "values": [
+        "Joe's Medical Supply",
+        "JMS Distribution"
+      ],
+      "translation_notes": "REQ-1. Blocked at individual merchant level, not by category, because the prohibited vendor is classified as a medical supplier — the category clinic managers must retain. Repeated on every programme because Ramp has no company-wide blocklist. Both trading names must resolve to Ramp merchant records for REQ-1 to be met."
+    },
+    {
+      "applies_to": "Contract Nursing",
+      "mechanism": "blocked_vendors",
+      "values": [
+        "Joe's Medical Supply",
+        "JMS Distribution"
+      ],
+      "translation_notes": "REQ-1. Blocked at individual merchant level, not by category, because the prohibited vendor is classified as a medical supplier — the category clinic managers must retain. Repeated on every programme because Ramp has no company-wide blocklist. Both trading names must resolve to Ramp merchant records for REQ-1 to be met."
+    },
+    {
+      "applies_to": "Clinic Supplies",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Medical",
+        "Office supplies and cleaning",
+        "General merchandise"
+      ],
+      "translation_notes": "Medical supply houses and pharmacies map to Medical (21); cleaning suppliers to Office supplies and cleaning (12); hardware stores to General merchandise (13), which is the closest Ramp category and is broader than hardware. A permitted list also excludes travel, restaurants and electronics retail, which is stricter than the exclusions named on the call."
+    },
+    {
+      "applies_to": "Regional Travel",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Lodging",
+        "Airlines",
+        "Car rental",
+        "Restaurants"
+      ],
+      "translation_notes": "Hotels map to Lodging (6), flights to Airlines (4), rental cars to Car rental (5), meals to Restaurants (19)."
+    },
+    {
+      "applies_to": "Contract Nursing",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Lodging",
+        "Restaurants",
+        "Fuel and gas"
+      ],
+      "translation_notes": "Lodging (6), meals to Restaurants (19), gas to Fuel and gas (18). Mileage was mentioned as an expense type but is a reimbursement rather than a card category."
+    }
+  ]
+}

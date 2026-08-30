@@ -1,0 +1,215 @@
+{
+  "client_id": "client_c_apex_health",
+  "assumptions_made": [
+    {
+      "assumption": "REQ-4 (contract staff card expiry) is answered ENFORCED BY PLATFORM. Each contract nurse limit carries a lock date, after which the card stops working with no human action, and the date can be edited to extend an assignment.",
+      "source": "security_requirements.doc, line 42 — Apex Health Partners compliance requirements v2.1, owned by M. Vance (Director of Compliance) and approved by the Risk Committee 2026-07-30, stating the contract staff expiry requirement: \"Cards issued to contract clinical staff must automatically cease functioning\non the assignment end date without human action.\"",
+      "impact_if_wrong": "None to the mechanism, which is native. The risk is operational: no assignment end dates appear anywhere in this packet, so every nurse limit currently carries no date and would run indefinitely until one is supplied."
+    },
+    {
+      "assumption": "REQ-5 (compliance visibility) is answered ENFORCED BY PLATFORM. The Compliance Office is assigned the Auditor role, which grants read access across transactions, cards, limits and users with no spend capability and no administrative capability.",
+      "source": "security_requirements.doc, line 47 — Apex Health Partners compliance requirements v2.1, owned by M. Vance (Director of Compliance) and approved by the Risk Committee 2026-07-30, stating the compliance visibility requirement: \"The Compliance Office must hold read-only access to all transactions, cards,\nlimits, and users: full visibility, no spend capability, no administrative\ncapability.\"",
+      "impact_if_wrong": "None to the mechanism. Only Millie Vance is named in the packet, so any other member of the Compliance Office is absent from this configuration and would have no access at go-live."
+    },
+    {
+      "assumption": "Email addresses follow the pattern firstname.lastname@apexhealth.example. No email address and no email domain appears anywhere in this packet; the domain is invented to produce a usable configuration.",
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [05:51], naming an administrator without giving any email address, as is the case for every person in this packet: \"Our controller, Dana Whitfield, plus me.\"",
+      "impact_if_wrong": "Every address in this configuration is wrong. Invitations would fail or, worse, reach an unintended recipient. No user should be invited until Apex Health Partners supplies the real addresses."
+    },
+    {
+      "assumption": "Bruno, the facilities lead, is recorded with the surname placeholder shown rather than a guessed name.",
+      "source": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [00:32], naming the facilities lead by first name only: \"And our facilities lead, Bruno, who handles repairs and contractors.\"",
+      "impact_if_wrong": "The record cannot be matched to a real person until the surname is supplied, so Bruno's $2,500 facilities limit cannot be issued."
+    },
+    {
+      "assumption": "There are fourteen clinic managers, one per clinic. The packet gives a clinic count and describes one manager per clinic, but names no clinic manager.",
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [00:08], describing the clinic manager structure without naming any of the managers: \"each clinic has a clinic manager who buys supplies\"",
+      "impact_if_wrong": "If clinics share managers or any clinic has more than one, the count of $4,000 limits is wrong and the total monthly exposure changes by $4,000 per manager."
+    },
+    {
+      "assumption": "Traveling nurses are assigned the Guest User role as contract clinical staff, and the number on assignment at any time is taken as the upper figure of twelve for exposure purposes.",
+      "source": "discovery_call_apex.txt — Millie Vance (Director of Compliance, Apex Health Partners), [04:33], describing the contract nursing population: \"typically eight to twelve at any time, on assignments of thirty to ninety days\"",
+      "impact_if_wrong": "At twelve concurrent nurses the nursing programme carries $18,000 of monthly exposure rather than $12,000 at eight. Guest accounts also carry an automatic deactivation date — see the unsupported requests section."
+    },
+    {
+      "assumption": "Hardware stores are mapped to the Ramp category General merchandise, because Ramp has no hardware category.",
+      "source": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [01:09], listing the categories clinic managers should be able to buy from: \"Medical supply houses, pharmacies, hardware stores, cleaning suppliers, that kind of thing.\"",
+      "impact_if_wrong": "General merchandise is considerably broader than hardware and admits retailers Apex Health Partners may not intend clinic managers to use. The tighter alternative is to exclude the category entirely, which would decline emergency repair purchases at hardware stores."
+    },
+    {
+      "assumption": "The clinic programme uses a permitted-category list rather than a blocked-category list. A permitted list already excludes travel, restaurants and electronics retail, so the exclusions are satisfied by a stricter mechanism than the one described.",
+      "source": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [01:09], listing categories clinic manager cards must refuse: \"Definitely no travel, no restaurants, no electronics retail.\"",
+      "impact_if_wrong": "None to the named exclusions, which are covered. The difference is that any category not on the permitted list is also refused, which is stricter than the packet describes."
+    },
+    {
+      "assumption": "The prohibited vendor's two trading names are recorded as two separate entries, on the basis that Ramp holds a distinct merchant record for each name.",
+      "source": "discovery_call_apex.txt — Millie Vance (Director of Compliance, Apex Health Partners), [01:19], identifying both trading names of the prohibited vendor: \"They operate under Joe's Medical Supply and also as JMS Distribution, same outfit.\"",
+      "impact_if_wrong": "If only one trading name resolves to a Ramp merchant record, transactions under the other name are not blocked and REQ-1 is not met. Both names must be confirmed against Ramp's merchant directory before go-live."
+    },
+    {
+      "assumption": "The prohibited vendor block is repeated on every spend programme, because Ramp has no company-wide vendor blocklist.",
+      "source": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [05:15], confirming the vendor block applies to every card in the programme: \"Same vendor block applies, obviously — everything gets the Joe's block.\"",
+      "impact_if_wrong": "Any spend programme or limit created after go-live without the block re-applied leaves a gap in REQ-1. This makes the block an ongoing operational obligation, not a one-time setting."
+    },
+    {
+      "assumption": "REQ-2's activation gate is not currently reachable by any card in this configuration. The highest monthly limit is $4,000 and the requirement applies above $10,000.",
+      "source": "discovery_call_apex.txt — Millie Vance (Director of Compliance, Apex Health Partners), [03:37], responding to the observation that few cards would reach the threshold: \"The number doesn't matter. The control has to exist.\"",
+      "impact_if_wrong": "None today. The control is documented so it is in place before any limit is raised above $10,000, which the packet anticipates for facilities and regional travel."
+    },
+    {
+      "assumption": "The central finance team is treated as a group with $500 each, with an assumed size of four, since the packet gives no headcount.",
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [02:15], setting the central finance limit without stating how many people are on the team: \"Central finance team, minimal — five hundred each for odds and ends.\"",
+      "impact_if_wrong": "Total central finance exposure scales directly with the real headcount, which is unknown. The per-person figure is stated and reliable; the total is not."
+    }
+  ],
+  "missing_information_flags": [
+    {
+      "question": "No email address appears anywhere in this packet. What are the real email addresses, and what is the correct email domain for Apex Health Partners? Every address in this configuration is a placeholder.",
+      "affected_config": "users",
+      "blocking": true
+    },
+    {
+      "question": "What are the names and email addresses of the fourteen clinic managers? None are named, so no clinic manager can be created and the three-week go-live for clinic managers cannot be met until those names are supplied.",
+      "affected_config": "users, limits",
+      "blocking": true
+    },
+    {
+      "question": "What is the surname of Bruno, the facilities lead?",
+      "affected_config": "users",
+      "blocking": true
+    },
+    {
+      "question": "What are the assignment end dates for each contract nurse? REQ-4 requires cards to stop on the assignment end date, and no dates are given, so no lock date can be set.",
+      "affected_config": "limits",
+      "blocking": true
+    },
+    {
+      "question": "Do both 'Joe's Medical Supply' and 'JMS Distribution' resolve to merchant records in Ramp's merchant directory? REQ-1 is met only if both do. Any name that does not resolve cannot be blocked at merchant level.",
+      "affected_config": "mcc_controls",
+      "blocking": true
+    },
+    {
+      "question": "REQ-3 requires a purchase order for any transaction over $500, but clinic managers are given a $1,000 per-transaction cap. Transactions between $500 and $1,000 will be approved by the card and are not covered by the cap. Does Compliance accept same-day reconciliation as the control for that band, or should the cap be lowered to $500?",
+      "affected_config": "limits, spend_programs",
+      "blocking": true
+    },
+    {
+      "question": "What are the names and email addresses of the central finance team, and how many people are on it? The per-person limit is known; the headcount is not.",
+      "affected_config": "users, limits",
+      "blocking": true
+    },
+    {
+      "question": "What are the names of the fourteen clinics and which state is each in? Clinic locations are needed to attach clinic managers to the right site.",
+      "affected_config": "locations",
+      "blocking": true
+    },
+    {
+      "question": "Who else is in the Compliance Office besides Millie Vance? Only one compliance user is created, so any colleague would have no access under REQ-5.",
+      "affected_config": "users",
+      "blocking": false
+    },
+    {
+      "question": "Is General merchandise an acceptable permitted category for clinic managers? It is the closest Ramp category to hardware stores but is considerably broader. The alternative is to exclude it and accept that hardware purchases decline.",
+      "affected_config": "spend_programs, mcc_controls",
+      "blocking": false
+    },
+    {
+      "question": "Who is on the procurement team, and should procurement hold cards? Procurement is named as part of the central team and as the route for purchases over $1,000, but no limits were discussed for it.",
+      "affected_config": "users, limits",
+      "blocking": false
+    },
+    {
+      "question": "Which cardholders need physical cards rather than virtual ones, and what are the shipping addresses? REQ-2 concerns physical cards specifically, and Ramp requires a shipping address for each one.",
+      "affected_config": "users, spend_programs",
+      "blocking": false
+    }
+  ],
+  "conflicts": [
+    {
+      "description": "The purchase order threshold and the clinic per-transaction cap do not line up. The compliance document requires a purchase order for every transaction above $500. The discovery call sets the clinic manager per-transaction cap at $1,000. A clinic purchase of $700 is therefore permitted by the card while falling under the purchase order requirement.",
+      "source_a": "security_requirements.doc, line 32 — Apex Health Partners compliance requirements v2.1, owned by M. Vance (Director of Compliance) and approved by the Risk Committee 2026-07-30, setting the purchase order threshold at $500: \"Transactions exceeding $500 USD must be declined at authorization unless a\nvalid open Purchase Order number from the Apex ERP (NetSuite) is associated\nwith the transaction prior to authorization.\"",
+      "source_b": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [00:49], setting the clinic manager per-transaction cap at $1,000: \"We want four thousand a month per clinic manager, with a per-transaction cap of a thousand.\"",
+      "provisional_resolution": "Encoded the $1,000 operational cap, because lowering it to $500 would block routine clinic purchases the business depends on. Transactions between $500 and $1,000 are therefore covered by same-day reconciliation rather than by the cap. This is raised as a blocking question, because the compliance document is the controlling instrument and this gap sits inside its stated threshold."
+    },
+    {
+      "description": "How much flexibility exists on REQ-3. The CFO characterises the pre-authorization requirement as an opening position in a negotiation; the Director of Compliance rejects that characterisation in the same exchange.",
+      "source_a": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [04:12], describing the compliance position as a negotiating style: \"What Millie will actually accept, if the ideal isn't possible, is the tightest thing that gets us audit-proof.\"",
+      "source_b": "discovery_call_apex.txt — Millie Vance (Director of Compliance, Apex Health Partners), [04:22], rejecting that characterisation: \"It's a compliance style.\"",
+      "provisional_resolution": "Treated the written document as controlling rather than either spoken characterisation. The compensating control is encoded and presented for the review that the document itself provides for, rather than presented as agreed."
+    },
+    {
+      "description": "Whether the prohibited vendor can be blocked by category. The compliance document states category-level control is insufficient because the vendor sits in the same category clinic managers require; the clinic programme nonetheless permits the Medical category, which is the prohibited vendor's own category.",
+      "source_a": "security_requirements.doc, line 16 — Apex Health Partners compliance requirements v2.1, owned by M. Vance (Director of Compliance) and approved by the Risk Committee 2026-07-30, stating that category controls cannot satisfy REQ-1: \"Category-level controls are NOT sufficient: the Prohibited\"",
+      "source_b": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [01:09], requiring clinic managers to retain access to medical suppliers: \"Medical supply houses, pharmacies, hardware stores, cleaning suppliers, that kind of thing.\"",
+      "provisional_resolution": "Both are encoded, which is the only arrangement that satisfies each: the Medical category is permitted, and the prohibited vendor is blocked by merchant record on top of it. The merchant-level block is what carries REQ-1; the category permission carries the clinical requirement."
+    }
+  ],
+  "unsupported_api_requests": [
+    {
+      "requested_feature": "REQ-1 — a hard block on the terminated supplier trading as Joe's Medical Supply and JMS Distribution, applying to every card including temporary and contractor cards.",
+      "reason_unsupported": "ENFORCED BY PLATFORM, with a standing process obligation. Ramp blocks named merchants at the individual merchant level, which is what REQ-1 requires and what category controls cannot deliver. Two qualifications: both trading names must resolve to merchant records in Ramp's directory, and because Ramp has no company-wide blocklist the block is applied to each spend programme separately and must be re-applied to any programme created later.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_vendors / blocked_vendor_ids take merchant UUIDs from GET /merchants (not Bill Pay vendor objects); no global blocklist resource exists, so the block must be repeated on every spend program and standalone limit.",
+      "proposed_manual_workaround": "A merchant block is real and enforced, but Ramp holds no account-wide blocklist: the block is set on each spend program and each individual limit, and must be re-applied to anything created later. The deployment owner should add that step to the routine for issuing new cards and programs. One trade name can also map to more than one merchant record in Ramp, so each name is resolved separately."
+    },
+    {
+      "requested_feature": "REQ-2 — physical cards with a monthly limit above $10,000 must be incapable of transacting until the Compliance Office confirms receipt of a notarized wet-ink Liability Acknowledgment Form, failing closed.",
+      "reason_unsupported": "ENFORCED BY PROCESS. Ramp cannot condition card activation on an external document. The equivalent is achieved by creating the card and immediately suspending it, so it cannot transact, and lifting the suspension only when the Compliance Office confirms the form is on file. This fails closed as required: a card left alone stays suspended. The residual exposure is the interval between creation and suspension, and the fact that Ramp does not itself check that the form exists — a person does.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no native activation gate on external attestation; the composable equivalent is POST /cards/physical followed immediately by POST /cards/physical/{id}/suspension, released only on confirmation.",
+      "proposed_manual_workaround": "Ramp cannot hold a card inactive pending an outside document, but the same effect is achieved by issuing the card and suspending it in the same step, then lifting the suspension only once the signed document is on file. Lifting a suspension is a deliberate human action, so the arrangement fails closed. The residual risk is the short window between issue and suspension, and the fact that Ramp itself does not check that the document exists."
+    },
+    {
+      "requested_feature": "REQ-3 — transactions over $500 declined at authorization unless a valid open NetSuite purchase order is attached beforehand.",
+      "reason_unsupported": "NOT MET as written; ENFORCED BY PROCESS via the compensating control the document itself provides for. Ramp has no hook that runs during card authorization, so no external purchase order check can influence whether a transaction is approved. The compensating control encoded here is the one named in the document: hard per-transaction caps, same-day post-transaction reconciliation against the NetSuite purchase order list, and suspension of the card on violation. This is detective rather than preventive, which is the material difference. The document provides for Compliance to review such a control, not to accept one in advance, so this remains open.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no authorization-time hook exists; /purchase-orders is a record API, not a control surface, so a charge cannot be gated on PO match at authorization.",
+      "proposed_manual_workaround": "Ramp performs no check at the moment a card is authorised, so a charge cannot be held until a purchase order is matched; purchase order data in Ramp is a record rather than a control. The closest compensating control is a hard per-transaction cap at the stated threshold, same-day reconciliation against approved purchase orders, and suspending the card when a mismatch is found. That detects a breach after the fact rather than preventing it, which the deployment owner should weigh against the original requirement."
+    },
+    {
+      "requested_feature": "REQ-6 — receipts required for every transaction regardless of amount, with missing receipts flagged.",
+      "reason_unsupported": "ENFORCED BY PLATFORM, configured outside this document. Ramp collects receipts and flags missing ones, but the requirement is a company policy setting in the Ramp application rather than a property of any card or limit, so there is nowhere in this configuration to record it. It is listed here so it is not lost between this document and go-live.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no receipt-policy configuration resource; /receipts covers receipt objects and ingestion, not thresholds. Receipt rules are an in-app setting.",
+      "proposed_manual_workaround": "Receipt requirements are a standard Ramp policy setting, configured in the Ramp application rather than through the API, so the rule is not carried in the setup produced here. The deployment owner sets the receipt threshold during account setup; the omission is recorded so that nothing is assumed to already be in place."
+    },
+    {
+      "requested_feature": "A single limit covering the fourteen clinic managers, another covering the central finance team, and another covering the contract nurses on assignment.",
+      "reason_unsupported": "Ramp limits belong to one person, so each of these becomes one limit per member. The clinic manager group is the largest at fourteen, and the nursing group varies between eight and twelve as assignments start and end.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds requires a single user_id, so a group limit becomes one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N).",
+      "proposed_manual_workaround": "Ramp attaches a spend limit to one person at a time, so a limit described for a team becomes either a separate limit of that size for each member or a single shared pot the whole team draws down. Those are materially different outcomes and the wording of a request rarely settles which is meant, so the deployment owner should confirm the intent for each team-level limit before setup."
+    },
+    {
+      "requested_feature": "Physical cards for the cardholders who require one, which REQ-2 addresses specifically.",
+      "reason_unsupported": "Ramp creates virtual cards as part of issuing a spend limit rather than on request. Physical cards must be requested individually and require a shipping address for each cardholder, and this packet contains none.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly.",
+      "proposed_manual_workaround": "Both card types are available: a virtual card is issued alongside a spend limit, while a physical card is ordered explicitly and needs a shipping address for each recipient. Shipping addresses are not present in the material provided, so the deployment owner supplies one per physical cardholder before those cards can be ordered."
+    },
+    {
+      "requested_feature": "Clinic manager spend approved automatically within limits, central team spend above $500 approved by a manager, and compliance escalations routed to the CFO.",
+      "reason_unsupported": "Ramp has no endpoint for creating approval policies. The structure is recorded in this configuration as desired state but has to be built in the Ramp application before go-live.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one.",
+      "proposed_manual_workaround": "Tiered approval chains are a standard Ramp feature, but are built in the approvals workflow builder inside the Ramp application rather than through the API. The tier structure requested is recorded here as desired state, and the deployment owner recreates it in Ramp before go-live. Routing by amount and by user role is available on every plan; more elaborate conditions require Ramp Plus, so confirm the plan tier first."
+    },
+    {
+      "requested_feature": "Onboarding contract nurses continuously as assignments start, eight to twelve at a time on thirty to ninety day rotations.",
+      "reason_unsupported": "Ramp creates users one at a time rather than from a file. At this volume that is not a practical obstacle, but it is worth stating plainly given the rotation is continuous rather than a single onboarding event.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no bulk user endpoint; POST /users/deferred is per-user and async (poll /users/deferred/status/{task_id}), with idempotency_key required in the body.",
+      "proposed_manual_workaround": "Ramp has no bulk user import: people are created one at a time and each creation is processed in the background. At the volumes described this is not a practical constraint, since the roster is loaded in a single automated pass rather than typed in, and each request carries a duplicate-protection key so a re-run of a weekly wave cannot create the same person twice."
+    },
+    {
+      "requested_feature": "Contract nurse accounts for assignments of thirty to ninety days.",
+      "reason_unsupported": "Ramp sets an automatic deactivation date six months after invitation on Guest User accounts unless that date is cleared. For assignments of ninety days or less this expires well after the assignment ends, so the lock date on each limit remains the control that satisfies REQ-4.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — GUEST_USER accounts receive an automatic scheduled_deactivation_date six months from invite unless explicitly nulled; the field is not settable for admins or owners.",
+      "proposed_manual_workaround": "A Guest User account (limited, occasional-use access) is automatically scheduled to deactivate six months after invitation unless that date is cleared. Anyone needing access for longer than six months, such as a contractor on a multi-year engagement, should either hold a different role or have the deactivation date cleared at setup. Every Guest User assignment is called out for the deployment owner to confirm."
+    },
+    {
+      "requested_feature": "Adjusting the clinic, travel, facilities and nursing programmes after go-live.",
+      "reason_unsupported": "Ramp spend programmes cannot be edited through the API once created. Given clinic managers go live in three weeks and the nursing programme follows, both should be reviewed carefully before creation.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API.",
+      "proposed_manual_workaround": "A spend program cannot be edited through the API once created; later changes are made in the Ramp application instead. That makes the review of program definitions before go-live the cheapest point to change anything, and the deployment owner should treat it as the moment to settle names, limits and restrictions."
+    },
+    {
+      "requested_feature": "Distinct permission levels for a CFO, a Director of Compliance, a Controller, regional operations directors, clinic managers, a facilities lead and contract nurses.",
+      "reason_unsupported": "Ramp offers a fixed set of roles with no seniority or scoping dimension, so each Apex Health Partners job title is matched to the closest available role. Every non-obvious match is listed individually in the assumptions above.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer job titles onto Ramp roles is a per-person judgement call.",
+      "proposed_manual_workaround": "Ramp offers a fixed set of six assignable roles with defined permissions and no seniority or scoping dimension, so each job title is matched to the closest role by judgement rather than by rule. Every non-obvious match is recorded with the job title, the role chosen, and what that role can see and do, for the deployment owner to confirm before invitations go out."
+    }
+  ]
+}

@@ -36,7 +36,12 @@ PRONOUN = re.compile(r"\b(?:he|she|his|her|hers|him|they|them|their|theirs)\b", 
 # A quoted span. An apostrophe inside a word ("else's") must not close a single-quoted span.
 QUOTED = re.compile(r"\"[^\"]*\"|(?<![A-Za-z])'.*?'(?![A-Za-z])", re.S)
 JARGON = [re.compile(p, re.I) for p in (
-    r"\bCAP-[A-Z][A-Z-]*", r"\bDRIFT-[A-Z][A-Z-]*", r"\breq_id\b", r"\bREQ-\d+\b",
+    r"\bCAP-[A-Z][A-Z-]*", r"\bDRIFT-[A-Z][A-Z-]*", r"\breq_id\b",
+    # This pipeline's own requirement ids are zero-padded to three digits (REQ-001), and
+    # leaking one into a customer document is the defect. A customer's OWN numbering is
+    # not: Apex Health Partners numbers its compliance requirements REQ-1..REQ-6 and
+    # requires responses to cite them. Match only the padded form.
+    r"\bREQ-\d{3,}\b",
     r"\barchetypes?\b", r"\btraceability\b", r"\bcapability ledger\b", r"\bthe ledger\b",
     r"\bfans out\b", r"\bfan[- ]out\b")]
 SPEAKER = re.compile(r"\b[A-Z][a-z]+ [A-Z][A-Za-z'-]+\b")       # Priya Shetty

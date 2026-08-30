@@ -1,0 +1,285 @@
+{
+  "packet": "client_c_apex_health",
+  "requirements": [
+    {
+      "req_id": "REQ-001",
+      "claim": "Fourteen clinics across three states, about six hundred employees",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Fourteen clinics across three states, about six hundred employees total",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-002",
+      "claim": "Spend is concentrated: a clinic manager per clinic plus a small central team of finance, procurement, facilities and compliance",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "each clinic has a clinic manager who buys supplies, and then there's a small central team — finance, procurement, facilities, and Millie's compliance group",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-003",
+      "claim": "Two regional operations directors, Sam Ionescu and Karen Doyle, plus facilities lead Bruno",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Two regional ops directors, me and Karen Doyle. We travel between clinics constantly. And our facilities lead, Bruno, who handles repairs and contractors.",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-004",
+      "claim": "Clinic managers get $4,000 per month with a $1,000 per-transaction cap",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "We want four thousand a month per clinic manager, with a per-transaction cap of a thousand.",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-005",
+      "claim": "Purchases over $1,000 must route through procurement rather than a card",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Anything over a thousand in one purchase should go through procurement, not on a card.",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-006",
+      "claim": "Clinic manager categories: medical supply houses, pharmacies, hardware stores, cleaning suppliers",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Medical supply houses, pharmacies, hardware stores, cleaning suppliers, that kind of thing.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-007",
+      "claim": "Clinic manager cards must not work for travel, restaurants or electronics retail",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Definitely no travel, no restaurants, no electronics retail.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-008",
+      "claim": "REQ-1: no Apex card may transact with the terminated supplier, enforced at merchant level",
+      "source_file": "security_requirements.doc",
+      "source_quote": "No Apex card may complete a transaction with the terminated supplier operating",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-009",
+      "claim": "REQ-1: the prohibited vendor trades under two names, Joe's Medical Supply and JMS Distribution",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "They operate under Joe's Medical Supply and also as JMS Distribution, same outfit.",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-010",
+      "claim": "REQ-1: category-level controls are explicitly insufficient because the vendor is a medical supplier",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Category-level controls are NOT sufficient: the Prohibited",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-011",
+      "claim": "REQ-1: the block must apply to every card including temporary and contractor cards",
+      "source_file": "security_requirements.doc",
+      "source_quote": "must apply to every card issued under the program,\nincluding temporary and contractor cards.",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-012",
+      "claim": "Regional directors get $3,000 per month for travel: hotels, flights, rental cars, meals",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Karen and I get travel cards — three thousand a month, hotels, flights, rental cars, meals.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-013",
+      "claim": "Bruno in facilities gets $2,500 per month for hardware and contractors",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Bruno in facilities: twenty-five hundred a month, hardware, contractors, that world.",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-014",
+      "claim": "Central finance team gets $500 each",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Central finance team, minimal — five hundred each for odds and ends.",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-015",
+      "claim": "REQ-2: physical cards over $10,000 per month must not transact until a notarized wet-ink form is on file",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Physical cards with a monthly limit exceeding $10,000 USD must remain\nincapable of transacting until the Compliance Office confirms receipt",
+      "archetype_id": "CAP-ACTIVATION-GATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-016",
+      "claim": "REQ-2: the activation gate must fail closed",
+      "source_file": "security_requirements.doc",
+      "source_quote": "The activation gate must fail closed: absent confirmation, the card must not\ntransact.",
+      "archetype_id": "CAP-ACTIVATION-GATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-017",
+      "claim": "REQ-2: enforcement must be by the card system, not by staff memory",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "I don't want \"we'll remember not to use it.\" I want it physically unable to work until we say so.",
+      "archetype_id": "CAP-ACTIVATION-GATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-018",
+      "claim": "REQ-3: transactions over $500 must be declined at authorization without a matching open PO from NetSuite",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Transactions exceeding $500 USD must be declined at authorization unless a\nvalid open Purchase Order number from the Apex ERP (NetSuite) is associated\nwith the transaction prior to authorization.",
+      "archetype_id": "CAP-PREAUTH-PO",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-019",
+      "claim": "REQ-3: Compliance will review a compensating control where pre-authorization matching is unavailable",
+      "source_file": "security_requirements.doc",
+      "source_quote": "where pre-authorization matching is not technically available, Compliance will\nreview the tightest available compensating control",
+      "archetype_id": "CAP-PREAUTH-PO",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-020",
+      "claim": "REQ-3: the vendor response must state which side of the line the platform falls on",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Vendor response must state clearly which side of\nthat line the platform falls on.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-021",
+      "claim": "REQ-4: contract staff cards must cease functioning on the assignment end date without human action",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Cards issued to contract clinical staff must automatically cease functioning\non the assignment end date without human action.",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-022",
+      "claim": "REQ-4: end dates must be editable if an assignment is extended",
+      "source_file": "security_requirements.doc",
+      "source_quote": "End dates must be editable\nif an assignment is extended.",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-023",
+      "claim": "Traveling nurses: eight to twelve at a time, assignments of thirty to ninety days",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "typically eight to twelve at any time, on assignments of thirty to ninety days",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-024",
+      "claim": "Traveling nurses get $1,500 per month for lodging, meals and fuel",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Fifteen hundred a month, lodging, meals, gas.",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-025",
+      "claim": "The vendor block applies to the nurses' cards as well — company-wide",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Same vendor block applies, obviously — everything gets the Joe's block.",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-026",
+      "claim": "REQ-5: the Compliance Office needs read-only access to all transactions, cards, limits and users",
+      "source_file": "security_requirements.doc",
+      "source_quote": "The Compliance Office must hold read-only access to all transactions, cards,\nlimits, and users: full visibility, no spend capability, no administrative\ncapability.",
+      "archetype_id": "CAP-READ-ONLY-AUDITOR",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-027",
+      "claim": "REQ-6: receipts required for every transaction regardless of amount",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Receipts are required for every transaction regardless of amount.",
+      "archetype_id": "CAP-RECEIPT-POLICY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-028",
+      "claim": "Clinic manager spend auto-approves within limits",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Clinic managers' spend auto-approves within their limits — that's what the limits are for.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-029",
+      "claim": "Central team spend over $500 requires manager approval; compliance escalations go to Gordon Pryce",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Central team, manager approval over five hundred. And anything Millie's team flags goes to me.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-030",
+      "claim": "Dana Whitfield and Gordon Pryce administer the account",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "Our controller, Dana Whitfield, plus me.",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-031",
+      "claim": "Clinic managers must be live in three weeks; the nurses programme can follow",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "We want clinic managers live in three weeks. The nurses program can follow.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-032",
+      "claim": "Every requirement must be answered ENFORCED BY PLATFORM, ENFORCED BY PROCESS or NOT MET",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Each requirement must be\nanswered as one of: ENFORCED BY PLATFORM / ENFORCED BY PROCESS / NOT MET.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-033",
+      "claim": "Vague vendor responses will be returned",
+      "source_file": "security_requirements.doc",
+      "source_quote": "Vague\nresponses (\"the platform supports robust controls\") will be returned.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-034",
+      "claim": "The acceptable fallback is the tightest control that is audit-proof, not necessarily the maximal ask",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "What Millie will actually accept, if the ideal isn't possible, is the tightest thing that gets us audit-proof.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-035",
+      "claim": "Only a handful of cards would exceed the $10,000 threshold, but the control must exist regardless",
+      "source_file": "discovery_call_apex.txt",
+      "source_quote": "The number doesn't matter. The control has to exist.",
+      "archetype_id": "CAP-ACTIVATION-GATE",
+      "confidence": "high"
+    }
+  ]
+}
