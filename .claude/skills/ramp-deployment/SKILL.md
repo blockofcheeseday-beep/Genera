@@ -113,13 +113,52 @@ Three rules that matter more than the rest:
    The rule goes in `provisional_resolution`. The conflict still gets logged.
 2. **Copy `evidence` verbatim from the ledger row's `evidence_line`.** Never compose it
    fresh. That is how several audit logs stay consistent with each other instead of each
-   re-arguing the same point. `proposed_manual_workaround` comes from the row's `workaround`.
+   re-arguing the same point. `proposed_manual_workaround` is copied from the row's
+   **`customer_workaround`** — never from `workaround`, which is the internal note and
+   carries row IDs and jargon the customer must not see.
 3. **Do not list things the API supports.** Getting `unsupported_api_requests` right
    *including not over-listing* is explicitly graded. Check the ledger verdict before you
    claim anything is impossible — several verdicts that look like gaps are `UI_ONLY`
    (real capability, wrong surface) or `PARTIAL` (possible with a caveat).
 
 > "An empty audit log on a messy packet is a red flag, not an achievement."
+
+## Write it for the customer
+
+**The audit log is a customer-facing document.** For Acme it is read by their finance team,
+and it will be forwarded internally. It is not a working note. Three rules, all enforced by
+`--verify` check 5:
+
+1. **Never use a pronoun for a person — name them.** Not *"his card declines"* but *"Marcus
+   Webb's card declines"*. This covers `they`/`them` too: a generic plural is exactly the
+   vagueness the rule exists to prevent. Rewrite the sentence rather than reaching for a
+   pronoun. The one exception is a verbatim quote inside a `source` field — never misquote a
+   customer to satisfy a style rule.
+
+2. **A citation must be verifiable without opening the file.** Name the file, attribute the
+   line, and quote it. A bare quote plus a timestamp is not enough: `discovery_call_01.txt —
+   'Priya and me.' [05:41]` leaves the reader unable to tell who "me" is or why the line
+   supports the point. Give the speaker, the role, and enough surrounding context that the
+   quote carries its meaning:
+
+   ```
+   discovery_call_01.txt — Diane Marsh (VP Finance), [05:41], naming who should administer
+   the Ramp instance: "Priya and me."
+
+   department_roster.csv, row 15 — "Jenny Park,jpark@acme.example,Engineer,Engineering,
+   dkim@acme.example,2022-10-17,500"
+   ```
+
+   Check 5 re-verifies the quoted span against the named packet file, so a citation cannot
+   drift from its source any more than a Phase 1 quote can.
+
+3. **No internal vocabulary.** No ledger row IDs (`CAP-…`, `DRIFT-…`), no `req_id`, no
+   "archetype", no "fan-out". Say "one card per person", not "fans out to N funds". Plain-
+   language a Ramp role name on first use — `AUDITOR` becomes "the Auditor role (read-only
+   access across the account)".
+
+Write `impact_if_wrong` as a consequence in the customer's world — who can spend what, who
+sees what, what breaks and when — never as a statement about the configuration file.
 
 ---
 
@@ -215,8 +254,9 @@ These will bite. The validator catches none of them.
 python3 run_pipeline.py --packet <packet> --verify
 ```
 
-Seven checks, in order: outputs parse; both files validate against the shipped schemas;
-every quote matches its source file; the coverage invariant plus both graded sweeps; the
+Eight checks, in order: outputs parse; both files validate against the shipped schemas;
+every Phase 1 quote matches its source file; the coverage invariant plus both graded sweeps;
+audit-log style (pronouns, citation quality, jargon, blocking order, dated evidence); the
 `assigned_to` exactly-one rule; config cross-references; ledger freshness.
 
 The two sweeps are the ones the exercise grades explicitly, in **both** directions:
@@ -228,6 +268,19 @@ The two sweeps are the ones the exercise grades explicitly, in **both** directio
   says `UNSUPPORTED`, `UI_ONLY`, or `PARTIAL` and the audit log says nothing about it.
 
 Fix what it reports and run it again. Green is the bar.
+
+A fully green run also writes the customer-facing copies:
+
+```
+deliverables/Acme_Corp/Acme_Corp_Ramp_Config.json
+deliverables/Acme_Corp/Acme_Corp_Audit_Log.json
+```
+
+`out/` keeps the canonical `ramp_config.json` / `audit_log.json` the exercise spec asks for,
+so grading tooling still finds them. `deliverables/` carries the customer's name for anything
+sent onward. Packaging runs **only** when every check passes — a skipped check blocks it too,
+because a skip means the check did not actually happen and these copies are what a customer
+receives.
 
 ---
 

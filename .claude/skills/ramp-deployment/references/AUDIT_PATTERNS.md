@@ -25,6 +25,74 @@ claim you are making, not a default.
 
 ---
 
+## Voice: this document is read by the customer
+
+Acme's finance team reads their audit log. Millie's compliance team reads Apex's. It gets
+forwarded. Everything below is enforced by `scripts/check_audit_style.py`, which runs as
+`--verify` check 5 — these are not style preferences, they are gates.
+
+### Never use a pronoun for a person
+
+| Instead of | Write |
+|---|---|
+| "his card declines" | "Marcus Webb's card declines" |
+| "she will hit declines on office spend" | "Renata Flores will hit declines on office spend" |
+| "who is her actual manager?" | "who is Jenny Park's manager?" |
+| "they can request it" | "Engineering staff can request it" |
+
+`they`/`them` is covered by the rule. A generic plural is the same vagueness the rule
+exists to prevent — the reader still cannot tell who is meant. Restructure the sentence.
+
+**One exception:** a verbatim quote inside a `source` field. The customer's own words stay
+as spoken, pronouns and all. Never misquote someone to satisfy a style rule.
+
+### Citations must be verifiable without opening the file
+
+Four things, every time: **the file**, **who said it or where it sits**, **enough context to
+carry the meaning**, and **the verbatim quote**.
+
+Rejected by the customer:
+
+```
+discovery_call_01.txt — 'Priya and me.' [05:41]
+```
+
+A reader cannot tell who "me" is, or why that line supports the assumption it is attached
+to. Corrected:
+
+```
+discovery_call_01.txt — Diane Marsh (VP Finance), [05:41], answering who should be able to
+administer the Ramp instance and change limits: "Priya and me."
+```
+
+For a roster row, the locator replaces the speaker:
+
+```
+department_roster.csv, row 15 — "Jenny Park,jpark@acme.example,Engineer,Engineering,dkim@acme.example,2022-10-17,500"
+```
+
+The checker re-verifies the quoted span against the real packet file, so a citation cannot
+drift from its source. A bare timestamp with no speaker fails.
+
+### No internal vocabulary
+
+Never emit: `CAP-…` / `DRIFT-…` row IDs, `req_id`, `REQ-001`, "archetype", "traceability",
+"capability ledger", "fan-out" / "fans out".
+
+`proposed_manual_workaround` is copied from the ledger row's **`customer_workaround`**, which
+is written for this audience. The `workaround` field is the internal note — it carries row
+IDs and jargon and must never reach the audit log.
+
+Plain-language a Ramp role on first use: `AUDITOR` becomes "the Auditor role (read-only
+access across the account)".
+
+### `impact_if_wrong` is a consequence in the customer's world
+
+Who can spend what, who sees what, what breaks and when. Not "the config would be
+incorrect" — that tells the reader nothing they can act on.
+
+---
+
 ## 1. `assumptions_made`
 
 Judgement calls a human could veto.

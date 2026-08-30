@@ -62,7 +62,7 @@ capabilities:
           Ramp Plus. So the capability is real and the API cannot reach it. UI_ONLY, not
           UNSUPPORTED — and the "hand it to the deployment owner" workaround is now evidenced
           rather than assumed.
-    evidence_line: "openapi snapshot 2026_08_30 — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one."
     config_expression:
       section: approval_policies
       note: >-
@@ -72,6 +72,13 @@ capabilities:
     workaround: >-
       Emit the full tier structure as desired state, then hand the deployment owner a
       UI checklist to build the same chain in Ramp's approvals workflow builder.
+    customer_workaround: >-
+      Tiered approval chains are a standard Ramp feature, but are built in the approvals
+      workflow builder inside the Ramp application rather than through the API. The tier
+      structure requested is recorded here as desired state, and the deployment owner
+      recreates it in Ramp before go-live. Routing by amount and by user role is available
+      on every plan; more elaborate conditions require Ramp Plus, so confirm the plan tier
+      first.
     seen_in: [client_0_sample, client_a_acme_corp, client_b_logistica_globex, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-NEW-VENDOR-APPROVAL
@@ -90,7 +97,7 @@ capabilities:
           No approval write surface at all (see CAP-APPROVAL-CHAIN). Separately, this rule
           is not threshold-shaped, so it has no home in the exercise schema either:
           approval_policies[].tiers[] is keyed on threshold_usd_cents (integer).
-    evidence_line: "openapi snapshot 2026_08_30 — no approval write surface; additionally 'new vendor' is not threshold-shaped and approval_policies[].tiers[] is keyed only on threshold_usd_cents."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no approval write surface; additionally 'new vendor' is not threshold-shaped and approval_policies[].tiers[] is keyed only on threshold_usd_cents."
     config_expression:
       section: audit_log_only
       note: A schema-expressiveness gap as well as an API gap. Worth flagging in both directions.
@@ -98,6 +105,13 @@ capabilities:
       Record in the audit log as a process control. The deployment owner can approximate it
       in-app with a low-threshold tier on a dedicated new-vendor spend program, at the cost
       of catching amount-based traffic too.
+    customer_workaround: >-
+      Ramp cannot route an approval on the basis that a supplier is new; approval rules are
+      driven by amount and by user role. The closest available control is a dedicated spend
+      program for first-time suppliers with a low approval threshold, set up by the
+      deployment owner in the Ramp application, accepting that it will also stop ordinary
+      purchases above that amount. This requirement is therefore recorded as a process
+      control rather than an automated one.
     seen_in: [client_0_sample, client_a_acme_corp, client_b_logistica_globex]
 
   # ---------------------------------------------------------------- MCC / categories
@@ -128,7 +142,7 @@ capabilities:
           factors", then restricts on its own categories. So an MCC allow-list is not
           expressible anywhere in the product, UI included — this stays UNSUPPORTED rather
           than becoming UI_ONLY.
-    evidence_line: "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API."
     config_expression:
       section: mcc_controls
       mechanism: allowed_categories
@@ -137,6 +151,14 @@ capabilities:
       lossy mapping in translation_notes plus an assumptions_made entry. Ranges that
       straddle categories (e.g. 3000-3299 airlines) collapse to the nearest single category
       and must be flagged individually.
+    customer_workaround: >-
+      Ramp restricts spend using its own 43 spend categories, which Ramp derives from the
+      merchant category code together with other signals, so an allow-list written at raw
+      merchant-category-code granularity cannot be applied through the API or in the Ramp
+      application. Each requested code is mapped to the nearest Ramp category and every
+      imprecise mapping is listed for review; ranges that span more than one category, such
+      as 3000-3299 for airlines, need the deployment owner to confirm the substitute before
+      go-live.
     seen_in: [client_c_apex_health, client_e_vanguard_retail]
 
   - id: CAP-MCC-BLOCKLIST
@@ -156,13 +178,19 @@ capabilities:
           ApiFundSpendingRestrictionsUpdateRequestBody and ApiSpendingRestrictionsRequestBody
           — but on NO *Dump (response) schema. You can set it; you cannot read it back
           through the API to confirm it applied.
-    evidence_line: "openapi snapshot 2026_08_30 — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API."
     config_expression:
       section: mcc_controls
       mechanism: blocked_mcc_codes
     workaround: >-
       Set it, then verify in the Ramp UI rather than by reading the API back. Note the
       write-only asymmetry for anyone building reconciliation on top.
+    customer_workaround: >-
+      Blocked merchant category codes can be set through the API but cannot be read back
+      from it, so the values that took effect are confirmed by opening the spend limit or
+      spend program in the Ramp application. The deployment owner should check each block
+      there after setup, and any later reconciliation tooling should not expect to retrieve
+      these codes from the API.
     seen_in: [client_c_apex_health, client_e_vanguard_retail]
 
   - id: CAP-CATEGORY-RESTRICT
@@ -188,7 +216,7 @@ capabilities:
           spelling is "SaaS / Software"; the Westbrook sample config writes
           "Software / SaaS", which validates because the exercise schema takes free strings
           but does not match the API vocabulary.
-    evidence_line: "openapi snapshot 2026_08_30 — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
     config_expression:
       section: mcc_controls
       mechanism: allowed_categories
@@ -214,12 +242,17 @@ capabilities:
           allowed_vendor_ids / blocked_vendor_ids. Spend-program restrictions use
           allowed_categories / blocked_categories / allowed_vendors / blocked_vendors.
           Same concept, two spellings, one silent-bug surface.
-    evidence_line: "openapi snapshot 2026_08_30 — fund restrictions use *_category_codes / *_vendor_ids while spend-program restrictions use *_categories / *_vendors; the concepts are identical and the names are not."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — fund restrictions use *_category_codes / *_vendor_ids while spend-program restrictions use *_categories / *_vendors; the concepts are identical and the names are not."
     config_expression:
       section: internal_note
     workaround: >-
       An implementation hazard rather than a customer-facing gap. The exercise schema uses
       the spend-program spelling; anyone turning this config into fund calls must rename.
+    customer_workaround: >-
+      An implementation detail rather than a limit on what Ramp can do: the same restriction
+      carries a different field name on spend limits than on spend programs. No action is
+      needed from the deployment owner; the team applying this setup accounts for the
+      difference.
     seen_in: []
 
 
@@ -247,6 +280,12 @@ capabilities:
       Read-modify-write on every restriction edit. A partial update silently drops
       restrictions the customer still expects — which is the quiet way a vendor block or a
       category allow-list disappears months after go-live.
+    customer_workaround: >-
+      When spending restrictions are changed later, Ramp replaces the entire set rather than
+      merging in the single edit, so every restriction that should stay in force must be
+      resent with the change. The deployment owner should treat any restriction edit as a
+      full restatement of the rules; otherwise a merchant block or category rule agreed at
+      go-live can disappear unnoticed months afterwards.
     seen_in: []
 
   - id: CAP-PRODUCTION-WRITES
@@ -272,6 +311,12 @@ capabilities:
       Out of scope for this exercise, which produces payloads rather than calls — but it is
       the first thing a deployment owner needs to know, because it means go-live is not a
       matter of pointing a script at production. Belongs in the go-live handoff.
+    customer_workaround: >-
+      Ramp disables write requests against the production API; write operations run against
+      the sandbox environment, which has a separate address and its own application
+      credentials. Go-live is therefore not a matter of pointing a script at production, and
+      the deployment owner should agree the intended apply path with Ramp before scheduling
+      it.
     seen_in: []
 
   # ---------------------------------------------------------------- vendors
@@ -294,7 +339,7 @@ capabilities:
           POST /developer/v1/vendors. Different object graph, easy to conflate. There is
           no company-wide blocklist resource: the block must be set on every program and
           every standalone limit.
-    evidence_line: "openapi snapshot 2026_08_30 — blocked_vendors / blocked_vendor_ids take merchant UUIDs from GET /merchants (not Bill Pay vendor objects); no global blocklist resource exists, so the block must be repeated on every spend program and standalone limit."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_vendors / blocked_vendor_ids take merchant UUIDs from GET /merchants (not Bill Pay vendor objects); no global blocklist resource exists, so the block must be repeated on every spend program and standalone limit."
     config_expression:
       section: mcc_controls
       mechanism: blocked_vendors
@@ -302,6 +347,12 @@ capabilities:
       Apply the block on every program and limit, and add a standing process step: any
       newly created card or program must re-apply it. Trade names that map to one outfit
       must each be resolved to their own merchant UUID — one name is not one merchant.
+    customer_workaround: >-
+      A merchant block is real and enforced, but Ramp holds no account-wide blocklist: the
+      block is set on each spend program and each individual limit, and must be re-applied
+      to anything created later. The deployment owner should add that step to the routine
+      for issuing new cards and programs. One trade name can also map to more than one
+      merchant record in Ramp, so each name is resolved separately.
     seen_in: [client_c_apex_health]
 
   # ---------------------------------------------------------------- limits / funds
@@ -323,7 +374,7 @@ capabilities:
           ApiFundCreateRequestBody). A group limit therefore fans out to N funds, one per
           member. is_shareable plus /funds/{id}/members is the nearest genuine shared-pool
           primitive, and it changes the semantics: one pot drawn down by many, not N pots.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /funds requires a single user_id, so a group limit fans out to one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N)."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds requires a single user_id, so a group limit fans out to one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N)."
     config_expression:
       section: limits
       mechanism: assigned_to.group
@@ -332,6 +383,12 @@ capabilities:
       intent was per-person (fan out to N funds) or a genuinely shared pot
       (one is_shareable fund with members). These are different products and the
       customer's phrasing usually does not distinguish them — ask.
+    customer_workaround: >-
+      Ramp attaches a spend limit to one person at a time, so a limit described for a team
+      becomes either a separate limit of that size for each member or a single shared pot
+      the whole team draws down. Those are materially different outcomes and the wording of
+      a request rarely settles which is meant, so the deployment owner should confirm the
+      intent for each team-level limit before setup.
     seen_in: [client_0_sample, client_a_acme_corp, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-USER-LIMIT
@@ -354,7 +411,7 @@ capabilities:
           spending_restrictions (interval + limit both required), which is exactly this.
           Recorded so the false-negative sweep has something to resolve for ordinary
           per-person limits instead of leaving archetype_id null on half a packet.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /funds takes a single user_id with spending_restrictions (interval and limit both required), so a per-person recurring limit is the API's native shape."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds takes a single user_id with spending_restrictions (interval and limit both required), so a per-person recurring limit is the API's native shape."
     config_expression:
       section: limits
       mechanism: assigned_to.user_email
@@ -378,13 +435,19 @@ capabilities:
           ApiFundSpendingRestrictionsRequestBody requires both interval and limit;
           limit is a CurrencyAmountRequestBody whose amount is a required integer.
           There is no null / unlimited sentinel.
-    evidence_line: "openapi snapshot 2026_08_30 — ApiFundSpendingRestrictionsRequestBody requires both 'interval' and 'limit', and limit.amount is a required integer; there is no unlimited sentinel."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — ApiFundSpendingRestrictionsRequestBody requires both 'interval' and 'limit', and limit.amount is a required integer; there is no unlimited sentinel."
     config_expression:
       section: limits
     workaround: >-
       Encode a deliberately high ceiling and record the exact number as an assumption with
       impact_if_wrong. Never emit a high number silently — "no limit" and "$50k/mo" are
       different promises to the person holding the card.
+    customer_workaround: >-
+      Ramp requires every spend limit to carry both a period and an amount; there is no
+      unlimited setting, in the API or in the Ramp application. A deliberately high ceiling
+      stands in for 'no limit', and the exact figure is recorded for the deployment owner to
+      approve, because a high ceiling and no ceiling are different promises to the person
+      holding the card.
     seen_in: [client_a_acme_corp]
 
   - id: CAP-AUTO-EXPIRY
@@ -404,7 +467,7 @@ capabilities:
           lock_date is settable on ApiFundSpendingRestrictionsRequestBody and on the update
           body, and surfaces as auto_lock_date on the dump schemas. Editable, so an
           extension is a PATCH rather than a teardown.
-    evidence_line: "openapi snapshot 2026_08_30 — lock_date is settable on fund create and update bodies (auto_lock_date on read), so a hard stop date is native and extendable via PATCH."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — lock_date is settable on fund create and update bodies (auto_lock_date on read), so a hard stop date is native and extendable via PATCH."
     config_expression:
       section: limits
       mechanism: spending_restrictions.lock_date
@@ -426,7 +489,7 @@ capabilities:
         note: >-
           CurrencyAmountRequestBody carries currency_code (ISO-4217, defaults USD) alongside
           an integer amount in the smallest denomination. Limits genuinely can be MXN / BRL / USD.
-    evidence_line: "openapi snapshot 2026_08_30 — CurrencyAmountRequestBody takes an ISO-4217 currency_code (default USD) with an integer minor-unit amount, so per-limit local currency is native."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — CurrencyAmountRequestBody takes an ISO-4217 currency_code (default USD) with an integer minor-unit amount, so per-limit local currency is native."
     config_expression:
       section: limits
       mechanism: spending_restrictions.currency
@@ -446,7 +509,7 @@ capabilities:
         note: >-
           CurrencyAmountRequestBody.amount is an integer in the smallest denomination
           ("cents for USD"). Only amount is required; currency_code defaults to USD.
-    evidence_line: "openapi snapshot 2026_08_30 — CurrencyAmountRequestBody.amount is an integer in the smallest currency denomination ('cents for USD')."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — CurrencyAmountRequestBody.amount is an integer in the smallest currency denomination ('cents for USD')."
     config_expression:
       section: internal_note
     workaround: >-
@@ -472,7 +535,7 @@ capabilities:
         note: >-
           Suspension is a POST/DELETE pair on funds, on individual fund members
           (/funds/{id}/members/{user_id}/suspension) and on physical cards. Reversible.
-    evidence_line: "openapi snapshot 2026_08_30 — suspension is a reversible POST/DELETE pair on /funds/{id}/suspension, /funds/{id}/members/{user_id}/suspension and physical cards."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — suspension is a reversible POST/DELETE pair on /funds/{id}/suspension, /funds/{id}/members/{user_id}/suspension and physical cards."
     config_expression:
       section: internal_note
     workaround: null
@@ -494,7 +557,7 @@ capabilities:
         note: >-
           There is no authorization-time hook anywhere in the spec — no endpoint that runs
           during card authorization. /purchase-orders is a record API, not a control surface.
-    evidence_line: "openapi snapshot 2026_08_30 — no authorization-time hook exists; /purchase-orders is a record API, not a control surface, so a charge cannot be gated on PO match at authorization."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no authorization-time hook exists; /purchase-orders is a record API, not a control surface, so a charge cannot be gated on PO match at authorization."
     config_expression:
       section: limits
       mechanism: spending_restrictions.transaction_amount_limit_cents
@@ -503,6 +566,14 @@ capabilities:
       threshold, plus same-day post-transaction PO reconciliation, plus
       POST /funds/{id}/suspension on violation. Detective rather than preventive — say so
       plainly, because the difference is the whole point of the requirement.
+    customer_workaround: >-
+      Ramp performs no check at the moment a card is authorised, so a charge cannot be held
+      until a purchase order is matched; purchase order data in Ramp is a record rather than
+      a control. The closest compensating control is a hard per-transaction cap at the
+      stated threshold, same-day reconciliation against approved purchase orders, and
+      suspending the card when a mismatch is found. That detects a breach after the fact
+      rather than preventing it, which the deployment owner should weigh against the
+      original requirement.
     seen_in: [client_c_apex_health]
 
   - id: CAP-ACTIVATION-GATE
@@ -523,13 +594,20 @@ capabilities:
           No native conditioning of card activation on an external attestation. But
           issue-then-immediately-suspend is expressible, and unsuspending is a deliberate
           human act, which satisfies "fails closed".
-    evidence_line: "openapi snapshot 2026_08_30 — no native activation gate on external attestation; the composable equivalent is POST /cards/physical followed immediately by POST /cards/physical/{id}/suspension, released only on confirmation."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no native activation gate on external attestation; the composable equivalent is POST /cards/physical followed immediately by POST /cards/physical/{id}/suspension, released only on confirmation."
     config_expression:
       section: audit_log_only
     workaround: >-
       Issue, then suspend in the same run, and release only on written confirmation. The
       residual risk is the window between the two calls and the fact that nothing in Ramp
       enforces the evidence requirement — a human does.
+    customer_workaround: >-
+      Ramp cannot hold a card inactive pending an outside document, but the same effect is
+      achieved by issuing the card and suspending it in the same step, then lifting the
+      suspension only once the signed document is on file. Lifting a suspension is a
+      deliberate human action, so the arrangement fails closed. The residual risk is the
+      short window between issue and suspension, and the fact that Ramp itself does not
+      check that the document exists.
     seen_in: [client_c_apex_health]
 
   - id: CAP-RECEIPT-POLICY
@@ -548,7 +626,7 @@ capabilities:
           No receipt-threshold configuration resource. /receipts and /receipt-integrations
           handle receipt objects and ingestion, not policy. The threshold is an in-app
           policy setting.
-    evidence_line: "openapi snapshot 2026_08_30 — no receipt-policy configuration resource; /receipts covers receipt objects and ingestion, not thresholds. Receipt rules are an in-app setting."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no receipt-policy configuration resource; /receipts covers receipt objects and ingestion, not thresholds. Receipt rules are an in-app setting."
     config_expression:
       section: audit_log_only
       note: >-
@@ -556,6 +634,11 @@ capabilities:
         is itself a decision, so it belongs in assumptions_made. This is the idiom the
         Westbrook sample demonstrates with its $50 rule.
     workaround: Deployment owner sets the receipt threshold in-app during setup.
+    customer_workaround: >-
+      Receipt requirements are a standard Ramp policy setting, configured in the Ramp
+      application rather than through the API, so the rule is not carried in the setup
+      produced here. The deployment owner sets the receipt threshold during account setup;
+      the omission is recorded so that nothing is assumed to already be in place.
     seen_in: [client_0_sample, client_a_acme_corp, client_c_apex_health]
 
   - id: CAP-MEMO-POLICY
@@ -573,10 +656,15 @@ capabilities:
         note: >-
           A memos resource exists for reading memo objects, but there is no memo-policy
           or memo-threshold configuration surface. Same shape as CAP-RECEIPT-POLICY.
-    evidence_line: "openapi snapshot 2026_08_30 — /memos exposes memo objects but no memo-policy or threshold configuration surface; the rule is an in-app setting."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — /memos exposes memo objects but no memo-policy or threshold configuration surface; the rule is an in-app setting."
     config_expression:
       section: audit_log_only
     workaround: Deployment owner sets the memo threshold in-app during setup.
+    customer_workaround: >-
+      Memo and justification requirements are configured in the Ramp application rather than
+      through the API. The deployment owner sets the memo threshold during account setup;
+      the rule is not carried in the setup produced here, and that omission is recorded
+      rather than quietly dropped.
     seen_in: [client_a_acme_corp]
 
   - id: CAP-NOTIFICATIONS
@@ -595,13 +683,19 @@ capabilities:
           No notification or chat-integration configuration resource. The nearest primitive
           is POST /developer/v1/webhooks (transaction events), which is a delivery mechanism,
           not a rule engine — thresholds and routing would live in the consumer.
-    evidence_line: "openapi snapshot 2026_08_30 — no notifications resource; nearest primitive is POST /webhooks (transaction events), which delivers events but does not evaluate threshold or routing rules."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no notifications resource; nearest primitive is POST /webhooks (transaction events), which delivers events but does not evaluate threshold or routing rules."
     config_expression:
       section: audit_log_only
     workaround: >-
       Ramp's in-app Slack integration may cover the common case (deployment owner enables it);
       otherwise a webhook consumer applies the threshold and posts. Note when the customer's
       phrasing is a wish rather than a rule — "I want to know about" is not a limit.
+    customer_workaround: >-
+      Ramp has no rule engine for routing spend alerts to a chat channel or to a named
+      person. Ramp's Slack integration, switched on by the deployment owner in the Ramp
+      application, covers the common case of posting card activity to a channel; anything
+      conditional, such as alerting only above a set monthly amount, needs a webhook
+      subscription with the threshold applied by the receiving system.
     seen_in: [client_0_sample, client_d_hypergrowth]
 
   - id: CAP-SCOPED-VISIBILITY
@@ -633,7 +727,7 @@ capabilities:
           Separately, "Customizing Roles and Permissions" documents Custom Roles with
           entity restriction, on Ramp Plus, in-app — so finer scoping exists but is not
           API-creatable (consistent with GET /roles being read-only).
-    evidence_line: "support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — openapi snapshot 2026_08_30 shows GET /roles is read-only."
+    evidence_line: "support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — Ramp Developer API specification (snapshot dated 2026-08-30) shows GET /roles is read-only."
     config_expression:
       section: users
       mechanism: role
@@ -644,6 +738,12 @@ capabilities:
       is a stock role rather than a gap — see CAP-IT-ADMIN-SCOPE. Only scoping that follows
       neither reporting lines nor a stock role needs a Custom Role, which is Ramp Plus and
       in-app. Confirm the customer's plan tier before promising it.
+    customer_workaround: >-
+      Ramp scopes spend visibility to a manager's own reporting line, so setting each
+      person's manager correctly delivers most of this requirement directly. Anything beyond
+      that — visibility that does not follow reporting lines — requires a Custom Role, which
+      is configured in the Ramp application and is available on Ramp Plus. Confirm the plan
+      tier before relying on it.
     seen_in: [client_a_acme_corp, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-READ-ONLY-AUDITOR
@@ -658,7 +758,7 @@ capabilities:
       - source: openapi_snapshot_2026_08_30
         checked_on: 2026-08-30
         note: AUDITOR is a first-class value in the user create/update role enum.
-    evidence_line: "openapi snapshot 2026_08_30 — AUDITOR is a first-class role on ApiUserCreateRequestBody, giving read-only access without a custom role."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — AUDITOR is a first-class role on ApiUserCreateRequestBody, giving read-only access without a custom role."
     config_expression:
       section: users
       mechanism: role
@@ -682,7 +782,7 @@ capabilities:
         note: >-
           is_draft is an optional boolean on ApiUserCreateRequestBody; a draft user gets no
           invite email and is activated later via POST /users/{id}/invite.
-    evidence_line: "openapi snapshot 2026_08_30 — ApiUserCreateRequestBody accepts is_draft, creating a user with no invite email, activated later via POST /users/{id}/invite."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — ApiUserCreateRequestBody accepts is_draft, creating a user with no invite email, activated later via POST /users/{id}/invite."
     config_expression:
       section: users
       mechanism: notes
@@ -708,13 +808,19 @@ capabilities:
           No bulk user endpoint. Creation is per-user and asynchronous: POST returns a task
           to poll at /users/deferred/status/{task_id}. idempotency_key is a required BODY
           field here, unlike funds which uses an X-Idempotency-Key header.
-    evidence_line: "openapi snapshot 2026_08_30 — no bulk user endpoint; POST /users/deferred is per-user and async (poll /users/deferred/status/{task_id}), with idempotency_key required in the body."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no bulk user endpoint; POST /users/deferred is per-user and async (poll /users/deferred/status/{task_id}), with idempotency_key required in the body."
     config_expression:
       section: users
     workaround: >-
       A loop is entirely adequate at this scale — say so rather than implying a bulk import
       exists. Idempotency keys make waves safely re-runnable, which matters when a customer
       onboards in weekly batches.
+    customer_workaround: >-
+      Ramp has no bulk user import: people are created one at a time and each creation is
+      processed in the background. At the volumes described this is not a practical
+      constraint, since the roster is loaded in a single automated pass rather than typed
+      in, and each request carries a duplicate-protection key so a re-run of a weekly wave
+      cannot create the same person twice.
     seen_in: [client_e_vanguard_retail]
 
   - id: CAP-IDEMPOTENCY-SPLIT
@@ -730,10 +836,15 @@ capabilities:
         note: >-
           POST /users/deferred requires idempotency_key in the request body.
           POST /funds takes an X-Idempotency-Key HTTP header. Same guarantee, two transports.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /users/deferred requires a body-level idempotency_key while POST /funds uses an X-Idempotency-Key header."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /users/deferred requires a body-level idempotency_key while POST /funds uses an X-Idempotency-Key header."
     config_expression:
       section: internal_note
     workaround: Implementation hazard for anyone writing the apply step. No customer-facing impact.
+    customer_workaround: >-
+      An implementation detail with no effect on the finished account: Ramp accepts the
+      duplicate-protection key in two different places depending on which resource is being
+      created. The team applying this setup handles both forms, and no action is needed from
+      the deployment owner.
     seen_in: []
 
   - id: CAP-GUEST-EXPIRY-DEFAULT
@@ -750,13 +861,19 @@ capabilities:
         note: >-
           GUEST_USER gets scheduled_deactivation_date auto-set to six months from invite
           unless explicitly nulled. The field cannot be set for admins or owners.
-    evidence_line: "openapi snapshot 2026_08_30 — GUEST_USER accounts receive an automatic scheduled_deactivation_date six months from invite unless explicitly nulled; the field is not settable for admins or owners."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — GUEST_USER accounts receive an automatic scheduled_deactivation_date six months from invite unless explicitly nulled; the field is not settable for admins or owners."
     config_expression:
       section: users
       mechanism: notes
     workaround: >-
       A default with teeth: choosing GUEST_USER for a long-running contractor quietly
       schedules their deactivation. Flag it whenever GUEST_USER is assigned.
+    customer_workaround: >-
+      A Guest User account (limited, occasional-use access) is automatically scheduled to
+      deactivate six months after invitation unless that date is cleared. Anyone needing
+      access for longer than six months, such as a contractor on a multi-year engagement,
+      should either hold a different role or have the deactivation date cleared at setup.
+      Every Guest User assignment is called out for the deployment owner to confirm.
     seen_in: [client_a_acme_corp, client_c_apex_health]
 
   - id: CAP-USER-TO-ENTITY
@@ -775,7 +892,7 @@ capabilities:
           There is no entity field on user create. Entity assignment is indirect, via
           location_id — locations map many-to-one onto entities (POST /locations takes an
           optional entity_id).
-    evidence_line: "openapi snapshot 2026_08_30 — user create has no entity field; entity assignment is indirect via location_id, and locations carry an optional entity_id."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — user create has no entity field; entity assignment is indirect via location_id, and locations carry an optional entity_id."
     config_expression:
       section: users
       mechanism: location
@@ -810,7 +927,7 @@ capabilities:
           spec does not: what each role can actually see and do. Role choice is a permissions
           decision, not a titles translation, and it should be made from those pages rather
           than from the enum name.
-    evidence_line: "openapi snapshot 2026_08_30 plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call."
     config_expression:
       section: users
       mechanism: role
@@ -821,6 +938,12 @@ capabilities:
       (see CAP-GUEST-EXPIRY-DEFAULT), IT_ADMIN for identity owners (see CAP-IT-ADMIN-SCOPE),
       BUSINESS_ADMIN for owners (see DRIFT-ROLE-BUSINESS-OWNER). Never infer a role from
       seniority alone.
+    customer_workaround: >-
+      Ramp offers a fixed set of six assignable roles with defined permissions and no
+      seniority or scoping dimension, so each job title is matched to the closest role by
+      judgement rather than by rule. Every non-obvious match is recorded with the job title,
+      the role chosen, and what that role can see and do, for the deployment owner to
+      confirm before invitations go out.
     seen_in: [client_0_sample, client_a_acme_corp, client_b_logistica_globex, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-IT-ADMIN-SCOPE
@@ -880,7 +1003,7 @@ capabilities:
           Create legal entity, and a bulk flow for adding several at once. A positive docs
           statement is much stronger evidence than an endpoint's absence from a snapshot, and
           it moves the verdict to UI_ONLY.
-    evidence_line: "openapi snapshot 2026_08_30 — /entities is GET-only; the separate POST /accounting/entities creates an accounting-side object, not a Ramp legal entity. docs.ramp.com accounting guide, checked 2026-08-30 — 'Entities are created in the Ramp UI, and objects are scoped to an entity_id when fetching via the API.'"
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — /entities is GET-only; the separate POST /accounting/entities creates an accounting-side object, not a Ramp legal entity. docs.ramp.com accounting guide, checked 2026-08-30 — 'Entities are created in the Ramp UI, and objects are scoped to an entity_id when fetching via the API.'"
     config_expression:
       section: entities
       mechanism: status
@@ -890,6 +1013,11 @@ capabilities:
     workaround: >-
       Emit status "requested", pair it with is_draft users, and hand the entity creation to
       the deployment owner as a prerequisite step with a date dependency.
+    customer_workaround: >-
+      Legal entities are created in the Ramp application, not through the API. The entity is
+      recorded here as requested and the people belonging to it are prepared without being
+      invited, so the deployment owner creates the entity first and the accounts are
+      activated once it exists.
     seen_in: [client_b_logistica_globex]
 
   - id: CAP-DEPT-CREATE
@@ -904,7 +1032,7 @@ capabilities:
       - source: openapi_snapshot_2026_08_30
         checked_on: 2026-08-30
         note: ApiDepartmentCreateRequestBody has exactly one property, name, and it is required.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /departments takes exactly one field, name."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /departments takes exactly one field, name."
     config_expression:
       section: departments
     workaround: null
@@ -925,7 +1053,7 @@ capabilities:
           The exercise schema allows departments[].entity, but the API department create
           body is name-only — no entity_id. Departments are company-wide; only *locations*
           carry entity_id.
-    evidence_line: "openapi snapshot 2026_08_30 — the department create body is name-only with no entity_id, so departments are company-wide; only locations carry an entity association."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — the department create body is name-only with no entity_id, so departments are company-wide; only locations carry an entity association."
     config_expression:
       section: departments
       mechanism: entity
@@ -935,6 +1063,11 @@ capabilities:
     workaround: >-
       Model the entity split through locations instead, or accept company-wide departments
       with entity-prefixed names. Flag rather than silently dropping the entity field.
+    customer_workaround: >-
+      Departments in Ramp are account-wide and cannot be attached to a legal entity; only
+      locations carry an entity association. The requested split is preserved either by
+      modelling it through locations or by naming each department with its entity prefix,
+      and the deployment owner should confirm which of the two reads better in reporting.
     seen_in: [client_b_logistica_globex]
 
   - id: CAP-LOCATION-CREATE
@@ -950,7 +1083,7 @@ capabilities:
       - source: openapi_snapshot_2026_08_30
         checked_on: 2026-08-30
         note: name required, entity_id optional. This is the only user-reachable entity link.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /locations requires name and accepts an optional entity_id; this is the only entity association reachable from user setup."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /locations requires name and accepts an optional entity_id; this is the only entity association reachable from user setup."
     config_expression:
       section: locations
     workaround: null
@@ -973,7 +1106,7 @@ capabilities:
           ApiSpendProgramCreateRequestBody requires display_name, description, icon,
           permitted_spend_types and spending_restrictions. Note "icon" is REQUIRED by the API
           and has no home in the exercise schema.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /spend-programs requires display_name, description, icon, permitted_spend_types and spending_restrictions; 'icon' is required by the API but has no field in the exercise schema."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /spend-programs requires display_name, description, icon, permitted_spend_types and spending_restrictions; 'icon' is required by the API but has no field in the exercise schema."
     config_expression:
       section: spend_programs
     workaround: >-
@@ -995,12 +1128,17 @@ capabilities:
         note: >-
           /spend-programs supports GET and POST; /spend-programs/{id} supports GET only.
           No PATCH, no DELETE. A program is effectively immutable once created via API.
-    evidence_line: "openapi snapshot 2026_08_30 — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API."
     config_expression:
       section: internal_note
     workaround: >-
       Get programs right the first time, or edit in-app. This raises the stakes on the
       config review before go-live and is worth saying in the handoff.
+    customer_workaround: >-
+      A spend program cannot be edited through the API once created; later changes are made
+      in the Ramp application instead. That makes the review of program definitions before
+      go-live the cheapest point to change anything, and the deployment owner should treat
+      it as the moment to settle names, limits and restrictions.
     seen_in: [client_a_acme_corp, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-SP-ISSUANCE-RULES
@@ -1018,7 +1156,7 @@ capabilities:
         note: >-
           issuance_rules splits into automatic and requestable, each targeting
           department_ids / location_ids / user_custom_field_ids / applies_to_all.
-    evidence_line: "openapi snapshot 2026_08_30 — spend program issuance_rules splits into 'automatic' and 'requestable', each targeting department_ids, location_ids, user_custom_field_ids or applies_to_all."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — spend program issuance_rules splits into 'automatic' and 'requestable', each targeting department_ids, location_ids, user_custom_field_ids or applies_to_all."
     config_expression:
       section: spend_programs
       note: The exercise schema has no issuance_rules field; targeting is implied by limits[].assigned_to.
@@ -1043,7 +1181,7 @@ capabilities:
           Physical cards have full CRUD (POST /cards/physical requires shipping_address and
           user_id; automatic_routing_enabled and fund_id are mutually exclusive). Virtual
           cards are GET-only — they are issued as a side effect of funds, not created directly.
-    evidence_line: "openapi snapshot 2026_08_30 — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly."
     config_expression:
       section: spend_programs
       mechanism: issue_physical_card_if_needed
@@ -1051,6 +1189,11 @@ capabilities:
       Express the physical/virtual split through permitted_spend_types on the fund and
       issue_physical_card_if_needed on the program. Physical issuance additionally needs
       shipping addresses, which packets rarely contain — usually a missing-information flag.
+    customer_workaround: >-
+      Both card types are available: a virtual card is issued alongside a spend limit, while
+      a physical card is ordered explicitly and needs a shipping address for each recipient.
+      Shipping addresses are not present in the material provided, so the deployment owner
+      supplies one per physical cardholder before those cards can be ordered.
     seen_in: [client_a_acme_corp, client_e_vanguard_retail]
 
   - id: CAP-REIMBURSEMENTS
@@ -1068,7 +1211,7 @@ capabilities:
         note: >-
           reimbursements_enabled on the spend-program permitted_spend_types;
           reimbursements on the fund-level body. Independently togglable per object.
-    evidence_line: "openapi snapshot 2026_08_30 — reimbursements are a per-object toggle via permitted_spend_types (reimbursements_enabled on spend programs, reimbursements on funds)."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — reimbursements are a per-object toggle via permitted_spend_types (reimbursements_enabled on spend programs, reimbursements on funds)."
     config_expression:
       section: spend_programs
       mechanism: permitted_spend_types.reimbursements_enabled
@@ -1099,12 +1242,16 @@ capabilities:
           write "the API has no limits concept" in any audit log — it has the concept, under
           a different path. This is the single most likely place to produce a wrong
           "the API cannot do this" claim.
-    evidence_line: "openapi snapshot 2026_08_30 — the top-level 'limits' section maps to POST /developer/v1/funds (no /limits path exists), though both limits:* and funds:* OAuth scopes are defined; docs.ramp.com still documents the resource as 'spend limits' (checked 2026-08-30). The concept exists — only the path name differs."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — the top-level 'limits' section maps to POST /developer/v1/funds (no /limits path exists), though both limits:* and funds:* OAuth scopes are defined; docs.ramp.com still documents the resource as 'spend limits' (checked 2026-08-30). The concept exists — only the path name differs."
     config_expression:
       section: limits
       note: Emit the schema shape (limits). Log the mapping. Do not rename.
     workaround: >-
       Anyone applying this config posts to /funds rather than /limits.
+    customer_workaround: >-
+      A naming difference only: what Ramp's documentation and application call a spend limit
+      is addressed as a fund on the current API path. Nothing about the requirement or the
+      finished account changes, and no action is needed from the deployment owner.
     seen_in: [client_0_sample, client_a_acme_corp, client_b_logistica_globex, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: DRIFT-INTERVAL-TERTIARY
@@ -1120,11 +1267,15 @@ capabilities:
         note: >-
           API interval enum has eight values: ANNUAL, DAILY, MONTHLY, QUARTERLY, TERTIARY,
           TOTAL, WEEKLY, YEARLY. The exercise schema has seven — no TERTIARY.
-    evidence_line: "openapi snapshot 2026_08_30 — the API interval enum carries eight values including TERTIARY; the exercise schema's interval enum has seven and omits it."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — the API interval enum carries eight values including TERTIARY; the exercise schema's interval enum has seven and omits it."
     config_expression:
       section: limits
       note: No packet has asked for a four-monthly interval, so this drift is currently harmless.
     workaround: Emit only the seven schema values. Log the difference.
+    customer_workaround: >-
+      Ramp offers one limit period beyond those used in this deployment — a four-monthly
+      cycle — which nothing in this account requires. Noted for completeness; no action is
+      needed from the deployment owner.
     seen_in: []
 
   - id: DRIFT-ROLE-BUSINESS-OWNER
@@ -1143,7 +1294,7 @@ capabilities:
           exercise schema has six and omits it. Read-side User schemas carry eleven values
           (adding UNBUNDLED_*). Ramp's own docs note the Owner role is not invitable, so
           BUSINESS_OWNER would be a poor choice for a new user regardless.
-    evidence_line: "openapi snapshot 2026_08_30 — the API user-create role enum has seven values including BUSINESS_OWNER (read schemas carry eleven, adding UNBUNDLED_*); the exercise schema has six and omits BUSINESS_OWNER."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — the API user-create role enum has seven values including BUSINESS_OWNER (read schemas carry eleven, adding UNBUNDLED_*); the exercise schema has six and omits BUSINESS_OWNER."
     config_expression:
       section: users
       mechanism: role
@@ -1151,6 +1302,11 @@ capabilities:
         Map a founder/owner to BUSINESS_ADMIN and log the mapping. This is the idiom the
         Westbrook sample demonstrates with Priti.
     workaround: Map owners to BUSINESS_ADMIN. Record the mapping as an assumption.
+    customer_workaround: >-
+      Ramp keeps a separate Owner role that cannot be granted by invitation, so a founder or
+      company owner is set up with the Business Admin role (full administrative access
+      across the account) instead. The deployment owner should confirm that this is the
+      intended level of access for each person named as an owner.
     seen_in: [client_0_sample, client_a_acme_corp, client_d_hypergrowth]
 
   - id: NOT-DRIFT-SPEND-TYPES
@@ -1172,7 +1328,7 @@ capabilities:
           virtual_card + reimbursements. The exercise schema attaches permitted_spend_types
           to spend_programs, so it matches its API counterpart exactly. This is the same
           level-divergence pattern as CAP-FIELD-NAME-DIVERGENCE, not drift.
-    evidence_line: "openapi snapshot 2026_08_30 — ApiPermittedSpendTypesRequestBody (spend programs) requires exactly primary_card_enabled and reimbursements_enabled, matching the exercise schema; the three-boolean shape belongs to funds (ApiFundPermittedSpendTypesRequestBody), a different object level."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — ApiPermittedSpendTypesRequestBody (spend programs) requires exactly primary_card_enabled and reimbursements_enabled, matching the exercise schema; the three-boolean shape belongs to funds (ApiFundPermittedSpendTypesRequestBody), a different object level."
     config_expression:
       section: spend_programs
     workaround: >-

@@ -10,13 +10,14 @@ what Ramp cannot do. This script never writes config or audit content itself.
   python3 run_pipeline.py --packet client_a_acme_corp            # setup + runbook
   python3 run_pipeline.py --packet client_a_acme_corp --verify   # gate the outputs
 """
-import argparse, hashlib, json, pathlib, subprocess, sys
+import argparse, hashlib, json, pathlib, re, shutil, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent
 PACKETS = ROOT / "candidate" / "customer_packets"
 SCRIPTS = ROOT / ".claude" / "skills" / "ramp-deployment" / "scripts"
 VALIDATE = ROOT / "candidate" / "tools" / "validate.py"
 WORK, OUT = ROOT / "work", ROOT / "out"
+DELIVERABLES = ROOT / "deliverables"
 SKILL = ".claude/skills/ramp-deployment/SKILL.md"
 SECTIONS = ("entities, departments, locations, users, spend_programs, "
             "limits, approval_policies, mcc_controls")
@@ -196,6 +197,35 @@ def check_assigned_to(config):
     return (not bad), "; ".join(bad) or f"{len(config.get('limits') or [])} limits, each assigned exactly once"
 
 
+def client_name(packet):
+    """client_a_acme_corp -> Acme_Corp.
+
+    The graded filenames in out/ are fixed by the exercise spec. These are the
+    customer-facing copies, so they carry the customer's name rather than the
+    exercise's packet id.
+    """
+    stem = re.sub(r"^client_[0-9a-z]_", "", packet)
+    return "_".join(w.capitalize() for w in stem.split("_"))
+
+
+def package(name):
+    """Copy the verified outputs to deliverables/ under customer-facing names.
+
+    out/ keeps the canonical ramp_config.json / audit_log.json the spec asks for, so
+    grading tooling still finds them. This runs only after every check passes, so a
+    deliverable can never be a copy of output that failed verification.
+    """
+    client = client_name(name)
+    dest = DELIVERABLES / client
+    dest.mkdir(parents=True, exist_ok=True)
+    written = []
+    for src, suffix in (("ramp_config.json", "Ramp_Config"), ("audit_log.json", "Audit_Log")):
+        target = dest / f"{client}_{suffix}.json"
+        shutil.copyfile(OUT / name / src, target)
+        written.append(target)
+    return written
+
+
 def verify(pkt):
     name, rows = pkt.name, []
     outs_ok, outs_note, config = load_outputs(name)
@@ -207,7 +237,9 @@ def verify(pkt):
     else:
         rows.append(("schema validation", None, "skipped — outputs missing or unparseable"))
 
-    for label, script in (("quote fidelity", "check_quotes.py"), ("coverage + sweeps", "check_coverage.py")):
+    for label, script in (("quote fidelity", "check_quotes.py"),
+                          ("coverage + sweeps", "check_coverage.py"),
+                          ("audit log style", "check_audit_style.py")):
         rows.append((label, *run([sys.executable, str(SCRIPTS / script), "--packet", name])[:2]))
 
     if config is None:
@@ -238,6 +270,11 @@ def verify(pkt):
     print(f"\n{len(rows) - len(failed) - len(skipped)} passed, {len(failed)} failed, {len(skipped)} skipped")
     if failed:
         print("failed: " + ", ".join(failed))
+    if failed or skipped:
+        print("  not packaged — deliverables/ is written only from a fully green run")
+    else:
+        for f in package(name):
+            print(f"  packaged  {rel(f)}")
     return 1 if failed else 0
 
 
