@@ -609,9 +609,10 @@ capabilities:
     workaround: >-
       First model the reporting chain — set direct_manager_id so each person reports to the
       manager who should see them, and is_manager on that manager. That covers most of the
-      ask natively. Only what remains after that (partial permissions such as "manage users
-      but not limits", or scoping that does not follow reporting lines) needs a Custom Role,
-      which is Ramp Plus and in-app. Confirm the customer's plan tier before promising it.
+      ask natively. The common partial-permission ask, "manage users but not spend limits",
+      is a stock role rather than a gap — see CAP-IT-ADMIN-SCOPE. Only scoping that follows
+      neither reporting lines nor a stock role needs a Custom Role, which is Ramp Plus and
+      in-app. Confirm the customer's plan tier before promising it.
     seen_in: [client_a_acme_corp, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-READ-ONLY-AUDITOR
@@ -752,6 +753,75 @@ capabilities:
       stating in the handoff, because it makes location setup a prerequisite rather than
       a nicety.
     seen_in: [client_b_logistica_globex]
+
+  - id: CAP-ROLE-MAPPING
+    verdict: PARTIAL
+    title: Map customer job titles onto Ramp's role enum
+    customer_phrasings:
+      - "Priya runs the books and needs to see everything"
+      - "he is a contractor, give him the most locked-down thing you have"
+      - "Priya and me should administer it"
+    api_mechanism:
+      endpoints: [POST /developer/v1/users/deferred]
+      fields: [role]
+    evidence:
+      - source: openapi_snapshot_2026_08_30
+        checked_on: 2026-08-30
+        note: >-
+          The exercise schema offers six roles (BUSINESS_ADMIN, BUSINESS_USER,
+          BUSINESS_BOOKKEEPER, IT_ADMIN, AUDITOR, GUEST_USER). Customer org charts do not
+          come in six shapes, so most packets need a judgement call per person, and the enum
+          carries no seniority or scoping dimension to encode the rest.
+      - source: support.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          "User roles overview" and the per-role deep-dives give the semantics the OpenAPI
+          spec does not: what each role can actually see and do. Role choice is a permissions
+          decision, not a titles translation, and it should be made from those pages rather
+          than from the enum name.
+    evidence_line: "openapi snapshot 2026_08_30 plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call."
+    config_expression:
+      section: users
+      mechanism: role
+    workaround: >-
+      Every non-obvious mapping gets an assumptions_made entry naming the title, the chosen
+      role, and what the person will consequently be able to see or do. Bookkeeper for
+      close-the-books staff, AUDITOR for read-only compliance, GUEST_USER for contractors
+      (see CAP-GUEST-EXPIRY-DEFAULT), IT_ADMIN for identity owners (see CAP-IT-ADMIN-SCOPE),
+      BUSINESS_ADMIN for owners (see DRIFT-ROLE-BUSINESS-OWNER). Never infer a role from
+      seniority alone.
+    seen_in: [client_0_sample, client_a_acme_corp, client_b_logistica_globex, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
+
+  - id: CAP-IT-ADMIN-SCOPE
+    verdict: SUPPORTED
+    title: Manage people without being able to touch spend controls
+    customer_phrasings:
+      - "she should manage users but not change spend limits"
+      - "he runs our identity stuff — joiners and leavers"
+    api_mechanism:
+      endpoints: [POST /developer/v1/users/deferred]
+      fields: [role]
+    evidence:
+      - source: support.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          Found by dry-running the ledger against packet A, which asks for exactly this split.
+          "User role deep-dive: IT Admin" states IT Admins have employee permissions plus
+          access to edit People, Company Settings, Developer API and Integrations, and can
+          invite users of any role including Admin — while they "do not have access to the
+          business's spend information and cannot manage spend controls", and cannot issue
+          spend or cards unless manager permissions are enabled for direct reports. That is
+          the requested split exactly, as a stock role.
+    evidence_line: "support.ramp.com 'User role deep-dive: IT Admin', checked 2026-08-30 — IT Admins can edit People, Company Settings, Integrations and invite users of any role, but have no access to spend information and cannot manage spend controls; user administration without spend authority is a stock role, not a custom one."
+    config_expression:
+      section: users
+      mechanism: role
+    workaround: >-
+      No workaround needed — but note the semantics come from the help centre, not the API
+      spec. The enum value IT_ADMIN tells you nothing about what it permits, so a
+      snapshot-only reading of this requirement would reach for a custom role that does not
+      exist instead of the stock role that solves it.
+    seen_in: [client_a_acme_corp]
 
   # ---------------------------------------------------------------- structure
   - id: CAP-ENTITY-CREATE

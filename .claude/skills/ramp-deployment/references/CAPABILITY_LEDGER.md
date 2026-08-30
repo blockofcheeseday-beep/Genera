@@ -7,7 +7,7 @@ The unit is *a thing customers ask for*, not an endpoint.
 
 Primary evidence: `candidate/2026_08_30_Ramp_OpenAPI_Schema.json` — 171 paths, 1017 schemas, 76 OAuth scopes, server `https://api.ramp.com`, prefix `/developer/v1/`.
 
-**40 rows.** UNSUPPORTED: 7  UI_ONLY: 4  PARTIAL: 12  SUPPORTED: 14  DRIFT: 3
+**42 rows.** UNSUPPORTED: 7  UI_ONLY: 4  PARTIAL: 13  SUPPORTED: 15  DRIFT: 3
 
 | id | verdict | title | seen in |
 |---|---|---|---|
@@ -33,6 +33,7 @@ Primary evidence: `candidate/2026_08_30_Ramp_OpenAPI_Schema.json` — 171 paths,
 | [`CAP-BULK-USERS`](#cap-bulk-users) | **PARTIAL** | Onboard many people from a spreadsheet | e vanguard retail |
 | [`CAP-IDEMPOTENCY-SPLIT`](#cap-idempotency-split) | **PARTIAL** | Idempotency is passed two different ways | — |
 | [`CAP-GUEST-EXPIRY-DEFAULT`](#cap-guest-expiry-default) | **PARTIAL** | Guest users silently expire after six months | a acme corp, c apex health |
+| [`CAP-ROLE-MAPPING`](#cap-role-mapping) | **PARTIAL** | Map customer job titles onto Ramp's role enum | 0 sample, a acme corp, b logistica globex, c apex health, d hypergrowth, e vanguard retail |
 | [`CAP-CARD-TYPE`](#cap-card-type) | **PARTIAL** | Choose physical versus virtual cards | a acme corp, e vanguard retail |
 | [`CAP-CATEGORY-RESTRICT`](#cap-category-restrict) | **SUPPORTED** | Restrict a card or program to Ramp spend categories | a acme corp, c apex health, e vanguard retail |
 | [`CAP-AUTO-EXPIRY`](#cap-auto-expiry) | **SUPPORTED** | Card or limit stops working on a fixed date | c apex health, d hypergrowth, e vanguard retail |
@@ -42,6 +43,7 @@ Primary evidence: `candidate/2026_08_30_Ramp_OpenAPI_Schema.json` — 171 paths,
 | [`CAP-READ-ONLY-AUDITOR`](#cap-read-only-auditor) | **SUPPORTED** | Read-only access for compliance or audit staff | c apex health |
 | [`CAP-DRAFT-USER`](#cap-draft-user) | **SUPPORTED** | Create a user now, invite them later | b logistica globex, d hypergrowth |
 | [`CAP-USER-TO-ENTITY`](#cap-user-to-entity) | **SUPPORTED** | Assign a person to a legal entity | b logistica globex |
+| [`CAP-IT-ADMIN-SCOPE`](#cap-it-admin-scope) | **SUPPORTED** | Manage people without being able to touch spend controls | a acme corp |
 | [`CAP-DEPT-CREATE`](#cap-dept-create) | **SUPPORTED** | Create departments | a acme corp, c apex health, d hypergrowth |
 | [`CAP-LOCATION-CREATE`](#cap-location-create) | **SUPPORTED** | Create locations, optionally tied to an entity | b logistica globex, c apex health |
 | [`CAP-SP-CREATE`](#cap-sp-create) | **SUPPORTED** | Create a spend program with its own rules | a acme corp, c apex health, d hypergrowth |
@@ -562,7 +564,7 @@ support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visib
 
 Config expression: section `users`, mechanism `role`
 
-**Workaround.** First model the reporting chain — set direct_manager_id so each person reports to the manager who should see them, and is_manager on that manager. That covers most of the ask natively. Only what remains after that (partial permissions such as "manage users but not limits", or scoping that does not follow reporting lines) needs a Custom Role, which is Ramp Plus and in-app. Confirm the customer's plan tier before promising it.
+**Workaround.** First model the reporting chain — set direct_manager_id so each person reports to the manager who should see them, and is_manager on that manager. That covers most of the ask natively. The common partial-permission ask, "manage users but not spend limits", is a stock role rather than a gap — see CAP-IT-ADMIN-SCOPE. Only scoping that follows neither reporting lines nor a stock role needs a Custom Role, which is Ramp Plus and in-app. Confirm the customer's plan tier before promising it.
 
 ### CAP-BULK-USERS
 
@@ -639,6 +641,38 @@ openapi snapshot 2026_08_30 — GUEST_USER accounts receive an automatic schedul
 Config expression: section `users`, mechanism `notes`
 
 **Workaround.** A default with teeth: choosing GUEST_USER for a long-running contractor quietly schedules their deactivation. Flag it whenever GUEST_USER is assigned.
+
+### CAP-ROLE-MAPPING
+
+**Map customer job titles onto Ramp's role enum**
+
+How customers say it:
+
+- *“Priya runs the books and needs to see everything”*
+- *“he is a contractor, give him the most locked-down thing you have”*
+- *“Priya and me should administer it”*
+
+Endpoints: `POST /developer/v1/users/deferred`
+
+Fields: `role`
+
+> **openapi_snapshot_2026_08_30** (checked 2026-08-30)
+>
+> The exercise schema offers six roles (BUSINESS_ADMIN, BUSINESS_USER, BUSINESS_BOOKKEEPER, IT_ADMIN, AUDITOR, GUEST_USER). Customer org charts do not come in six shapes, so most packets need a judgement call per person, and the enum carries no seniority or scoping dimension to encode the rest.
+
+> **support.ramp.com** (checked 2026-08-30)
+>
+> "User roles overview" and the per-role deep-dives give the semantics the OpenAPI spec does not: what each role can actually see and do. Role choice is a permissions decision, not a titles translation, and it should be made from those pages rather than from the enum name.
+
+Evidence line (verbatim into audit logs):
+
+```
+openapi snapshot 2026_08_30 plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call.
+```
+
+Config expression: section `users`, mechanism `role`
+
+**Workaround.** Every non-obvious mapping gets an assumptions_made entry naming the title, the chosen role, and what the person will consequently be able to see or do. Bookkeeper for close-the-books staff, AUDITOR for read-only compliance, GUEST_USER for contractors (see CAP-GUEST-EXPIRY-DEFAULT), IT_ADMIN for identity owners (see CAP-IT-ADMIN-SCOPE), BUSINESS_ADMIN for owners (see DRIFT-ROLE-BUSINESS-OWNER). Never infer a role from seniority alone.
 
 ### CAP-CARD-TYPE
 
@@ -866,6 +900,33 @@ openapi snapshot 2026_08_30 — user create has no entity field; entity assignme
 Config expression: section `users`, mechanism `location`
 
 **Workaround.** Every entity needs at least one location before its people can be placed. Worth stating in the handoff, because it makes location setup a prerequisite rather than a nicety.
+
+### CAP-IT-ADMIN-SCOPE
+
+**Manage people without being able to touch spend controls**
+
+How customers say it:
+
+- *“she should manage users but not change spend limits”*
+- *“he runs our identity stuff — joiners and leavers”*
+
+Endpoints: `POST /developer/v1/users/deferred`
+
+Fields: `role`
+
+> **support.ramp.com** (checked 2026-08-30)
+>
+> Found by dry-running the ledger against packet A, which asks for exactly this split. "User role deep-dive: IT Admin" states IT Admins have employee permissions plus access to edit People, Company Settings, Developer API and Integrations, and can invite users of any role including Admin — while they "do not have access to the business's spend information and cannot manage spend controls", and cannot issue spend or cards unless manager permissions are enabled for direct reports. That is the requested split exactly, as a stock role.
+
+Evidence line (verbatim into audit logs):
+
+```
+support.ramp.com 'User role deep-dive: IT Admin', checked 2026-08-30 — IT Admins can edit People, Company Settings, Integrations and invite users of any role, but have no access to spend information and cannot manage spend controls; user administration without spend authority is a stock role, not a custom one.
+```
+
+Config expression: section `users`, mechanism `role`
+
+**Workaround.** No workaround needed — but note the semantics come from the help centre, not the API spec. The enum value IT_ADMIN tells you nothing about what it permits, so a snapshot-only reading of this requirement would reach for a custom role that does not exist instead of the stock role that solves it.
 
 ### CAP-DEPT-CREATE
 
