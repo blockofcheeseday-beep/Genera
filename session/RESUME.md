@@ -48,10 +48,34 @@ zero-threshold tier that over-captures (catches all software spend, not just new
 Recurs in packet C as the compliance-escalation policy. Honest in the audit log, still a
 semantic mismatch.
 
-**Script budget exception:** `cite.py` is 220 lines and `money_map.py` 174, against a ~40-line
+**Script budget exception:** `cite.py` is 220 lines and `money_map.py` 182, against a ~40-line
 guardrail. Defensible
 (16 and 9 small functions, longest 40 lines, replacing work otherwise redone per packet) but
 should be named in NOTES.md, not hidden.
+
+## money_map.py — documented limits
+
+Its own author listed these; keep them in NOTES.md rather than implying full coverage.
+The tool is a prompt to look, not a guarantee that everything was found.
+
+1. A bare unit word with no scale and no currency is not detected — packet A's "cap it at
+   ten to be safe" is invisible as a figure. Deliberate: it is indistinguishable from "ten
+   clinics". The text does appear in the context line printed for the $8,000 figure on the
+   same line (verified), so a reader still sees it.
+2. Spanish/Portuguese hundreds words beyond quinientos/quinhentos are not in the table.
+   None appear as money in packet B; adding more raises headcount-noise risk.
+3. `period` is read from a short window around the figure, so a line stating two amounts can
+   leave the further one's period blank rather than wrong. `scope` is line-wide by design and
+   can be over-inclusive on dense lines.
+4. Currency is inferred from the nearest marker; a spelled-out amount with no marker on its
+   line defaults to USD. Non-USD figures are marked, but an unmarked figure is an inference.
+5. A range becomes two endpoints, both tagged `range` — "between X and Y" is not one object.
+6. Repeated identical amounts on one line are reported once per occurrence, intentionally,
+   since each carries different surrounding text.
+
+**Already surfaced, unprompted:** on packet B, 2,000 MXN appears both as a per-transaction
+ceiling in the memo and as the auto-approve threshold on the call — the same straddle class
+as packet C. Worth checking properly if B gets run.
 
 ## Constraints found
 
