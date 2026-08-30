@@ -3,16 +3,16 @@
 
 check_audit_style.py gates every `source` field in audit_log.json: it must name a real packet
 file, carry a verbatim quoted span of 15+ characters, and attribute it to a speaker name or a
-row/line locator -- a bare timestamp is exactly the case the customer rejected. That gate
-shipped with no tool behind it, so the first two packets each grew a throwaway quote-finder,
-written from scratch and thrown away; a fresh session on an unseen packet would write a third.
-This is the permanent one. It folds text the way the gate folds it, so a quote typed with ASCII
-punctuation still matches curly-quoted source, and it never invents attribution: a quote that
-is not in the packet exits 1 rather than being dressed up as a citation.
+row/line locator -- a bare timestamp is exactly the case the customer rejected. That gate shipped
+with no tool behind it, so the first two packets each grew a throwaway quote-finder, written from
+scratch and thrown away; a fresh session on an unseen packet would write a third. This is the
+permanent one: it folds text the way the gate folds it, so a quote typed with ASCII punctuation
+still matches curly-quoted source, and it never invents attribution -- a quote that is not in the
+packet exits 1 instead of being dressed up as a citation.
 
 Packet formats differ -- attendee-block transcripts, Slack exports, markdown notes, numbered
-memos, CSV rosters -- and the next packet is unseen, so attribution degrades in steps: speaker
-if a header roster names one, else document owner plus section, else a bare line number. A line
+memos, CSV rosters -- and the next packet is unseen, so attribution degrades in steps: speaker if
+a header roster names one, else document owner plus section, else a bare line number. A line
 number alone already satisfies the gate, so an unknown format still yields a VALID citation.
 
   python3 cite.py --packet client_a_acme_corp --quote "Priya and me" --context "naming admins"
@@ -66,19 +66,16 @@ def titleize(handle):
 
 def speaker_map(text):
     """key -> display name, from whichever header roster the file happens to carry."""
-    head, out = text.splitlines()[:HEADER], {}
-    for line in head:
-        m = ATTENDEE.match(line)
-        if m:
-            out[m.group("key")] = f"{m.group('name').strip()} ({m.group('role').strip()})"
-    for i, line in enumerate(head):
+    head = text.splitlines()[:HEADER]
+    out = {m.group("key"): f"{m.group('name').strip()} ({m.group('role').strip()})"
+           for m in filter(None, map(ATTENDEE.match, head))}
+    for i, line in enumerate(head):          # no attendee block? Slack ships "Members: handle (Role)"
         if out or not re.match(r"\s*members\s*:", line, re.I):
             continue
-        block = []
-        while i < len(head) and head[i].strip():
-            block.append(head[i])
-            i += 1
-        for m in MEMBERS.finditer(" ".join(block)):
+        j = i
+        while j < len(head) and head[j].strip():
+            j += 1
+        for m in MEMBERS.finditer(" ".join(head[i:j])):
             out[m.group("key")] = f"{titleize(m.group('key'))} ({m.group('role').strip()})"
     return out
 
@@ -193,17 +190,15 @@ def arg(flag, default=None):
 def main():
     packet, quote, repo = arg("--packet"), arg("--quote"), arg("--repo")
     if not packet or not (quote or "--speakers" in sys.argv):
-        print('usage: cite.py --packet <packet> --quote "<text>" [--context "<clause>"] [--repo <path>]\n'
-              "       cite.py --packet <packet> --speakers")
+        print('usage: cite.py --packet <name> {--quote "<text>" [--context "<clause>"] | --speakers}'
+              " [--repo <path>]")
         return 1
     try:
         if "--speakers" in sys.argv:
-            for name, speakers in packet_speakers(packet, repo).items():
+            for name, found in packet_speakers(packet, repo).items():
                 print(name)
-                for key, who in speakers.items():
-                    print(f"    {key:<16} {who}")
-                if not speakers:
-                    print("    (no speaker roster -- citations fall back to section/line numbers)")
+                print("\n".join(f"    {k:<16} {v}" for k, v in found.items())
+                      or "    (no speaker roster -- citations fall back to section/line numbers)")
             return 0
         hits = locate(packet, quote, repo)
     except (FileNotFoundError, ValueError) as e:
