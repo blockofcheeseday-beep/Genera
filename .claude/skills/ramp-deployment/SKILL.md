@@ -164,7 +164,9 @@ Read `candidate/sample_packet/.../example_output/ramp_config.json` before compos
 short and every line of it is a decision:
 
 - `approval_policies[].source` carries the **verbatim quote** the policy came from
-  (`"intake_email.txt — 'Anything over $1,000 needs Priti's approval.'"`). Use it; it is
+  (`"intake_email.txt — 'Anything over 1,000 dollars needs Priti's approval.'"` — the sample
+  quotes the figure with a dollar sign; written without one here because a literal `$1` in
+  this file gets eaten by skill argument substitution). Use it; it is
   where a reviewer looks when sources conflict.
 - A tier list starts at `{"threshold_usd_cents": 0, "approver": "AUTO"}` — the auto-approve
   floor is an explicit tier, not an absence.
@@ -193,7 +195,17 @@ These will bite. The validator catches none of them.
   validates cleanly and is wrong.
 - **Seven intervals, no `TERTIARY`.** The live API has eight.
 - **`permitted_spend_types` takes exactly two booleans** and forbids anything else.
-- `out/` contains **only** the two JSON files. Intermediates go in `work/`.
+- **Optional fields are omitted, not nulled.** `affected_config` is optional on a
+  missing-information flag, but its type is `string` — emitting `null` fails validation.
+  Only `direct_manager_email` is explicitly nullable.
+- **Names must point at something you emitted.** A user's `department`, an
+  `mcc_controls[].applies_to`, a `limits[].spend_program`, a `direct_manager_email` — all
+  are free strings to the schema, so a typo or a stray case-normalization validates
+  cleanly and is wrong. Normalizing roster departments with `.title()` turns `IT` into
+  `It`, which silently orphans that user from the department you created. `--verify`
+  check 6 catches this class; it exists because that exact bug got through packet A.
+- `out/` contains **only** the two JSON files. Intermediates go in `work/` — the rendered
+  `view.html` included.
 
 ---
 
@@ -203,9 +215,9 @@ These will bite. The validator catches none of them.
 python3 run_pipeline.py --packet <packet> --verify
 ```
 
-Six checks, in order: outputs parse; both files validate against the shipped schemas; every
-quote matches its source file; the coverage invariant plus both graded sweeps; the
-`assigned_to` exactly-one rule; ledger freshness.
+Seven checks, in order: outputs parse; both files validate against the shipped schemas;
+every quote matches its source file; the coverage invariant plus both graded sweeps; the
+`assigned_to` exactly-one rule; config cross-references; ledger freshness.
 
 The two sweeps are the ones the exercise grades explicitly, in **both** directions:
 

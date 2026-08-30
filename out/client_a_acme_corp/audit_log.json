@@ -1,0 +1,241 @@
+{
+  "client_id": "client_a_acme_corp",
+  "assumptions_made": [
+    {
+      "assumption": "Marcus Webb's 'no limit' is encoded as a $50,000/month ceiling. Ramp requires a limit amount; $50,000 is Diane's own stated practical equivalent, not a number we chose.",
+      "source": "discovery_call_01.txt — 'Fifty grand a month?' [01:38]",
+      "impact_if_wrong": "If Marcus's real spend can exceed $50k in a month his card declines — the exact outcome Priya warned would get the project renamed. Confirm the ceiling with him before go-live."
+    },
+    {
+      "assumption": "Marcus Webb (CEO) is mapped to BUSINESS_ADMIN. The config schema's role enum has no BUSINESS_OWNER.",
+      "source": "department_roster.csv — 'Marcus Webb,marcus@acme.example,CEO,G&A,,2019-02-01,NO LIMIT'",
+      "impact_if_wrong": "Marcus gets full administrative rights over the instance, which is broader than a pure owner role. If Acme wants him to spend but not administer, downgrade to BUSINESS_USER."
+    },
+    {
+      "assumption": "Kevin O'Rourke is mapped to GUEST_USER as the most locked-down assignable role.",
+      "source": "discovery_call_01.txt — 'he should absolutely not see anything about anyone else's spend'",
+      "impact_if_wrong": "If GUEST_USER is more restrictive than his job needs he cannot spend on job boards; if less, he sees more than intended. Note his email is an external domain (orourketalent.example)."
+    },
+    {
+      "assumption": "Priya Shetty is mapped to BUSINESS_ADMIN rather than BUSINESS_BOOKKEEPER, because she was named as an instance administrator as well as the person who closes the books.",
+      "source": "discovery_call_01.txt — 'Priya and me.' [05:41]",
+      "impact_if_wrong": "BUSINESS_BOOKKEEPER would match 'close the month' more exactly but could not administer users or limits, which Diane explicitly asked for."
+    },
+    {
+      "assumption": "Sana Qureshi is mapped to IT_ADMIN, which grants people administration without spend-control authority — the exact split requested.",
+      "source": "discovery_call_01.txt — 'Sana should not be able to change spend limits though. Just people stuff.'",
+      "impact_if_wrong": "If Acme expects Sana to also issue cards, IT_ADMIN blocks it unless manager permissions are enabled for her direct reports."
+    },
+    {
+      "assumption": "The $75 receipt threshold is an in-app policy setting and is deliberately omitted from this config rather than encoded anywhere.",
+      "source": "discovery_call_01.txt — 'Required over seventy-five dollars.'",
+      "impact_if_wrong": "None to card behaviour; the deployment owner sets it in-app during setup. If missed, receipts are not enforced at all."
+    },
+    {
+      "assumption": "The $500 memo threshold is an in-app policy setting and is deliberately omitted from this config.",
+      "source": "discovery_call_01.txt — 'And memo required for anything over five hundred.'",
+      "impact_if_wrong": "None to card behaviour; set in-app. If missed, memos are not required and month-end coding gets harder."
+    },
+    {
+      "assumption": "Roster department values 'sales' and 'Sales' are the same department, normalized to 'Sales'.",
+      "source": "department_roster.csv — 'Fatima Diallo,fdiallo@acme.example,Account Executive,sales,ohaddad@acme.example,2022-06-06,2000'",
+      "impact_if_wrong": "If they are genuinely distinct, Fatima Diallo and Ivy Chen land in the wrong department and inherit the wrong program targeting."
+    },
+    {
+      "assumption": "IT is included as a fifth department, taken from the roster even though the call named only four.",
+      "source": "department_roster.csv — 'Sana Qureshi,squreshi@acme.example,IT Administrator,IT,dmarsh@acme.example,2021-09-13,2000'",
+      "impact_if_wrong": "If IT should roll into G&A, Sana sits in a department of one and any future department-targeted program misses her."
+    },
+    {
+      "assumption": "Han Zhao's monthly limit is taken as $1,200 — the value on the later of his two duplicate roster rows.",
+      "source": "department_roster.csv — 'Han Zhao,hzhao@acme.example,Staff Engineer,Engineering,vostrowski@acme.example,2020-07-06,1200'",
+      "impact_if_wrong": "He gets $1,200 rather than the $500 every other engineer gets. Row order is a weak tie-breaker; this is logged as a conflict and needs a human answer."
+    },
+    {
+      "assumption": "Engineering's request-based access to the travel program is recorded here rather than in the config, because the config schema has no issuance_rules field. The Ramp API does support this.",
+      "source": "discovery_call_01.txt — 'Nobody in Engineering by default; they can request.'",
+      "impact_if_wrong": "If the deployment owner does not set the program's requestable issuance rule for Engineering, engineers cannot request travel cards at all."
+    },
+    {
+      "assumption": "The config's top-level 'limits' section is emitted in the shape the exercise schema requires; applying it means posting to /developer/v1/funds.",
+      "source": "candidate/schemas/ramp_config_schema.json — top-level 'limits' section",
+      "impact_if_wrong": "None to this document. Anyone writing the apply step against a literal /limits path will 404."
+    },
+    {
+      "assumption": "Renata Flores's 'decent limit' is taken as the roster's $3,000, under the stated rule that the roster wins.",
+      "source": "discovery_call_01.txt — 'She should have her own card with a decent limit'",
+      "impact_if_wrong": "If 'decent' meant more than $3,000 she will hit declines on office spend, which is her daily job."
+    },
+    {
+      "assumption": "'Software-ish' is mapped to the single Ramp category 'SaaS / Software' (code 40).",
+      "source": "discovery_call_01.txt — 'And it should decline anything that isn't software-ish.'",
+      "impact_if_wrong": "Purchases Acme considers software but Ramp categorizes elsewhere — hardware-bundled tools, some marketplaces — will decline on the software card."
+    },
+    {
+      "assumption": "'Actual travel categories' is mapped to Airlines, Lodging, Taxi and rideshare, and Restaurants (codes 4, 6, 8, 19).",
+      "source": "discovery_call_01.txt — 'restricted to actual travel categories — airlines, hotels, rideshare, restaurants while traveling'",
+      "impact_if_wrong": "Restaurants cannot be scoped to 'while traveling' — the category is unconditional, so travel cards will also work at local restaurants. Car rental (code 5) was not named and is excluded; confirm."
+    },
+    {
+      "assumption": "The travel limit is modelled as one group limit over a named cohort of 11 travellers, which fans out to one fund per person at apply time.",
+      "source": "discovery_call_01.txt — 'Everyone in Sales, plus Marcus, plus me, plus Tom Reyes in Marketing'",
+      "impact_if_wrong": "If Acme meant one shared $2,000 pool rather than $2,000 each, total travel exposure is 11x what they expect."
+    },
+    {
+      "assumption": "A single existing US entity is assumed; the packet never names a legal entity or discusses multiple.",
+      "source": "discovery_call_01.txt — 'Four departments for spend purposes.'",
+      "impact_if_wrong": "If Acme has more than one legal entity, users are attached to the wrong one and locations would be needed to separate them."
+    }
+  ],
+  "missing_information_flags": [
+    {
+      "question": "Sam Whitfield has no Target_Limit_USD_Monthly on the roster. What monthly limit should he get? No limit has been emitted for him, so he currently gets no card.",
+      "affected_config": "limits",
+      "blocking": true
+    },
+    {
+      "question": "Jenny Park's manager is listed as dkim@acme.example, who does not appear anywhere in the roster. Who is her actual manager? Her direct_manager_email is emitted as null.",
+      "affected_config": "users",
+      "blocking": true
+    },
+    {
+      "question": "Han Zhao appears twice on the roster with monthly limits of 500 and 1200. Which is correct?",
+      "affected_config": "limits",
+      "blocking": true
+    },
+    {
+      "question": "Marcus Webb's $50,000/month ceiling is our encoding of 'no limit'. Does Marcus accept that number?",
+      "affected_config": "limits",
+      "blocking": true
+    },
+    {
+      "question": "Physical cards were requested for all of Sales and for travellers, but the packet contains no shipping addresses. Ramp requires a shipping_address per physical card.",
+      "affected_config": "users, spend_programs",
+      "blocking": true
+    },
+    {
+      "question": "Who do the two newest Marketing hires (Aisha Bello, started 2026-05-18; Grant Sokol, started 2026-06-29) report to after the reorg? The roster says Lucy Tran and Tom Reyes respectively; Priya flagged both as possibly stale. Encoded as the roster states, per instruction not to block.",
+      "affected_config": "users",
+      "blocking": false
+    },
+    {
+      "question": "Kevin O'Rourke's email is on an external domain (kevin@orourketalent.example). Is that intended for his Ramp account, or should he have an acme.example address?",
+      "affected_config": "users",
+      "blocking": false
+    },
+    {
+      "question": "The call named four departments for spend; the roster contains a fifth, IT, with one member. Should IT be its own department or roll into G&A?",
+      "affected_config": "departments",
+      "blocking": false
+    },
+    {
+      "question": "Is Car rental (Ramp category 5) intended to be in scope for the travel program? It was not named alongside airlines, hotels, rideshare and restaurants.",
+      "affected_config": "spend_programs, mcc_controls",
+      "blocking": false
+    },
+    {
+      "question": "Go-live is wanted before the September close. Which date is the hard deadline?",
+      "blocking": false
+    }
+  ],
+  "conflicts": [
+    {
+      "description": "Marcus Webb's spending limit. The roster records a non-numeric 'NO LIMIT'; the call offers $50,000/month as the practical equivalent, and Priya asks for very-high rather than none.",
+      "source_a": "department_roster.csv — 'Marcus Webb,marcus@acme.example,CEO,G&A,,2019-02-01,NO LIMIT'",
+      "source_b": "discovery_call_01.txt — 'Fifty grand a month?' [01:38]",
+      "provisional_resolution": "Encoded $50,000/month. The stated roster-wins rule does not resolve this one: 'NO LIMIT' is not a value Ramp can express at all, so the call's number is the only representable option. Flagged for Marcus's confirmation."
+    },
+    {
+      "description": "Han Zhao's monthly limit. The roster contradicts itself — the same email appears on two rows with different limits.",
+      "source_a": "department_roster.csv — 'Han Zhao,hzhao@acme.example,Staff Engineer,Engineering,vostrowski@acme.example,2020-07-06,500'",
+      "source_b": "department_roster.csv — 'Han Zhao,hzhao@acme.example,Staff Engineer,Engineering,vostrowski@acme.example,2020-07-06,1200'",
+      "provisional_resolution": "Encoded $1,200, the later row. The roster-wins rule cannot arbitrate a roster that disagrees with itself, so this is row order only — a weak reason. Blocking flag raised."
+    },
+    {
+      "description": "Number of departments. The call names four departments for spend purposes; the roster contains five distinct department values.",
+      "source_a": "discovery_call_01.txt — 'Four departments for spend purposes.'",
+      "source_b": "department_roster.csv — 'Sana Qureshi,squreshi@acme.example,IT Administrator,IT,dmarsh@acme.example,2021-09-13,2000'",
+      "provisional_resolution": "Encoded all five, including IT, under the stated rule that the roster wins where it and the call disagree."
+    },
+    {
+      "description": "Reimbursements. Diane states the goal is to eliminate reimbursements, then immediately asks to keep them enabled for edge cases.",
+      "source_a": "discovery_call_01.txt — 'We want to basically kill reimbursements.'",
+      "source_b": "discovery_call_01.txt — 'Keep reimbursements on for edge cases'",
+      "provisional_resolution": "Reimbursements left enabled at the company level; disabled on the Software program specifically, where a card-only rule was explicit ('Nobody buys software on a personal card, period.'). The two statements are a stated direction and a stated exception, not a true contradiction."
+    },
+    {
+      "description": "Whether the roster's manager column is authoritative. Diane confirms managers are as listed; Priya immediately qualifies that the two newest Marketing hires may be stale after a reorg.",
+      "source_a": "discovery_call_01.txt — 'And manager approvals — managers are as listed in the roster's manager column?'",
+      "source_b": "discovery_call_01.txt — 'The roster's manager column is right for everyone except possibly the two newest Marketing hires'",
+      "provisional_resolution": "Encoded the roster's manager column as written for all users, per the explicit instruction not to block and not to invent. The two named hires are flagged non-blocking for confirmation."
+    }
+  ],
+  "unsupported_api_requests": [
+    {
+      "requested_feature": "Three-tier approval chain: under $500 auto-approves, $500-$5,000 to the direct manager, over $5,000 to Diane Marsh personally with no delegation.",
+      "reason_unsupported": "The Developer API has no approval-policy write endpoint. The chain is emitted as desired state in approval_policies but cannot be applied programmatically; it is built in Ramp's in-app approvals workflow builder.",
+      "evidence": "openapi snapshot 2026_08_30 — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one.",
+      "proposed_manual_workaround": "Emit the full tier structure as desired state, then hand the deployment owner a UI checklist to build the same chain in Ramp's approvals workflow builder."
+    },
+    {
+      "requested_feature": "Any new software vendor requires Diane's approval regardless of amount, including a $10/month tool.",
+      "reason_unsupported": "The rule is keyed on vendor novelty, not amount. There is no approval write surface, and approval_policies[].tiers[] is keyed only on threshold_usd_cents, so the exercise schema cannot express 'regardless of amount' except as a zero-threshold tier that also catches all other spend on that program.",
+      "evidence": "openapi snapshot 2026_08_30 — no approval write surface; additionally 'new vendor' is not threshold-shaped and approval_policies[].tiers[] is keyed only on threshold_usd_cents.",
+      "proposed_manual_workaround": "Record in the audit log as a process control. The deployment owner can approximate it in-app with a low-threshold tier on a dedicated new-vendor spend program, at the cost of catching amount-based traffic too."
+    },
+    {
+      "requested_feature": "A card with no spending ceiling for the CEO.",
+      "reason_unsupported": "Ramp requires an interval and a limit amount on every fund; there is no unlimited sentinel. Encoded as a $50,000/month ceiling with an explicit assumption.",
+      "evidence": "openapi snapshot 2026_08_30 — ApiFundSpendingRestrictionsRequestBody requires both 'interval' and 'limit', and limit.amount is a required integer; there is no unlimited sentinel.",
+      "proposed_manual_workaround": "Encode a deliberately high ceiling and record the exact number as an assumption with impact_if_wrong. Never emit a high number silently — \"no limit\" and \"$50k/mo\" are different promises to the person holding the card."
+    },
+    {
+      "requested_feature": "A single $2,000/month travel limit covering a named cohort of eleven travellers.",
+      "reason_unsupported": "POST /funds takes one user_id, so a group limit is a fan-out to one fund per member rather than a native object. Whether Acme wants $2,000 each or $2,000 shared is not stated and changes total exposure elevenfold.",
+      "evidence": "openapi snapshot 2026_08_30 — POST /funds requires a single user_id, so a group limit fans out to one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N).",
+      "proposed_manual_workaround": "Emit assigned_to.group as the customer stated it and record in notes whether the intent was per-person (fan out to N funds) or a genuinely shared pot (one is_shareable fund with members). These are different products and the customer's phrasing usually does not distinguish them — ask."
+    },
+    {
+      "requested_feature": "Receipts required on transactions over $75.",
+      "reason_unsupported": "There is no receipt-threshold configuration resource in the Developer API. Correctly omitted from the config and recorded as an assumption instead.",
+      "evidence": "openapi snapshot 2026_08_30 — no receipt-policy configuration resource; /receipts covers receipt objects and ingestion, not thresholds. Receipt rules are an in-app setting.",
+      "proposed_manual_workaround": "Deployment owner sets the receipt threshold in-app during setup."
+    },
+    {
+      "requested_feature": "Memo required on transactions over $500.",
+      "reason_unsupported": "There is no memo-policy or threshold configuration surface. Correctly omitted from the config and recorded as an assumption instead.",
+      "evidence": "openapi snapshot 2026_08_30 — /memos exposes memo objects but no memo-policy or threshold configuration surface; the rule is an in-app setting.",
+      "proposed_manual_workaround": "Deployment owner sets the memo threshold in-app during setup."
+    },
+    {
+      "requested_feature": "Kevin O'Rourke must not see anything about anyone else's spend.",
+      "reason_unsupported": "Ramp scopes transaction visibility by reporting chain rather than by department, and GUEST_USER is the most restricted assignable role — so this is largely achievable, but there is no API-creatable custom role to guarantee it field by field.",
+      "evidence": "support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — openapi snapshot 2026_08_30 shows GET /roles is read-only.",
+      "proposed_manual_workaround": "First model the reporting chain — set direct_manager_id so each person reports to the manager who should see them, and is_manager on that manager. That covers most of the ask natively. The common partial-permission ask, \"manage users but not spend limits\", is a stock role rather than a gap — see CAP-IT-ADMIN-SCOPE. Only scoping that follows neither reporting lines nor a stock role needs a Custom Role, which is Ramp Plus and in-app. Confirm the customer's plan tier before promising it."
+    },
+    {
+      "requested_feature": "A long-running contractor account for Kevin O'Rourke.",
+      "reason_unsupported": "GUEST_USER accounts are automatically given a scheduled_deactivation_date six months from invite unless explicitly nulled. Kevin is an ongoing fractional recruiter, so his card will stop working mid-engagement if this default is left in place.",
+      "evidence": "openapi snapshot 2026_08_30 — GUEST_USER accounts receive an automatic scheduled_deactivation_date six months from invite unless explicitly nulled; the field is not settable for admins or owners.",
+      "proposed_manual_workaround": "A default with teeth: choosing GUEST_USER for a long-running contractor quietly schedules their deactivation. Flag it whenever GUEST_USER is assigned."
+    },
+    {
+      "requested_feature": "Virtual software card held by IT; physical cards for everyone in Sales and for travellers.",
+      "reason_unsupported": "Virtual cards are GET-only in the API — they are issued as a side effect of funds rather than created directly — and physical card creation requires a shipping_address per cardholder, which this packet does not contain.",
+      "evidence": "openapi snapshot 2026_08_30 — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly.",
+      "proposed_manual_workaround": "Express the physical/virtual split through permitted_spend_types on the fund and issue_physical_card_if_needed on the program. Physical issuance additionally needs shipping addresses, which packets rarely contain — usually a missing-information flag."
+    },
+    {
+      "requested_feature": "Iterative tuning of the Software and Travel programs after go-live.",
+      "reason_unsupported": "Spend programs support GET and POST only; there is no PATCH or DELETE, so a program is effectively immutable once created via the API. This raises the stakes on reviewing the two programs before they are created.",
+      "evidence": "openapi snapshot 2026_08_30 — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API.",
+      "proposed_manual_workaround": "Get programs right the first time, or edit in-app. This raises the stakes on the config review before go-live and is worth saying in the handoff."
+    },
+    {
+      "requested_feature": "Distinct permission levels for a CEO, a VP Finance, a Controller, an office manager, an IT administrator and an external contractor.",
+      "reason_unsupported": "Acme's six distinct roles must be mapped onto Ramp's six fixed roles, which carry no seniority or scoping dimension. Each non-obvious mapping is recorded individually in assumptions_made.",
+      "evidence": "openapi snapshot 2026_08_30 plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call.",
+      "proposed_manual_workaround": "Every non-obvious mapping gets an assumptions_made entry naming the title, the chosen role, and what the person will consequently be able to see or do. Bookkeeper for close-the-books staff, AUDITOR for read-only compliance, GUEST_USER for contractors (see CAP-GUEST-EXPIRY-DEFAULT), IT_ADMIN for identity owners (see CAP-IT-ADMIN-SCOPE), BUSINESS_ADMIN for owners (see DRIFT-ROLE-BUSINESS-OWNER). Never infer a role from seniority alone."
+    }
+  ]
+}

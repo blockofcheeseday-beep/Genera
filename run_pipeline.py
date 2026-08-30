@@ -153,6 +153,38 @@ def load_outputs(name):
     return (not problems), "; ".join(problems) or "both present and parse", config
 
 
+def check_cross_refs(cfg):
+    """Names that must point at something this config actually emits.
+
+    Every one of these is a valid string to the schema, so validation passes while the
+    config quietly refers to a department, program or manager that does not exist. A
+    case-normalizer that turns "IT" into "It" is the way this happens in practice.
+    """
+    if not isinstance(cfg, dict):
+        return None, "skipped — ramp_config.json unreadable"
+    depts = {d.get("name") for d in cfg.get("departments", [])}
+    progs = {p.get("display_name") for p in cfg.get("spend_programs", [])}
+    lims = {l.get("display_name") for l in cfg.get("limits", [])}
+    users = {u.get("email") for u in cfg.get("users", [])}
+    bad = []
+    for i, u in enumerate(cfg.get("users", [])):
+        if u.get("department") not in depts:
+            bad.append(f"users[{i}] department {u.get('department')!r} is not in departments[]")
+        m = u.get("direct_manager_email")
+        if m and m not in users:
+            bad.append(f"users[{i}] direct_manager_email {m!r} is not a user in this config")
+    for i, m in enumerate(cfg.get("mcc_controls", [])):
+        if m.get("applies_to") not in progs | lims:
+            bad.append(f"mcc_controls[{i}] applies_to {m.get('applies_to')!r} names no program or limit")
+    for i, l in enumerate(cfg.get("limits", [])):
+        sp = l.get("spend_program")
+        if sp and sp not in progs:
+            bad.append(f"limits[{i}] spend_program {sp!r} names no spend program")
+    if bad:
+        return False, "\n".join("FAIL " + b for b in bad)
+    return True, f"{len(cfg.get('users', []))} users, {len(cfg.get('mcc_controls', []))} mcc_controls all resolve"
+
+
 def check_assigned_to(config):
     """Check 5: exactly one of user_email / group per limit. The validator misses this."""
     bad = []
@@ -183,13 +215,20 @@ def verify(pkt):
     else:
         rows.append(("assigned_to exactly-one", *check_assigned_to(config)))
 
+    rows.append(("config cross-references", *check_cross_refs(config)))
     rows.append(("ledger freshness", *run([sys.executable, str(SCRIPTS / "gen_ledger.py"), "--check"])[:2]))
 
     print(f"\nVERIFY {name}")
     width = max(len(r[0]) for r in rows)
     for i, (label, ok, note) in enumerate(rows, 1):
         status = "SKIP" if ok is None else ("PASS" if ok else "FAIL")
-        head = (note.splitlines() or [""])[0][:200]
+        lines = note.splitlines() or [""]
+        # On failure show the first line that actually reports one — the first line of a
+        # multi-file check is often a PASS ("OK ramp_config.json") and reads as a lie
+        # next to a FAIL status.
+        if ok is False:
+            lines = [l for l in lines if l.lstrip().startswith(("FAIL", "-", "missing"))] or lines
+        head = lines[0][:200]
         print(f"  {i}. {label:<{width}}  {status}  {head}")
     for label, ok, note in rows:
         if ok is False and len(note.splitlines()) > 1:

@@ -1,0 +1,301 @@
+{
+  "packet": "client_a_acme_corp",
+  "requirements": [
+    {
+      "req_id": "REQ-001",
+      "claim": "Four departments for spend purposes: Engineering, Sales, Marketing, G&A",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Four departments for spend purposes.",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-002",
+      "claim": "Exec team sits inside G&A rather than as a separate department",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Inside G&A is fine.",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-003",
+      "claim": "CEO Marcus Webb's card should effectively have no limit",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "I never want to see a decline.",
+      "archetype_id": "CAP-UNLIMITED",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-004",
+      "claim": "Diane offers $50k/month as the practical equivalent of no limit",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Fifty grand a month?",
+      "archetype_id": "CAP-UNLIMITED",
+      "confidence": "medium"
+    },
+    {
+      "req_id": "REQ-005",
+      "claim": "Priya wants a very-high ceiling rather than none, for auditors",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Can we do very-high instead of none?",
+      "archetype_id": "CAP-UNLIMITED",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-006",
+      "claim": "Roster carries per-person target monthly limits and is authoritative for them",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "On the roster I marked target monthly limits per person.",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-007",
+      "claim": "Stated precedence: the roster wins over anything said on the call",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Where the roster and anything I say today disagree, the roster wins",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-008",
+      "claim": "Tier 1: under $500 auto-approves with no friction",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Anything under five hundred dollars, people should just be able to spend.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-009",
+      "claim": "Tier 2 manager approval $500-$5,000; Tier 3 over $5,000 to Diane",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Then five hundred to five thousand, your manager should sign off. And anything over five thousand comes to me.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-010",
+      "claim": "Top tier routes to Diane personally, not to the VP Finance role; no delegation",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Me specifically for now. If I'm out, it waits.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-011",
+      "claim": "Dedicated virtual software card held by IT",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "We want a dedicated software card — virtual — that lives with IT.",
+      "archetype_id": "CAP-CARD-TYPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-012",
+      "claim": "Any new software vendor needs Diane's approval regardless of amount",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "software vendor needs my approval regardless of amount",
+      "archetype_id": "CAP-NEW-VENDOR-APPROVAL",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-013",
+      "claim": "Software program monthly cap of $10,000",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Call it eight thousand a month, cap it at ten to be safe.",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-014",
+      "claim": "Software card must decline non-software purchases",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "And it should decline anything that isn't software-ish.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-015",
+      "claim": "Travel program restricted to travel categories",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "restricted to actual travel categories — airlines, hotels, rideshare, restaurants while traveling",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-016",
+      "claim": "Travel limit of $2,000 per month per traveling rep",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "We budgeted two thousand a month per traveling rep.",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-017",
+      "claim": "Travelers are all of Sales plus Marcus, Diane, and Tom Reyes",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Everyone in Sales, plus Marcus, plus me, plus Tom Reyes in Marketing",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-018",
+      "claim": "Engineering gets travel access on request rather than by default",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Nobody in Engineering by default; they can request.",
+      "archetype_id": "CAP-SP-ISSUANCE-RULES",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-019",
+      "claim": "Physical cards for all of Sales; virtual for everyone else",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "physical for everyone in Sales anyway, they're client-facing, they expense dinners",
+      "archetype_id": "CAP-CARD-TYPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-020",
+      "claim": "Kevin O'Rourke is a contractor needing maximum lockdown and no visibility into others' spend",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "he should absolutely not see anything about anyone else's spend",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-021",
+      "claim": "Office manager Renata needs her own card with a decent limit",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "She should have her own card with a decent limit",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-022",
+      "claim": "Priya runs the books and needs to see everything and close the month",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "She needs to see everything, close the month, all of it.",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-023",
+      "claim": "Diane and Priya administer the instance",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Priya and me.",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-024",
+      "claim": "Sana in IT handles the user-management side because she runs identity",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "And probably Sana in IT for the user-management side, since she runs our identity stuff",
+      "archetype_id": "CAP-IT-ADMIN-SCOPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-025",
+      "claim": "Sana must not be able to change spend limits — people administration only",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Sana should not be able to change spend limits though. Just people stuff.",
+      "archetype_id": "CAP-IT-ADMIN-SCOPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-026",
+      "claim": "Marketing was reorged; the two newest Marketing hires' managers are unconfirmed",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "The roster's manager column is right for everyone except possibly the two newest Marketing hires",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-027",
+      "claim": "Do not guess the Marketing reorg answer, and do not block on it",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Don't block on it, but don't invent an answer either.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-028",
+      "claim": "Reimbursements stay enabled for edge cases despite a card-first goal",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Keep reimbursements on for edge cases",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-029",
+      "claim": "Receipts required over $75",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "Required over seventy-five dollars.",
+      "archetype_id": "CAP-RECEIPT-POLICY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-030",
+      "claim": "Memo required for anything over $500",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "And memo required for anything over five hundred.",
+      "archetype_id": "CAP-MEMO-POLICY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-031",
+      "claim": "Roster contains an IT department that the call's four-department list omits",
+      "source_file": "department_roster.csv",
+      "source_quote": "Sana Qureshi,squreshi@acme.example,IT Administrator,IT,dmarsh@acme.example,2021-09-13,2000",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-032",
+      "claim": "Han Zhao appears twice with disagreeing monthly limits (500 and 1200)",
+      "source_file": "department_roster.csv",
+      "source_quote": "Han Zhao,hzhao@acme.example,Staff Engineer,Engineering,vostrowski@acme.example,2020-07-06,1200",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-033",
+      "claim": "Sam Whitfield has no target monthly limit on the roster",
+      "source_file": "department_roster.csv",
+      "source_quote": "Sam Whitfield,swhitfield@acme.example,Engineer,Engineering,vostrowski@acme.example,2023-03-06,",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-034",
+      "claim": "Department column has a case variant, sales vs Sales, that would create duplicates",
+      "source_file": "department_roster.csv",
+      "source_quote": "Fatima Diallo,fdiallo@acme.example,Account Executive,sales,ohaddad@acme.example,2022-06-06,2000",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-035",
+      "claim": "Jenny Park reports to dkim@acme.example, who is not in the roster",
+      "source_file": "department_roster.csv",
+      "source_quote": "Jenny Park,jpark@acme.example,Engineer,Engineering,dkim@acme.example,2022-10-17,500",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-036",
+      "claim": "Marcus Webb's roster limit is the non-numeric string NO LIMIT",
+      "source_file": "department_roster.csv",
+      "source_quote": "Marcus Webb,marcus@acme.example,CEO,G&A,,2019-02-01,NO LIMIT",
+      "archetype_id": "CAP-UNLIMITED",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-037",
+      "claim": "Go-live is wanted before the September close",
+      "source_file": "discovery_call_01.txt",
+      "source_quote": "We want this live before the September close.",
+      "archetype_id": null,
+      "confidence": "high"
+    }
+  ]
+}

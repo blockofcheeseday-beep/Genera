@@ -75,10 +75,11 @@ python3 .claude/skills/ramp-deployment/scripts/gen_ledger.py --check
 
 ## Verification
 
-`--verify` runs six checks: outputs parse, both files validate against the shipped schemas,
-every quote substring-matches its source file, the coverage invariant plus both graded
-sweeps, the `assigned_to` exactly-one rule the schema describes but does not enforce, and
-ledger freshness.
+`--verify` runs seven checks: outputs parse, both files validate against the shipped
+schemas, every quote substring-matches its source file, the coverage invariant plus both
+graded sweeps, the `assigned_to` exactly-one rule the schema describes but does not
+enforce, config cross-references (every department, program, limit and manager name points
+at something the config actually emits), and ledger freshness.
 
 The two sweeps check the failure modes the exercise grades in both directions:
 

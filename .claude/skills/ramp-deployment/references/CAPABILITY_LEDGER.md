@@ -7,7 +7,7 @@ The unit is *a thing customers ask for*, not an endpoint.
 
 Primary evidence: `candidate/2026_08_30_Ramp_OpenAPI_Schema.json` — 171 paths, 1017 schemas, 76 OAuth scopes, server `https://api.ramp.com`, prefix `/developer/v1/`.
 
-**42 rows.** UNSUPPORTED: 7  UI_ONLY: 4  PARTIAL: 13  SUPPORTED: 15  DRIFT: 3
+**43 rows.** UNSUPPORTED: 7  UI_ONLY: 4  PARTIAL: 13  SUPPORTED: 16  DRIFT: 3
 
 | id | verdict | title | seen in |
 |---|---|---|---|
@@ -36,6 +36,7 @@ Primary evidence: `candidate/2026_08_30_Ramp_OpenAPI_Schema.json` — 171 paths,
 | [`CAP-ROLE-MAPPING`](#cap-role-mapping) | **PARTIAL** | Map customer job titles onto Ramp's role enum | 0 sample, a acme corp, b logistica globex, c apex health, d hypergrowth, e vanguard retail |
 | [`CAP-CARD-TYPE`](#cap-card-type) | **PARTIAL** | Choose physical versus virtual cards | a acme corp, e vanguard retail |
 | [`CAP-CATEGORY-RESTRICT`](#cap-category-restrict) | **SUPPORTED** | Restrict a card or program to Ramp spend categories | a acme corp, c apex health, e vanguard retail |
+| [`CAP-USER-LIMIT`](#cap-user-limit) | **SUPPORTED** | Give one named person a card with a recurring spending limit | 0 sample, a acme corp, b logistica globex, c apex health, d hypergrowth, e vanguard retail |
 | [`CAP-AUTO-EXPIRY`](#cap-auto-expiry) | **SUPPORTED** | Card or limit stops working on a fixed date | c apex health, d hypergrowth, e vanguard retail |
 | [`CAP-LOCAL-CURRENCY`](#cap-local-currency) | **SUPPORTED** | Limits denominated in the cardholder's local currency | b logistica globex |
 | [`CAP-MONEY-MINOR-UNITS`](#cap-money-minor-units) | **SUPPORTED** | Amounts are integers in the smallest currency unit | b logistica globex |
@@ -727,6 +728,32 @@ openapi snapshot 2026_08_30 — 43 integer category codes, numbered 1-44 with 22
 ```
 
 Config expression: section `mcc_controls`, mechanism `allowed_categories`
+
+### CAP-USER-LIMIT
+
+**Give one named person a card with a recurring spending limit**
+
+How customers say it:
+
+- *“she should have her own card with a decent limit”*
+- *“on the roster I marked target monthly limits per person”*
+- *“two thousand a month per rep”*
+
+Endpoints: `POST /developer/v1/funds`
+
+Fields: `user_id`, `spending_restrictions.limit`, `spending_restrictions.interval`
+
+> **openapi_snapshot_2026_08_30** (checked 2026-08-30)
+>
+> Found missing while running packet A — the most common request in the entire packet set had no ledger row, because the ledger had been written around the hard cases. POST /developer/v1/funds takes a single user_id plus spending_restrictions (interval + limit both required), which is exactly this. Recorded so the false-negative sweep has something to resolve for ordinary per-person limits instead of leaving archetype_id null on half a packet.
+
+Evidence line (verbatim into audit logs):
+
+```
+openapi snapshot 2026_08_30 — POST /funds takes a single user_id with spending_restrictions (interval and limit both required), so a per-person recurring limit is the API's native shape.
+```
+
+Config expression: section `limits`, mechanism `assigned_to.user_email`
 
 ### CAP-AUTO-EXPIRY
 

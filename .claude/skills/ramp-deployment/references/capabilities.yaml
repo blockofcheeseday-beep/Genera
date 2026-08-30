@@ -334,6 +334,33 @@ capabilities:
       customer's phrasing usually does not distinguish them — ask.
     seen_in: [client_0_sample, client_a_acme_corp, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
 
+  - id: CAP-USER-LIMIT
+    verdict: SUPPORTED
+    title: Give one named person a card with a recurring spending limit
+    customer_phrasings:
+      - "she should have her own card with a decent limit"
+      - "on the roster I marked target monthly limits per person"
+      - "two thousand a month per rep"
+    api_mechanism:
+      endpoints: [POST /developer/v1/funds]
+      fields: [user_id, spending_restrictions.limit, spending_restrictions.interval]
+    evidence:
+      - source: openapi_snapshot_2026_08_30
+        checked_on: 2026-08-30
+        note: >-
+          Found missing while running packet A — the most common request in the entire
+          packet set had no ledger row, because the ledger had been written around the
+          hard cases. POST /developer/v1/funds takes a single user_id plus
+          spending_restrictions (interval + limit both required), which is exactly this.
+          Recorded so the false-negative sweep has something to resolve for ordinary
+          per-person limits instead of leaving archetype_id null on half a packet.
+    evidence_line: "openapi snapshot 2026_08_30 — POST /funds takes a single user_id with spending_restrictions (interval and limit both required), so a per-person recurring limit is the API's native shape."
+    config_expression:
+      section: limits
+      mechanism: assigned_to.user_email
+    workaround: null
+    seen_in: [client_0_sample, client_a_acme_corp, client_b_logistica_globex, client_c_apex_health, client_d_hypergrowth, client_e_vanguard_retail]
+
   - id: CAP-UNLIMITED
     verdict: UNSUPPORTED
     title: A card with no spending ceiling

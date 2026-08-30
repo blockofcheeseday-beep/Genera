@@ -1,0 +1,727 @@
+{
+  "client_id": "client_a_acme_corp",
+  "generated_at": "2026-08-30T00:00:00Z",
+  "base_currency": "USD",
+  "entities": [
+    {
+      "name": "Acme Corp",
+      "country": "US",
+      "currency": "USD",
+      "status": "existing"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Engineering"
+    },
+    {
+      "name": "Sales"
+    },
+    {
+      "name": "Marketing"
+    },
+    {
+      "name": "G&A"
+    },
+    {
+      "name": "IT"
+    }
+  ],
+  "users": [
+    {
+      "email": "marcus@acme.example",
+      "first_name": "Marcus",
+      "last_name": "Webb",
+      "role": "BUSINESS_ADMIN",
+      "department": "G&A",
+      "direct_manager_email": null,
+      "notes": "CEO. Mapped to BUSINESS_ADMIN — the schema role enum has no BUSINESS_OWNER. Limit is the $50k/mo encoding of 'no limit'."
+    },
+    {
+      "email": "dmarsh@acme.example",
+      "first_name": "Diane",
+      "last_name": "Marsh",
+      "role": "BUSINESS_ADMIN",
+      "department": "G&A",
+      "direct_manager_email": "marcus@acme.example"
+    },
+    {
+      "email": "pshetty@acme.example",
+      "first_name": "Priya",
+      "last_name": "Shetty",
+      "role": "BUSINESS_ADMIN",
+      "department": "G&A",
+      "direct_manager_email": "dmarsh@acme.example"
+    },
+    {
+      "email": "rflores@acme.example",
+      "first_name": "Renata",
+      "last_name": "Flores",
+      "role": "BUSINESS_USER",
+      "department": "G&A",
+      "direct_manager_email": "dmarsh@acme.example"
+    },
+    {
+      "email": "tnguyen@acme.example",
+      "first_name": "Talia",
+      "last_name": "Nguyen",
+      "role": "BUSINESS_USER",
+      "department": "G&A",
+      "direct_manager_email": "marcus@acme.example"
+    },
+    {
+      "email": "kevin@orourketalent.example",
+      "first_name": "Kevin",
+      "last_name": "O'Rourke",
+      "role": "GUEST_USER",
+      "department": "G&A",
+      "direct_manager_email": "dmarsh@acme.example",
+      "notes": "External contractor (fractional recruiter). GUEST_USER is the most locked-down assignable role. Guest accounts auto-expire six months from invite unless nulled — see audit log."
+    },
+    {
+      "email": "squreshi@acme.example",
+      "first_name": "Sana",
+      "last_name": "Qureshi",
+      "role": "IT_ADMIN",
+      "department": "IT",
+      "direct_manager_email": "dmarsh@acme.example",
+      "notes": "IT_ADMIN grants people administration without spend-control authority — the split Diane and Priya asked for."
+    },
+    {
+      "email": "vostrowski@acme.example",
+      "first_name": "Val",
+      "last_name": "Ostrowski",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "marcus@acme.example"
+    },
+    {
+      "email": "hzhao@acme.example",
+      "first_name": "Han",
+      "last_name": "Zhao",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example",
+      "notes": "Appears twice on the roster with limits of 500 and 1200. Encoded 1200 (later row) — see conflicts."
+    },
+    {
+      "email": "msilva@acme.example",
+      "first_name": "Marta",
+      "last_name": "Silva",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "dclarke@acme.example",
+      "first_name": "Devon",
+      "last_name": "Clarke",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "ifournier@acme.example",
+      "first_name": "Ines",
+      "last_name": "Fournier",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "rokafor@acme.example",
+      "first_name": "Rob",
+      "last_name": "Okafor",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "jpark@acme.example",
+      "first_name": "Jenny",
+      "last_name": "Park",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": null,
+      "notes": "Roster lists manager dkim@acme.example, who is not in the roster. Emitted null pending confirmation."
+    },
+    {
+      "email": "swhitfield@acme.example",
+      "first_name": "Sam",
+      "last_name": "Whitfield",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example",
+      "notes": "Roster has no target monthly limit; no limit emitted. Blocking flag raised."
+    },
+    {
+      "email": "apetrova@acme.example",
+      "first_name": "Ana",
+      "last_name": "Petrova",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "lherrera@acme.example",
+      "first_name": "Luis",
+      "last_name": "Herrera",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "cbennett@acme.example",
+      "first_name": "Chloe",
+      "last_name": "Bennett",
+      "role": "BUSINESS_USER",
+      "department": "Engineering",
+      "direct_manager_email": "vostrowski@acme.example"
+    },
+    {
+      "email": "ohaddad@acme.example",
+      "first_name": "Omar",
+      "last_name": "Haddad",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "marcus@acme.example"
+    },
+    {
+      "email": "gliu@acme.example",
+      "first_name": "Grace",
+      "last_name": "Liu",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "nromano@acme.example",
+      "first_name": "Nick",
+      "last_name": "Romano",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "fdiallo@acme.example",
+      "first_name": "Fatima",
+      "last_name": "Diallo",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "psandoval@acme.example",
+      "first_name": "Pete",
+      "last_name": "Sandoval",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "ichen@acme.example",
+      "first_name": "Ivy",
+      "last_name": "Chen",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "mbell@acme.example",
+      "first_name": "Marcus",
+      "last_name": "Bell",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "dkowalski@acme.example",
+      "first_name": "Dana",
+      "last_name": "Kowalski",
+      "role": "BUSINESS_USER",
+      "department": "Sales",
+      "direct_manager_email": "ohaddad@acme.example"
+    },
+    {
+      "email": "ltran@acme.example",
+      "first_name": "Lucy",
+      "last_name": "Tran",
+      "role": "BUSINESS_USER",
+      "department": "Marketing",
+      "direct_manager_email": "marcus@acme.example"
+    },
+    {
+      "email": "treyes@acme.example",
+      "first_name": "Tom",
+      "last_name": "Reyes",
+      "role": "BUSINESS_USER",
+      "department": "Marketing",
+      "direct_manager_email": "ltran@acme.example"
+    },
+    {
+      "email": "samado@acme.example",
+      "first_name": "Sophie",
+      "last_name": "Amado",
+      "role": "BUSINESS_USER",
+      "department": "Marketing",
+      "direct_manager_email": "ltran@acme.example"
+    },
+    {
+      "email": "abello@acme.example",
+      "first_name": "Aisha",
+      "last_name": "Bello",
+      "role": "BUSINESS_USER",
+      "department": "Marketing",
+      "direct_manager_email": "ltran@acme.example",
+      "notes": "One of the two newest Marketing hires flagged as possibly stale after the reorg. Manager encoded as the roster states."
+    },
+    {
+      "email": "gsokol@acme.example",
+      "first_name": "Grant",
+      "last_name": "Sokol",
+      "role": "BUSINESS_USER",
+      "department": "Marketing",
+      "direct_manager_email": "treyes@acme.example",
+      "notes": "One of the two newest Marketing hires flagged as possibly stale after the reorg. Manager encoded as the roster states."
+    }
+  ],
+  "spend_programs": [
+    {
+      "display_name": "Software",
+      "description": "All software and SaaS subscriptions on one virtual card held by IT. No software on personal cards. New vendors require Diane Marsh's approval regardless of amount — see approval_policies and audit log.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 1000000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "SaaS / Software"
+        ]
+      }
+    },
+    {
+      "display_name": "Travel",
+      "description": "Travel spend for Sales, the exec team and Tom Reyes (events). $2,000/month per traveller. Engineering has no default access and requests it — the API supports requestable issuance rules, but this schema has no field for them.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Taxi and rideshare",
+          "Restaurants"
+        ]
+      }
+    }
+  ],
+  "limits": [
+    {
+      "display_name": "Marcus Webb monthly",
+      "assigned_to": {
+        "user_email": "marcus@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 5000000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "Encodes 'I never want to see a decline' as a $50,000/mo ceiling — Diane's own stated practical equivalent. Ramp has no unlimited option."
+    },
+    {
+      "display_name": "Diane Marsh monthly",
+      "assigned_to": {
+        "user_email": "dmarsh@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 750000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Priya Shetty monthly",
+      "assigned_to": {
+        "user_email": "pshetty@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 500000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Renata Flores monthly",
+      "assigned_to": {
+        "user_email": "rflores@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 300000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Talia Nguyen monthly",
+      "assigned_to": {
+        "user_email": "tnguyen@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 100000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Kevin O'Rourke monthly",
+      "assigned_to": {
+        "user_email": "kevin@orourketalent.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Sana Qureshi monthly",
+      "assigned_to": {
+        "user_email": "squreshi@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Val Ostrowski monthly",
+      "assigned_to": {
+        "user_email": "vostrowski@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 600000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Han Zhao monthly",
+      "assigned_to": {
+        "user_email": "hzhao@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 120000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "Roster lists this person twice with 500 and 1200. Encoded 1200 (later row); needs a human answer."
+    },
+    {
+      "display_name": "Marta Silva monthly",
+      "assigned_to": {
+        "user_email": "msilva@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Devon Clarke monthly",
+      "assigned_to": {
+        "user_email": "dclarke@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Ines Fournier monthly",
+      "assigned_to": {
+        "user_email": "ifournier@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Rob Okafor monthly",
+      "assigned_to": {
+        "user_email": "rokafor@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Jenny Park monthly",
+      "assigned_to": {
+        "user_email": "jpark@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Ana Petrova monthly",
+      "assigned_to": {
+        "user_email": "apetrova@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 50000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Luis Herrera monthly",
+      "assigned_to": {
+        "user_email": "lherrera@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 30000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Chloe Bennett monthly",
+      "assigned_to": {
+        "user_email": "cbennett@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 30000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Omar Haddad monthly",
+      "assigned_to": {
+        "user_email": "ohaddad@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 400000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Grace Liu monthly",
+      "assigned_to": {
+        "user_email": "gliu@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Nick Romano monthly",
+      "assigned_to": {
+        "user_email": "nromano@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Fatima Diallo monthly",
+      "assigned_to": {
+        "user_email": "fdiallo@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Pete Sandoval monthly",
+      "assigned_to": {
+        "user_email": "psandoval@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Ivy Chen monthly",
+      "assigned_to": {
+        "user_email": "ichen@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 100000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Marcus Bell monthly",
+      "assigned_to": {
+        "user_email": "mbell@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 100000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Dana Kowalski monthly",
+      "assigned_to": {
+        "user_email": "dkowalski@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Lucy Tran monthly",
+      "assigned_to": {
+        "user_email": "ltran@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 350000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Tom Reyes monthly",
+      "assigned_to": {
+        "user_email": "treyes@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 250000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Sophie Amado monthly",
+      "assigned_to": {
+        "user_email": "samado@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 80000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Aisha Bello monthly",
+      "assigned_to": {
+        "user_email": "abello@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 60000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Grant Sokol monthly",
+      "assigned_to": {
+        "user_email": "gsokol@acme.example"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 60000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      }
+    },
+    {
+      "display_name": "Travel — per traveller monthly",
+      "assigned_to": {
+        "group": "Travelers"
+      },
+      "spend_program": "Travel",
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "One per traveller (11 people: all of Sales, plus Marcus Webb, Diane Marsh and Tom Reyes). Fans out to one fund per person at apply time. Whether Acme meant $2,000 each or $2,000 shared is not stated — see audit log."
+    }
+  ],
+  "approval_policies": [
+    {
+      "name": "Default spend approval",
+      "applies_to": "all",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 50000,
+          "approver": "DIRECT_MANAGER"
+        },
+        {
+          "threshold_usd_cents": 500000,
+          "approver": "Diane Marsh (VP Finance, dmarsh@acme.example)"
+        }
+      ],
+      "source": "discovery_call_01.txt — 'Then five hundred to five thousand, your manager should sign off. And anything over five thousand comes to me.' [02:14]; 'Me specifically for now. If I'm out, it waits.' [06:15]"
+    },
+    {
+      "name": "New software vendor",
+      "applies_to": "Software",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "Diane Marsh (VP Finance, dmarsh@acme.example)"
+        }
+      ],
+      "source": "discovery_call_01.txt — 'any *new* software vendor needs my approval regardless of amount' [02:31]. Encoded as a zero-threshold tier because tiers[] is keyed only on amount; this catches ALL software spend, not just new vendors — see audit log."
+    }
+  ],
+  "mcc_controls": [
+    {
+      "applies_to": "Software",
+      "mechanism": "allowed_categories",
+      "values": [
+        "SaaS / Software"
+      ],
+      "translation_notes": "'Should decline anything that isn't software-ish' mapped to the single Ramp category 'SaaS / Software' (integer code 40 on the API's allowed_category_codes). Lossy: software Ramp categorizes elsewhere will decline."
+    },
+    {
+      "applies_to": "Travel",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Airlines",
+        "Lodging",
+        "Taxi and rideshare",
+        "Restaurants"
+      ],
+      "translation_notes": "'Airlines, hotels, rideshare, restaurants while traveling' mapped to Ramp categories 4 Airlines, 6 Lodging, 8 Taxi and rideshare, 19 Restaurants. Lossy: 'while traveling' cannot be expressed — Restaurants is unconditional. Car rental (5) was not named and is excluded."
+    }
+  ]
+}
