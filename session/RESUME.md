@@ -48,8 +48,10 @@ zero-threshold tier that over-captures (catches all software spend, not just new
 Recurs in packet C as the compliance-escalation policy. Honest in the audit log, still a
 semantic mismatch.
 
-**Script budget exception:** `cite.py` is 238 lines against a ~40-line guardrail. Defensible
-(15 functions, longest 28 lines, replaces per-packet rework) but should be named, not hidden.
+**Script budget exception:** `cite.py` is 220 lines and `money_map.py` 174, against a ~40-line
+guardrail. Defensible
+(16 and 9 small functions, longest 40 lines, replacing work otherwise redone per packet) but
+should be named in NOTES.md, not hidden.
 
 ## Constraints found
 
