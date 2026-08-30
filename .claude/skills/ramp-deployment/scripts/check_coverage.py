@@ -9,6 +9,10 @@ Four failure modes this catches, all of them explicitly graded:
   (c) false negative— a PARTIAL / UI_ONLY / UNSUPPORTED ask quietly written into the
                       config with nothing in the audit log to warn the human.
   (d) evidence      — an unsupported_api_requests entry with undated evidence.
+  (e) dangling refs — a traceability citation pointing at a config field or audit entry
+                      that does not exist. Without this the coverage invariant is hollow:
+                      "every requirement lands somewhere" is satisfiable by citing
+                      assumptions_made[999].
 
   python3 check_coverage.py --packet client_a_acme_corp [--repo /path/to/repo]
 
@@ -77,6 +81,47 @@ def check_evidence(audit):
     return fails
 
 
+SEGMENT = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)(?:\[(\d+)\])?")
+
+
+def resolve(doc, path):
+    """Walk a dotted/indexed path like 'limits[0]' or 'users[3].role'.
+
+    Returns None when the path resolves, otherwise a short reason it did not.
+    """
+    cur = doc
+    for part in path.split("."):
+        m = SEGMENT.fullmatch(part)
+        if not m:
+            return f"unparseable segment {part!r}"
+        key, idx = m.group(1), m.group(2)
+        if not isinstance(cur, dict) or key not in cur:
+            return f"no such key {key!r}"
+        cur = cur[key]
+        if idx is not None:
+            if not isinstance(cur, list):
+                return f"{key!r} is not a list"
+            if int(idx) >= len(cur):
+                return f"{key}[{idx}] out of range (len {len(cur)})"
+            cur = cur[int(idx)]
+    return None
+
+
+def check_references(entries, audit, config):
+    """(e) Every citation must resolve to something that actually exists."""
+    fails = []
+    for e in entries:
+        for ref in e.get("audit_refs", []):
+            err = resolve(audit, ref)
+            if err:
+                fails.append(f"{e['req_id']} audit_ref {ref!r}: {err}")
+        for ref in e.get("config_paths", []):
+            err = resolve(config, ref)
+            if err:
+                fails.append(f"{e['req_id']} config_path {ref!r}: {err}")
+    return fails
+
+
 def arg(flag, default=None):
     return sys.argv[sys.argv.index(flag) + 1] if flag in sys.argv else default
 
@@ -89,7 +134,7 @@ def main():
         return 1
 
     needed = [f"work/{packet}/requirements.json", f"work/{packet}/traceability.json",
-              f"out/{packet}/audit_log.json", LEDGER]
+              f"out/{packet}/audit_log.json", f"out/{packet}/ramp_config.json", LEDGER]
     for rel in needed:
         if not (root / rel).is_file():
             print(f"missing: {root / rel}")
@@ -97,13 +142,15 @@ def main():
     reqs = json.loads((root / needed[0]).read_text())["requirements"]
     entries = json.loads((root / needed[1]).read_text())["entries"]
     audit = json.loads((root / needed[2]).read_text())
+    config = json.loads((root / needed[3]).read_text())
     ledger = yaml.safe_load((root / LEDGER).read_text())
     verdicts = {c["id"]: c["verdict"] for c in ledger["capabilities"]}
 
     results = [("coverage invariant", check_coverage(reqs, entries)),
                ("false-positive sweep", check_false_positives(entries, verdicts)),
                ("false-negative sweep", check_false_negatives(entries, verdicts)),
-               ("evidence completeness", check_evidence(audit))]
+               ("evidence completeness", check_evidence(audit)),
+               ("dangling references", check_references(entries, audit, config))]
 
     for name, fails in results:
         print(f"{'FAIL' if fails else 'PASS'}  {name} ({len(fails)} problem(s))")
