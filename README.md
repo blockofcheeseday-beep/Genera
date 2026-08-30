@@ -47,7 +47,13 @@ field, an audit entry, or both. Phase 4 fails the run on any orphan — which is
     capabilities.yaml       SOURCE OF TRUTH — the capability ledger
     CAPABILITY_LEDGER.md    generated from the yaml, committed so it reads without running
   scripts/
-    gen_ledger.py           regenerates the markdown; --check fails on staleness
+    gen_ledger.py           regenerates the ledger markdown; --check fails on staleness
+    cite.py                 builds attributed citations from any packet format
+    money_map.py            every monetary figure in a packet, collated by amount
+    lint_roster.py          deterministic roster dirt
+    check_quotes.py         Phase 1 quotes must match their source file
+    check_coverage.py       coverage invariant + both graded sweeps
+    check_audit_style.py    the audit log is customer-facing; this gates that
 candidate/                  exercise material, committed so the repo stays runnable
 work/                       intermediates (requirements.json) — not graded
 out/                        ONLY the two graded JSONs per packet

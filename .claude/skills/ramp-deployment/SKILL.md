@@ -34,7 +34,7 @@ rather than aspirational.
 
 | Path | What it is |
 |---|---|
-| `references/capabilities.yaml` | **The capability ledger — 42 rows, source of truth for what Ramp can do.** Read it before deciding anything is impossible. |
+| `references/capabilities.yaml` | **The capability ledger — 43 rows, source of truth for what Ramp can do.** Read it before deciding anything is impossible. |
 | `references/CAPABILITY_LEDGER.md` | Same content, readable. Generated — never edit it. |
 | `references/AUDIT_PATTERNS.md` | The four trigger classes. The engine of Phase 2. |
 | `references/PRECEDENCE_RULES.md` | How conflicts resolve, per packet, with verbatim quotes. |
@@ -45,6 +45,75 @@ rather than aspirational.
 ---
 
 # Phase 1 — Extract
+
+## Read the packet on its own terms first
+
+Before extracting anything, answer three questions about the packet itself. Each one has
+changed the shape of a deliverable at least once.
+
+**1. Does any document dictate how it must be answered?** Packet C's compliance file is a
+vendor-response instrument: it numbers its requirements `REQ-1`…`REQ-6`, demands each be
+answered `ENFORCED BY PLATFORM` / `ENFORCED BY PROCESS` / `NOT MET`, and warns that vague
+responses will be returned. A packet that specifies its own response format is telling you
+the grading rubric. Adopt its numbering and its vocabulary verbatim in the audit log.
+
+**The customer's vocabulary outranks these instructions.** When a customer's own terms
+collide with a house style rule, the customer wins and the rule bends. The jargon check
+originally rejected `REQ-1` as internal vocabulary — it was Apex's own mandated numbering.
+If a check fires on something the customer requires, fix the check, do not launder the
+customer's language.
+
+**2. Who exists, and can they be identified?** Packet A shipped a 32-row roster. Packet C
+named six people, one without a surname, and contained **no email address and no email
+domain at all**. When identity is missing, do not stall and do not quietly invent:
+
+- Derive addresses from a stated convention where one exists; otherwise construct
+  `firstname.lastname@<company>.example` and say plainly, in `assumptions_made`, that the
+  domain is invented.
+- Use the sample's placeholder idiom for a missing name part: `"(surname pending roster)"`.
+- Raise a **blocking** flag saying no user may be invited until real addresses arrive.
+
+A configuration naming known people with flagged placeholders is useful. An empty `users`
+array is not.
+
+**3. What is not in the packet at all?** Locations, shipping addresses, end dates,
+headcounts. These become blocking flags, and they are easy to miss precisely because
+nothing in the packet mentions them.
+
+## Look at the money before you compose
+
+```
+python3 .claude/skills/ramp-deployment/scripts/money_map.py --packet <packet>
+```
+
+Lists every monetary figure across every file with its location and context, then collates
+them by amount. Two figures from two different documents sitting adjacent in that sorted
+list is the signature of a real conflict.
+
+That is how packet C's sharpest finding surfaced: the compliance document requires a
+purchase order above **$500**, while the discovery call sets the clinic per-transaction cap
+at **$1,000** — so a $700 purchase is approved by the card while sitting inside the
+purchase-order rule. Neither document notices. It is only visible side by side.
+
+The script asserts nothing. Judging whether two figures actually collide is yours, and a
+real collision becomes a `conflicts` entry.
+
+## Lint the roster, if there is one
+
+If the packet has a roster CSV, run the linter before you trust it:
+
+```
+python3 .claude/skills/ramp-deployment/scripts/lint_roster.py <path-to-csv>
+```
+
+It deterministically finds duplicate emails with disagreeing values, blank cells,
+non-numeric limits, case-variant department names, and dangling manager references. These
+become `conflicts` and `missing_information_flags` rows. An LLM reading a 33-row CSV will
+skim past all five classes; the script will not.
+
+---
+
+## Then extract
 
 Read **every** file in the packet. Not a skim: the dirt is in the details, and packets are
 deliberately built so the important things sit in asides.
@@ -67,6 +136,18 @@ Reconstructing a quote later from memory is exactly how citations get hallucinat
 Phase 4 checks every one of them against the file with a substring match. The audit schema
 wants "file + line/quote"; this is where you earn it.
 
+Build citations with the tool rather than by hand:
+
+```
+python3 .claude/skills/ramp-deployment/scripts/cite.py --packet <packet> --speakers
+python3 .claude/skills/ramp-deployment/scripts/cite.py --packet <packet> --quote "..." --context "..."
+```
+
+It locates the quote, derives the speaker, role and timestamp from the file, and emits a
+citation that satisfies the Phase 4 gate. Run `--speakers` first on an unfamiliar packet to
+check the parse before building thirty citations on it. Hand-written citations are how
+attribution goes wrong.
+
 `source_quote` must be a **contiguous span** — no `...` elision, no stitching two sentences
 together. The check is a substring match after whitespace and unicode-punctuation
 normalization, so an elided quote fails even when it is honest. If the useful material spans
@@ -75,20 +156,11 @@ a gap, either quote the shorter contiguous piece or split it into two requiremen
 `requirements.json`.)
 
 Tag each requirement with the closest ledger `archetype_id`, or `null` if nothing fits.
-A `null` is a signal, not a failure — it means the ledger may need a new row. Say so.
+A `null` is a signal, not a failure — it means the ledger may need a new row. Say so. A
+*cluster* of nulls means the ledger does not yet cover this customer's kind of problem;
+stop and add rows before composing, or the audit log will be thin in exactly the places
+that matter.
 
-If the packet has a roster CSV, run the linter before you trust it:
-
-```
-python3 .claude/skills/ramp-deployment/scripts/lint_roster.py <path-to-csv>
-```
-
-It deterministically finds duplicate emails with disagreeing values, blank cells,
-non-numeric limits, case-variant department names, and dangling manager references. These
-become `conflicts` and `missing_information_flags` rows. An LLM reading a 33-row CSV will
-skim past all five classes; the script will not.
-
----
 
 # Phase 2 — Flag
 
@@ -197,6 +269,23 @@ This file is how Phase 4 proves the coverage invariant and runs both graded swee
 lives in `work/` because both output schemas set `additionalProperties: false`, so there is
 nowhere in `out/` to carry the linkage.
 
+## When the customer demands an answer to every requirement
+
+A numbered requirements document expects a verdict on each item — including the ones Ramp
+handles perfectly. Those have nowhere obvious to go: the audit log has no "works fine"
+array, and filing a `SUPPORTED` capability under `unsupported_api_requests` trips the
+false-positive sweep, correctly.
+
+Put them in `assumptions_made`, stating the verdict in the first sentence and then the
+encoding decision and any operational gap. Packet C's REQ-4 and REQ-5 are the worked
+examples: both are `ENFORCED BY PLATFORM`, and both still carry a real caveat — no
+assignment end dates exist anywhere in the packet, and only one member of the Compliance
+Office is named. The verdict is a win; the gap is still worth the customer's attention.
+
+Check before shipping that **every** numbered requirement appears somewhere with an
+explicit verdict. A requirement the customer numbered and you did not answer reads as an
+evasion.
+
 ## Idioms worth copying from the sample
 
 Read `candidate/sample_packet/.../example_output/ramp_config.json` before composing. It is
@@ -215,6 +304,14 @@ short and every line of it is a decision:
   missing-information flag, rather than invented or left blank.
 - `mcc_controls[].applies_to` is a limit or spend-program `display_name` — it must match one
   you actually emitted.
+- **A group limit must state its cardinality in `notes`** — how many people, and whether the
+  number is stated or assumed. "One per clinic manager (14 assumed, one per clinic; none are
+  named in the packet)" tells a reviewer the exposure and the uncertainty in one line.
+- **A rule that is not amount-shaped still has to go in `tiers[]`, which is keyed only on
+  amount.** "Any new vendor needs approval regardless of amount" and "anything Compliance
+  flags comes to me" both encode as a zero-threshold tier — which then catches *all* spend on
+  that target, not just the intended subset. Encode it, say so in the policy's `source`
+  field, and log the over-capture. This has now recurred in two packets; expect it again.
 
 ## Schema traps
 

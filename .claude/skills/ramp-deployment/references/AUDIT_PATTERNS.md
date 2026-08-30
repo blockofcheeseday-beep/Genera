@@ -231,6 +231,21 @@ if unknown, say so in the audit log."
 
 ---
 
+### When a packet has no roster at all
+
+Packet A shipped a 32-row CSV. Packet C named six people, one of them by first name only,
+and contained no email address and no email domain anywhere. The convention:
+
+| Situation | What to emit | Flag |
+|---|---|---|
+| No email domain stated | `firstname.lastname@<company>.example`, with the invention stated in `assumptions_made` | blocking — no user may be invited until real addresses arrive |
+| Name part missing | `"(surname pending roster)"`, as the Westbrook sample does | blocking |
+| Headcount given, no names ("fourteen clinic managers") | a group limit with the count and its basis in `notes` | blocking |
+| Population that varies ("eight to twelve nurses") | plan on the upper figure and say so | blocking |
+
+Name every person the packet does name. A configuration listing known people with flagged
+placeholders is useful to a deployment owner; an empty `users` array is not.
+
 ## 3. `conflicts`
 
 ### Fires on
@@ -243,6 +258,27 @@ if unknown, say so in the audit log."
 | A self-correcting author | D (Rachel's "+50% managers" then "correction — eng managers don't need +50%") |
 | Two people in one source disagreeing | D (dev "they're ops" vs jj "they're GTM") |
 | A hedged figure against a precise one | E ("about one hundred fifty field reps" vs 131 in the matrix) |
+| **A threshold in one document straddling a cap in another** | C (purchase order required above $500; clinic per-transaction cap set at $1,000) |
+
+### The straddled-threshold trigger
+
+This one is different from the others: **neither source contradicts itself, and neither
+mentions the other.** Each document is internally consistent. The conflict exists only in
+the gap between them, and it is invisible unless the figures are laid side by side.
+
+Packet C is the worked case. The compliance document requires a purchase order for any
+transaction above $500. The discovery call sets the clinic manager per-transaction cap at
+$1,000. A $700 clinic purchase is therefore approved by the card while sitting inside the
+purchase-order requirement — a compliance gap of $500 per transaction that nobody wrote down.
+
+Run `scripts/money_map.py --packet <packet>` and read its collated section, where every
+figure across the packet is sorted by amount. Adjacent figures from *different files* are
+the ones to examine. For each pair ask: does one govern spend that the other permits?
+
+When it is real, encode the figure the business actually needs, then say in
+`provisional_resolution` exactly which band is left uncovered and what covers it instead.
+Do not quietly adopt the stricter number to make the conflict disappear — that breaks the
+customer's operations to tidy a document.
 
 ### Required fields
 
