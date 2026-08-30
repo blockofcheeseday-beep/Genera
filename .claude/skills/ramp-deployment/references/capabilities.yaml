@@ -117,7 +117,7 @@ capabilities:
         note: >-
           The string "allowed_mcc" appears nowhere in the 2.3 MB spec. blocked_mcc_codes
           exists on request bodies only (4 occurrences, all *RequestBody). Allow-listing is
-          available only at Ramp's 44-code category granularity
+          available only at Ramp's 43-code category granularity
           (allowed_categories / allowed_category_codes).
       - source: support.ramp.com
         checked_on: 2026-08-30
@@ -128,7 +128,7 @@ capabilities:
           factors", then restricts on its own categories. So an MCC allow-list is not
           expressible anywhere in the product, UI included — this stays UNSUPPORTED rather
           than becoming UI_ONLY.
-    evidence_line: "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 44-code category granularity, in the UI as well as the API."
+    evidence_line: "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API."
     config_expression:
       section: mcc_controls
       mechanism: allowed_categories
@@ -182,9 +182,13 @@ capabilities:
       - source: openapi_snapshot_2026_08_30
         checked_on: 2026-08-30
         note: >-
-          44 integer category codes (1-44, no 22), e.g. 4 = Airlines, 6 = Lodging,
-          18 = Fuel and gas, 19 = Restaurants, 40 = SaaS / Software.
-    evidence_line: "openapi snapshot 2026_08_30 — 44 integer category codes (1-44, no 22) settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
+          43 integer category codes numbered 1-44 with 22 absent — counted directly from
+          the spec, which is 43 usable values, not 44. e.g. 4 = Airlines, 6 = Lodging,
+          18 = Fuel and gas, 19 = Restaurants, 40 = SaaS / Software. Note the canonical
+          spelling is "SaaS / Software"; the Westbrook sample config writes
+          "Software / SaaS", which validates because the exercise schema takes free strings
+          but does not match the API vocabulary.
+    evidence_line: "openapi snapshot 2026_08_30 — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
     config_expression:
       section: mcc_controls
       mechanism: allowed_categories
