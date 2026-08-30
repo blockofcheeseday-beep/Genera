@@ -97,6 +97,18 @@ def check_jargon(audit):
     return fails
 
 
+_PROJECT_FILES = None
+
+
+def project_files():
+    """Basenames of files shipped with the project, excluding customer packets."""
+    global _PROJECT_FILES
+    if _PROJECT_FILES is None:
+        _PROJECT_FILES = {p.name for p in (ROOT / "candidate").rglob("*")
+                          if p.is_file() and "customer_packets" not in p.parts}
+    return _PROJECT_FILES
+
+
 def check_citations(audit, packet_dir):
     """(c) Every source citation names a real file, quotes it verbatim, and attributes it."""
     fails, cache = [], {}
@@ -106,11 +118,19 @@ def check_citations(audit, packet_dir):
         outside = unquoted(value)
         named = [f for f in FILENAME.findall(outside) if (packet_dir / f).is_file()]
         if not named:
-            fails.append(f"{name}[{i}].{field}: names no file in {packet_dir.name}/ — {norm(value)[:70]!r}")
+            # A citation may legitimately point at a project file rather than a customer
+            # document — the shipped schema, for instance, when explaining why something is
+            # recorded in a particular shape. Those are pointers, not quotations of the
+            # customer, so they are exempt from the verbatim and attribution rules. Every
+            # other rule (pronouns, jargon) still applies to them.
+            if any(f in project_files() for f in FILENAME.findall(outside)):
+                continue
+            fails.append(f"{name}[{i}].{field}: names no file in {packet_dir.name}/ "
+                         f"and no file in the repo — {norm(value)[:70]!r}")
             continue
         if named[0] not in cache:
             cache[named[0]] = norm((packet_dir / named[0]).read_text())
-        long_spans = [m.group(0)[1:-1] for m in QUOTED.finditer(value) if len(m.group(0)[1:-1].strip()) >= 15]
+        long_spans = [s for s in spans(value) if len(s.strip()) >= 15]
         if not long_spans:
             fails.append(f"{name}[{i}].{field}: no quoted span of 15+ characters — {norm(value)[:70]!r}")
         elif not any(norm(s) in cache[named[0]] for s in long_spans):

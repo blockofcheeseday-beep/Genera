@@ -374,7 +374,7 @@ capabilities:
           ApiFundCreateRequestBody). A group limit therefore fans out to N funds, one per
           member. is_shareable plus /funds/{id}/members is the nearest genuine shared-pool
           primitive, and it changes the semantics: one pot drawn down by many, not N pots.
-    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds requires a single user_id, so a group limit fans out to one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N)."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds requires a single user_id, so a group limit becomes one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N)."
     config_expression:
       section: limits
       mechanism: assigned_to.group
@@ -927,7 +927,7 @@ capabilities:
           spec does not: what each role can actually see and do. Role choice is a permissions
           decision, not a titles translation, and it should be made from those pages rather
           than from the enum name.
-    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call."
+    evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer job titles onto Ramp roles is a per-person judgement call."
     config_expression:
       section: users
       mechanism: role

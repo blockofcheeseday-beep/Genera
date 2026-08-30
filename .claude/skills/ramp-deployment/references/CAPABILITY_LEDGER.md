@@ -73,7 +73,7 @@ How customers say it:
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no approval write surface; additionally 'new vendor' is not threshold-shaped and approval_policies[].tiers[] is keyed only on threshold_usd_cents.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no approval write surface; additionally 'new vendor' is not threshold-shaped and approval_policies[].tiers[] is keyed only on threshold_usd_cents.
 ```
 
 Config expression: section `audit_log_only`
@@ -107,7 +107,7 @@ Fields: `spending_restrictions.blocked_mcc_codes`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API.
+Ramp Developer API specification (snapshot dated 2026-08-30) — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API.
 ```
 
 Config expression: section `mcc_controls`, mechanism `allowed_categories`
@@ -135,7 +135,7 @@ Fields: `spending_restrictions.limit`, `spending_restrictions.interval`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — ApiFundSpendingRestrictionsRequestBody requires both 'interval' and 'limit', and limit.amount is a required integer; there is no unlimited sentinel.
+Ramp Developer API specification (snapshot dated 2026-08-30) — ApiFundSpendingRestrictionsRequestBody requires both 'interval' and 'limit', and limit.amount is a required integer; there is no unlimited sentinel.
 ```
 
 Config expression: section `limits`
@@ -160,7 +160,7 @@ Endpoints: `GET /developer/v1/purchase-orders`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no authorization-time hook exists; /purchase-orders is a record API, not a control surface, so a charge cannot be gated on PO match at authorization.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no authorization-time hook exists; /purchase-orders is a record API, not a control surface, so a charge cannot be gated on PO match at authorization.
 ```
 
 Config expression: section `limits`, mechanism `spending_restrictions.transaction_amount_limit_cents`
@@ -185,7 +185,7 @@ Endpoints: `POST /developer/v1/webhooks`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no notifications resource; nearest primitive is POST /webhooks (transaction events), which delivers events but does not evaluate threshold or routing rules.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no notifications resource; nearest primitive is POST /webhooks (transaction events), which delivers events but does not evaluate threshold or routing rules.
 ```
 
 Config expression: section `audit_log_only`
@@ -209,7 +209,7 @@ Endpoints: `POST /developer/v1/departments`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — the department create body is name-only with no entity_id, so departments are company-wide; only locations carry an entity association.
+Ramp Developer API specification (snapshot dated 2026-08-30) — the department create body is name-only with no entity_id, so departments are company-wide; only locations carry an entity association.
 ```
 
 Config expression: section `departments`, mechanism `entity`
@@ -235,7 +235,7 @@ Endpoints: `GET /developer/v1/spend-programs`, `POST /developer/v1/spend-program
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API.
+Ramp Developer API specification (snapshot dated 2026-08-30) — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API.
 ```
 
 Config expression: section `internal_note`
@@ -265,7 +265,7 @@ How customers say it:
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one.
 ```
 
 Config expression: section `approval_policies`
@@ -290,7 +290,7 @@ How customers say it:
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no receipt-policy configuration resource; /receipts covers receipt objects and ingestion, not thresholds. Receipt rules are an in-app setting.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no receipt-policy configuration resource; /receipts covers receipt objects and ingestion, not thresholds. Receipt rules are an in-app setting.
 ```
 
 Config expression: section `audit_log_only`
@@ -317,7 +317,7 @@ Endpoints: `GET /developer/v1/memos`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — /memos exposes memo objects but no memo-policy or threshold configuration surface; the rule is an in-app setting.
+Ramp Developer API specification (snapshot dated 2026-08-30) — /memos exposes memo objects but no memo-policy or threshold configuration surface; the rule is an in-app setting.
 ```
 
 Config expression: section `audit_log_only`
@@ -346,7 +346,7 @@ Endpoints: `GET /developer/v1/entities`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — /entities is GET-only; the separate POST /accounting/entities creates an accounting-side object, not a Ramp legal entity. docs.ramp.com accounting guide, checked 2026-08-30 — 'Entities are created in the Ramp UI, and objects are scoped to an entity_id when fetching via the API.'
+Ramp Developer API specification (snapshot dated 2026-08-30) — /entities is GET-only; the separate POST /accounting/entities creates an accounting-side object, not a Ramp legal entity. docs.ramp.com accounting guide, checked 2026-08-30 — 'Entities are created in the Ramp UI, and objects are scoped to an entity_id when fetching via the API.'
 ```
 
 Config expression: section `entities`, mechanism `status`
@@ -377,7 +377,7 @@ Fields: `spending_restrictions.blocked_mcc_codes`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API.
+Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API.
 ```
 
 Config expression: section `mcc_controls`, mechanism `blocked_mcc_codes`
@@ -399,7 +399,7 @@ Fields: `allowed_category_codes`, `allowed_categories`, `allowed_vendor_ids`, `a
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — fund restrictions use *_category_codes / *_vendor_ids while spend-program restrictions use *_categories / *_vendors; the concepts are identical and the names are not.
+Ramp Developer API specification (snapshot dated 2026-08-30) — fund restrictions use *_category_codes / *_vendor_ids while spend-program restrictions use *_categories / *_vendors; the concepts are identical and the names are not.
 ```
 
 Config expression: section `internal_note`
@@ -476,7 +476,7 @@ Fields: `spending_restrictions.blocked_vendors`, `spending_restrictions.blocked_
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — blocked_vendors / blocked_vendor_ids take merchant UUIDs from GET /merchants (not Bill Pay vendor objects); no global blocklist resource exists, so the block must be repeated on every spend program and standalone limit.
+Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_vendors / blocked_vendor_ids take merchant UUIDs from GET /merchants (not Bill Pay vendor objects); no global blocklist resource exists, so the block must be repeated on every spend program and standalone limit.
 ```
 
 Config expression: section `mcc_controls`, mechanism `blocked_vendors`
@@ -504,7 +504,7 @@ Fields: `user_id`, `is_shareable`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /funds requires a single user_id, so a group limit fans out to one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N).
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds requires a single user_id, so a group limit becomes one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N).
 ```
 
 Config expression: section `limits`, mechanism `assigned_to.group`
@@ -529,7 +529,7 @@ Endpoints: `POST /developer/v1/cards/physical`, `POST /developer/v1/cards/physic
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no native activation gate on external attestation; the composable equivalent is POST /cards/physical followed immediately by POST /cards/physical/{id}/suspension, released only on confirmation.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no native activation gate on external attestation; the composable equivalent is POST /cards/physical followed immediately by POST /cards/physical/{id}/suspension, released only on confirmation.
 ```
 
 Config expression: section `audit_log_only`
@@ -560,7 +560,7 @@ Fields: `direct_manager_id`, `is_manager`
 Evidence line (verbatim into audit logs):
 
 ```
-support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — openapi snapshot 2026_08_30 shows GET /roles is read-only.
+support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — Ramp Developer API specification (snapshot dated 2026-08-30) shows GET /roles is read-only.
 ```
 
 Config expression: section `users`, mechanism `role`
@@ -588,7 +588,7 @@ Fields: `idempotency_key`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — no bulk user endpoint; POST /users/deferred is per-user and async (poll /users/deferred/status/{task_id}), with idempotency_key required in the body.
+Ramp Developer API specification (snapshot dated 2026-08-30) — no bulk user endpoint; POST /users/deferred is per-user and async (poll /users/deferred/status/{task_id}), with idempotency_key required in the body.
 ```
 
 Config expression: section `users`
@@ -610,7 +610,7 @@ Fields: `idempotency_key`, `X-Idempotency-Key`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /users/deferred requires a body-level idempotency_key while POST /funds uses an X-Idempotency-Key header.
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /users/deferred requires a body-level idempotency_key while POST /funds uses an X-Idempotency-Key header.
 ```
 
 Config expression: section `internal_note`
@@ -636,7 +636,7 @@ Fields: `role`, `scheduled_deactivation_date`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — GUEST_USER accounts receive an automatic scheduled_deactivation_date six months from invite unless explicitly nulled; the field is not settable for admins or owners.
+Ramp Developer API specification (snapshot dated 2026-08-30) — GUEST_USER accounts receive an automatic scheduled_deactivation_date six months from invite unless explicitly nulled; the field is not settable for admins or owners.
 ```
 
 Config expression: section `users`, mechanism `notes`
@@ -668,7 +668,7 @@ Fields: `role`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer titles onto them is a per-person judgement call.
+Ramp Developer API specification (snapshot dated 2026-08-30) plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer job titles onto Ramp roles is a per-person judgement call.
 ```
 
 Config expression: section `users`, mechanism `role`
@@ -695,7 +695,7 @@ Fields: `permitted_spend_types`, `issue_physical_card_if_needed`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly.
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly.
 ```
 
 Config expression: section `spend_programs`, mechanism `issue_physical_card_if_needed`
@@ -724,7 +724,7 @@ Fields: `spending_restrictions.allowed_categories`, `spending_restrictions.block
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds.
+Ramp Developer API specification (snapshot dated 2026-08-30) — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds.
 ```
 
 Config expression: section `mcc_controls`, mechanism `allowed_categories`
@@ -750,7 +750,7 @@ Fields: `user_id`, `spending_restrictions.limit`, `spending_restrictions.interva
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /funds takes a single user_id with spending_restrictions (interval and limit both required), so a per-person recurring limit is the API's native shape.
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds takes a single user_id with spending_restrictions (interval and limit both required), so a per-person recurring limit is the API's native shape.
 ```
 
 Config expression: section `limits`, mechanism `assigned_to.user_email`
@@ -776,7 +776,7 @@ Fields: `spending_restrictions.lock_date`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — lock_date is settable on fund create and update bodies (auto_lock_date on read), so a hard stop date is native and extendable via PATCH.
+Ramp Developer API specification (snapshot dated 2026-08-30) — lock_date is settable on fund create and update bodies (auto_lock_date on read), so a hard stop date is native and extendable via PATCH.
 ```
 
 Config expression: section `limits`, mechanism `spending_restrictions.lock_date`
@@ -801,7 +801,7 @@ Fields: `spending_restrictions.limit.currency_code`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — CurrencyAmountRequestBody takes an ISO-4217 currency_code (default USD) with an integer minor-unit amount, so per-limit local currency is native.
+Ramp Developer API specification (snapshot dated 2026-08-30) — CurrencyAmountRequestBody takes an ISO-4217 currency_code (default USD) with an integer minor-unit amount, so per-limit local currency is native.
 ```
 
 Config expression: section `limits`, mechanism `spending_restrictions.currency`
@@ -821,7 +821,7 @@ Fields: `limit.amount`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — CurrencyAmountRequestBody.amount is an integer in the smallest currency denomination ('cents for USD').
+Ramp Developer API specification (snapshot dated 2026-08-30) — CurrencyAmountRequestBody.amount is an integer in the smallest currency denomination ('cents for USD').
 ```
 
 Config expression: section `internal_note`
@@ -846,7 +846,7 @@ Endpoints: `POST /developer/v1/funds/{fund_id}/suspension`, `DELETE /developer/v
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — suspension is a reversible POST/DELETE pair on /funds/{id}/suspension, /funds/{id}/members/{user_id}/suspension and physical cards.
+Ramp Developer API specification (snapshot dated 2026-08-30) — suspension is a reversible POST/DELETE pair on /funds/{id}/suspension, /funds/{id}/members/{user_id}/suspension and physical cards.
 ```
 
 Config expression: section `internal_note`
@@ -870,7 +870,7 @@ Fields: `role`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — AUDITOR is a first-class role on ApiUserCreateRequestBody, giving read-only access without a custom role.
+Ramp Developer API specification (snapshot dated 2026-08-30) — AUDITOR is a first-class role on ApiUserCreateRequestBody, giving read-only access without a custom role.
 ```
 
 Config expression: section `users`, mechanism `role`
@@ -896,7 +896,7 @@ Fields: `is_draft`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — ApiUserCreateRequestBody accepts is_draft, creating a user with no invite email, activated later via POST /users/{id}/invite.
+Ramp Developer API specification (snapshot dated 2026-08-30) — ApiUserCreateRequestBody accepts is_draft, creating a user with no invite email, activated later via POST /users/{id}/invite.
 ```
 
 Config expression: section `users`, mechanism `notes`
@@ -921,7 +921,7 @@ Fields: `location_id`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — user create has no entity field; entity assignment is indirect via location_id, and locations carry an optional entity_id.
+Ramp Developer API specification (snapshot dated 2026-08-30) — user create has no entity field; entity assignment is indirect via location_id, and locations carry an optional entity_id.
 ```
 
 Config expression: section `users`, mechanism `location`
@@ -974,7 +974,7 @@ Fields: `name`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /departments takes exactly one field, name.
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /departments takes exactly one field, name.
 ```
 
 Config expression: section `departments`
@@ -999,7 +999,7 @@ Fields: `name`, `entity_id`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /locations requires name and accepts an optional entity_id; this is the only entity association reachable from user setup.
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /locations requires name and accepts an optional entity_id; this is the only entity association reachable from user setup.
 ```
 
 Config expression: section `locations`
@@ -1024,7 +1024,7 @@ Fields: `display_name`, `description`, `icon`, `permitted_spend_types`, `spendin
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — POST /spend-programs requires display_name, description, icon, permitted_spend_types and spending_restrictions; 'icon' is required by the API but has no field in the exercise schema.
+Ramp Developer API specification (snapshot dated 2026-08-30) — POST /spend-programs requires display_name, description, icon, permitted_spend_types and spending_restrictions; 'icon' is required by the API but has no field in the exercise schema.
 ```
 
 Config expression: section `spend_programs`
@@ -1051,7 +1051,7 @@ Fields: `issuance_rules.automatic`, `issuance_rules.requestable`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — spend program issuance_rules splits into 'automatic' and 'requestable', each targeting department_ids, location_ids, user_custom_field_ids or applies_to_all.
+Ramp Developer API specification (snapshot dated 2026-08-30) — spend program issuance_rules splits into 'automatic' and 'requestable', each targeting department_ids, location_ids, user_custom_field_ids or applies_to_all.
 ```
 
 Config expression: section `spend_programs`
@@ -1080,7 +1080,7 @@ Fields: `permitted_spend_types.reimbursements_enabled`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — reimbursements are a per-object toggle via permitted_spend_types (reimbursements_enabled on spend programs, reimbursements on funds).
+Ramp Developer API specification (snapshot dated 2026-08-30) — reimbursements are a per-object toggle via permitted_spend_types (reimbursements_enabled on spend programs, reimbursements on funds).
 ```
 
 Config expression: section `spend_programs`, mechanism `permitted_spend_types.reimbursements_enabled`
@@ -1100,7 +1100,7 @@ Fields: `permitted_spend_types.primary_card_enabled`, `permitted_spend_types.rei
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — ApiPermittedSpendTypesRequestBody (spend programs) requires exactly primary_card_enabled and reimbursements_enabled, matching the exercise schema; the three-boolean shape belongs to funds (ApiFundPermittedSpendTypesRequestBody), a different object level.
+Ramp Developer API specification (snapshot dated 2026-08-30) — ApiPermittedSpendTypesRequestBody (spend programs) requires exactly primary_card_enabled and reimbursements_enabled, matching the exercise schema; the three-boolean shape belongs to funds (ApiFundPermittedSpendTypesRequestBody), a different object level.
 ```
 
 Config expression: section `spend_programs`
@@ -1126,7 +1126,7 @@ Endpoints: `POST /developer/v1/funds`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — the top-level 'limits' section maps to POST /developer/v1/funds (no /limits path exists), though both limits:* and funds:* OAuth scopes are defined; docs.ramp.com still documents the resource as 'spend limits' (checked 2026-08-30). The concept exists — only the path name differs.
+Ramp Developer API specification (snapshot dated 2026-08-30) — the top-level 'limits' section maps to POST /developer/v1/funds (no /limits path exists), though both limits:* and funds:* OAuth scopes are defined; docs.ramp.com still documents the resource as 'spend limits' (checked 2026-08-30). The concept exists — only the path name differs.
 ```
 
 Config expression: section `limits`
@@ -1150,7 +1150,7 @@ Fields: `spending_restrictions.interval`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — the API interval enum carries eight values including TERTIARY; the exercise schema's interval enum has seven and omits it.
+Ramp Developer API specification (snapshot dated 2026-08-30) — the API interval enum carries eight values including TERTIARY; the exercise schema's interval enum has seven and omits it.
 ```
 
 Config expression: section `limits`
@@ -1178,7 +1178,7 @@ Fields: `role`
 Evidence line (verbatim into audit logs):
 
 ```
-openapi snapshot 2026_08_30 — the API user-create role enum has seven values including BUSINESS_OWNER (read schemas carry eleven, adding UNBUNDLED_*); the exercise schema has six and omits BUSINESS_OWNER.
+Ramp Developer API specification (snapshot dated 2026-08-30) — the API user-create role enum has seven values including BUSINESS_OWNER (read schemas carry eleven, adding UNBUNDLED_*); the exercise schema has six and omits BUSINESS_OWNER.
 ```
 
 Config expression: section `users`, mechanism `role`

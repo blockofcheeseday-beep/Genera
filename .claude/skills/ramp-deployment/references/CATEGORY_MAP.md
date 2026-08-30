@@ -14,9 +14,9 @@ every translation is lossy, and every lossy translation is logged.
 
 Evidence strings to copy verbatim into `unsupported_api_requests[].evidence`:
 
-- `CAP-MCC-ALLOWLIST` — "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API."
-- `CAP-MCC-BLOCKLIST` — "openapi snapshot 2026_08_30 — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API."
-- `CAP-CATEGORY-RESTRICT` — "openapi snapshot 2026_08_30 — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
+- `CAP-MCC-ALLOWLIST` — "Ramp Developer API specification (snapshot dated 2026-08-30) — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API."
+- `CAP-MCC-BLOCKLIST` — "Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API."
+- `CAP-CATEGORY-RESTRICT` — "Ramp Developer API specification (snapshot dated 2026-08-30) — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
 
 ## Do not tell a customer MCCs are unusable
 
