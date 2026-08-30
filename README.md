@@ -6,6 +6,39 @@ what was assumed, what is missing, what conflicts, and what Ramp cannot actually
 
 The exercise spec is `candidate/README.md` and it is the source of truth for direction.
 
+## Running a packet
+
+```
+python3 run_pipeline.py --list                          # what packets exist
+python3 run_pipeline.py --packet client_a_acme_corp     # Phase 0: setup + printed runbook
+#   ... the agent does Phases 1-3, guided by SKILL.md ...
+python3 run_pipeline.py --packet client_a_acme_corp --verify    # Phase 4: all checks
+```
+
+`run_pipeline.py` is glue, not an engine. It does the deterministic parts — inventorying the
+packet, scaffolding `work/` and `out/`, and running every check — and prints a runbook telling
+a fresh session what to do in between. The judgement work (reading messy transcripts,
+resolving conflicts, deciding what Ramp genuinely cannot do) is done by the Claude session
+following `.claude/skills/ramp-deployment/SKILL.md`. That split is deliberate: the parts that
+should be reproducible are code, and the parts that need judgement are instructions.
+
+### The four phases
+
+| Phase | Who | Output |
+|---|---|---|
+| 0 Setup | script | `work/<packet>/packet_manifest.json` + printed runbook |
+| 1 Extract | agent | `work/<packet>/requirements.json` — every claim with a verbatim quote |
+| 2 Flag | agent | `out/<packet>/audit_log.json` — written *before* the config exists |
+| 3 Compose | agent | `out/<packet>/ramp_config.json` + `work/<packet>/traceability.json` |
+| 4 Verify | script | pass/fail table; non-zero exit on any failure |
+
+Phase 2 runs before Phase 3 on purpose. Compose first and the audit log becomes a
+rationalization of what you already built.
+
+**The coverage invariant:** every requirement extracted in Phase 1 must terminate in a config
+field, an audit entry, or both. Phase 4 fails the run on any orphan — which is what makes
+"flag-forward" mechanically enforced rather than aspirational.
+
 ## Layout
 
 ```
@@ -39,6 +72,19 @@ Regenerate and check the markdown:
 python3 .claude/skills/ramp-deployment/scripts/gen_ledger.py
 python3 .claude/skills/ramp-deployment/scripts/gen_ledger.py --check
 ```
+
+## Verification
+
+`--verify` runs six checks: outputs parse, both files validate against the shipped schemas,
+every quote substring-matches its source file, the coverage invariant plus both graded
+sweeps, the `assigned_to` exactly-one rule the schema describes but does not enforce, and
+ledger freshness.
+
+The two sweeps check the failure modes the exercise grades in both directions:
+
+- **false positive** — nothing claimed impossible that the ledger says is `SUPPORTED`
+- **false negative** — nothing silently configured as fully supported when the ledger says
+  `UNSUPPORTED`, `UI_ONLY` or `PARTIAL` and the audit log is silent about it
 
 ## Validating outputs
 

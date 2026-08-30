@@ -1,0 +1,19 @@
+{
+  "packet": "client_a_acme_corp",
+  "packet_dir": "candidate/customer_packets/client_a_acme_corp",
+  "file_count": 2,
+  "files": [
+    {
+      "filename": "department_roster.csv",
+      "bytes": 3035,
+      "lines": 33,
+      "sha256_12": "36b936541216"
+    },
+    {
+      "filename": "discovery_call_01.txt",
+      "bytes": 7487,
+      "lines": 107,
+      "sha256_12": "fbf5dc509fd9"
+    }
+  ]
+}
