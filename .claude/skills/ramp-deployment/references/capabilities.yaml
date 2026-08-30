@@ -34,7 +34,7 @@ capabilities:
 
   # ---------------------------------------------------------------- approvals
   - id: CAP-APPROVAL-CHAIN
-    verdict: UNSUPPORTED
+    verdict: UI_ONLY
     title: Multi-tier spend approval chain (threshold -> approver)
     customer_phrasings:
       - "under $500 auto-approves, $500-5k goes to the manager, over $5k comes to me"
@@ -51,7 +51,18 @@ capabilities:
           /developer/v1/blank-canvas-approvals/* (which act on already-existing approval
           trigger instances) and GET /developer/v1/spend-programs/{id}/workflow-nodes
           (read-only). No approval-related OAuth scope is defined among the 76 scopes.
-    evidence_line: "openapi snapshot 2026_08_30 — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes."
+      - source: support.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2 CORRECTION to the verdict, not the mechanism. Ramp does support multi-tier
+          approval chains — in the app. "Set up your spend approval policies" and "Setting up
+          spend request approvals" describe an approvals workflow builder where conditions and
+          outcomes (Require approval / Notify / Approve spend) are layered and nested, with
+          amount and user-role routing available to all customers and further conditions on
+          Ramp Plus. So the capability is real and the API cannot reach it. UI_ONLY, not
+          UNSUPPORTED — and the "hand it to the deployment owner" workaround is now evidenced
+          rather than assumed.
+    evidence_line: "openapi snapshot 2026_08_30 — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one."
     config_expression:
       section: approval_policies
       note: >-
@@ -108,7 +119,16 @@ capabilities:
           exists on request bodies only (4 occurrences, all *RequestBody). Allow-listing is
           available only at Ramp's 44-code category granularity
           (allowed_categories / allowed_category_codes).
-    evidence_line: "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). Allow-listing is possible only at Ramp's 44-code category granularity."
+      - source: support.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2 corroboration. "Setting up category and merchant restrictions" confirms the
+          abstraction is deliberate and product-level, not a gap in the API surface: Ramp
+          "determines the category of a merchant based on the MCC code and a number of
+          factors", then restricts on its own categories. So an MCC allow-list is not
+          expressible anywhere in the product, UI included — this stays UNSUPPORTED rather
+          than becoming UI_ONLY.
+    evidence_line: "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 44-code category granularity, in the UI as well as the API."
     config_expression:
       section: mcc_controls
       mechanism: allowed_categories
@@ -198,6 +218,57 @@ capabilities:
       the spend-program spelling; anyone turning this config into fund calls must rename.
     seen_in: []
 
+
+  - id: CAP-RESTRICTION-REPLACE-SEMANTICS
+    verdict: PARTIAL
+    title: Editing restrictions replaces the whole set rather than merging
+    customer_phrasings:
+      - "just add one more blocked vendor"
+      - "we will tune the limits once people are using it"
+    api_mechanism:
+      endpoints: ["PATCH /developer/v1/funds/{fund_id}"]
+      fields: [spending_restrictions]
+    evidence:
+      - source: docs.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2, found only in the live docs — this is not stated in the OpenAPI snapshot.
+          The spend limits reference says: "If this field is passed, the entire set of new
+          spending restrictions must be passed (i.e. the given spending restrictions will
+          override all existing spending restrictions)."
+    evidence_line: "docs.ramp.com developer API, spend limits reference, checked 2026-08-30 — passing spending_restrictions overrides the entire existing set rather than merging, so any edit must be read-modify-write."
+    config_expression:
+      section: internal_note
+    workaround: >-
+      Read-modify-write on every restriction edit. A partial update silently drops
+      restrictions the customer still expects — which is the quiet way a vendor block or a
+      category allow-list disappears months after go-live.
+    seen_in: []
+
+  - id: CAP-PRODUCTION-WRITES
+    verdict: PARTIAL
+    title: Applying this config against the real API
+    customer_phrasings:
+      - "can you just push this into our account"
+    api_mechanism:
+      endpoints: []
+      fields: []
+    evidence:
+      - source: docs.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2. The developer docs state production write requests are disabled and that
+          sandbox should be used for write operations; sandbox is a separate environment with
+          its own base URL and app credentials, not a mode within production, and requires a
+          separately created app.
+    evidence_line: "docs.ramp.com developer API, checked 2026-08-30 — production write requests are disabled and writes must go through the sandbox, which is a separate environment with its own base URL and app credentials."
+    config_expression:
+      section: internal_note
+    workaround: >-
+      Out of scope for this exercise, which produces payloads rather than calls — but it is
+      the first thing a deployment owner needs to know, because it means go-live is not a
+      matter of pointing a script at production. Belongs in the go-live handoff.
+    seen_in: []
 
   # ---------------------------------------------------------------- vendors
   - id: CAP-VENDOR-BLOCK
@@ -503,14 +574,14 @@ capabilities:
     seen_in: [client_0_sample, client_d_hypergrowth]
 
   - id: CAP-SCOPED-VISIBILITY
-    verdict: UNSUPPORTED
+    verdict: PARTIAL
     title: A manager sees only their own slice of spend
     customer_phrasings:
       - "district managers should see only their district"
       - "she should manage users but not limits"
     api_mechanism:
-      endpoints: [GET /developer/v1/roles]
-      fields: []
+      endpoints: [GET /developer/v1/roles, POST /developer/v1/users/deferred]
+      fields: [direct_manager_id, is_manager]
     evidence:
       - source: openapi_snapshot_2026_08_30
         checked_on: 2026-08-30
@@ -518,14 +589,29 @@ capabilities:
           /developer/v1/roles is GET-only — custom roles are readable, not creatable. The
           six-value role enum in the exercise schema is company-wide, with no scoping
           dimension. Partial-permission asks ("users but not limits") have no API surface.
-    evidence_line: "openapi snapshot 2026_08_30 — GET /roles is read-only (custom roles readable, not creatable) and the role enum carries no scoping dimension, so per-district or partial-permission visibility has no API surface."
+      - source: support.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2 CORRECTION — this row was a false negative. "User roles overview" states that
+          transaction visibility follows the MANAGEMENT CHAIN, not department labels: being in
+          the same department grants no visibility, and manager permissions give visibility
+          "scoped only to their team". That mechanism IS reachable from the API, via
+          direct_manager_id / is_manager on user create. So "a manager sees only their own
+          slice" is largely achievable by modelling the reporting structure correctly, which is
+          the opposite of what the snapshot-only reading concluded.
+          Separately, "Customizing Roles and Permissions" documents Custom Roles with
+          entity restriction, on Ramp Plus, in-app — so finer scoping exists but is not
+          API-creatable (consistent with GET /roles being read-only).
+    evidence_line: "support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — openapi snapshot 2026_08_30 shows GET /roles is read-only."
     config_expression:
       section: users
       mechanism: role
     workaround: >-
-      Map to the closest whole-company role and flag the gap explicitly, naming what the
-      person will be able to see beyond their slice. Ramp Plus tiers may offer more in-app;
-      confirm with the deployment owner rather than promising it.
+      First model the reporting chain — set direct_manager_id so each person reports to the
+      manager who should see them, and is_manager on that manager. That covers most of the
+      ask natively. Only what remains after that (partial permissions such as "manage users
+      but not limits", or scoping that does not follow reporting lines) needs a Custom Role,
+      which is Ramp Plus and in-app. Confirm the customer's plan tier before promising it.
     seen_in: [client_a_acme_corp, client_d_hypergrowth, client_e_vanguard_retail]
 
   - id: CAP-READ-ONLY-AUDITOR
@@ -669,7 +755,7 @@ capabilities:
 
   # ---------------------------------------------------------------- structure
   - id: CAP-ENTITY-CREATE
-    verdict: UNSUPPORTED
+    verdict: UI_ONLY
     title: Create a new legal entity
     customer_phrasings:
       - "the Brazilian entity is still in formation"
@@ -684,7 +770,16 @@ capabilities:
           /developer/v1/entities exposes GET only (collection and by-id). The separate
           POST /developer/v1/accounting/entities is an accounting-side object, not a Ramp
           legal entity.
-    evidence_line: "openapi snapshot 2026_08_30 — /entities is GET-only; the separate POST /accounting/entities creates an accounting-side object, not a Ramp legal entity."
+      - source: docs.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2. The accounting guide states it positively rather than by absence:
+          "Entities are created in the Ramp UI, and objects are scoped to an entity_id when
+          fetching via the API." support.ramp.com additionally documents Company > Entities >
+          Create legal entity, and a bulk flow for adding several at once. A positive docs
+          statement is much stronger evidence than an endpoint's absence from a snapshot, and
+          it moves the verdict to UI_ONLY.
+    evidence_line: "openapi snapshot 2026_08_30 — /entities is GET-only; the separate POST /accounting/entities creates an accounting-side object, not a Ramp legal entity. docs.ramp.com accounting guide, checked 2026-08-30 — 'Entities are created in the Ramp UI, and objects are scoped to an entity_id when fetching via the API.'"
     config_expression:
       section: entities
       mechanism: status
@@ -894,7 +989,16 @@ capabilities:
           No /limits path exists in the snapshot; the resource is /developer/v1/funds.
           BUT both limits:read/limits:write AND funds:read/funds:write are defined among the
           76 OAuth scopes — a rename caught in flight rather than a stale schema.
-    evidence_line: "openapi snapshot 2026_08_30 — the top-level 'limits' section maps to POST /developer/v1/funds (no /limits path exists), though both limits:* and funds:* OAuth scopes are defined."
+      - source: docs.ramp.com
+        checked_on: 2026-08-30
+        note: >-
+          PASS 2, and it sharpens the row. The live docs still present this resource as
+          "Creating spend limits" at docs.ramp.com/developer-api/v1/api/limits. So the
+          customer-facing vocabulary is "limits" while the current path is /funds. Do NOT
+          write "the API has no limits concept" in any audit log — it has the concept, under
+          a different path. This is the single most likely place to produce a wrong
+          "the API cannot do this" claim.
+    evidence_line: "openapi snapshot 2026_08_30 — the top-level 'limits' section maps to POST /developer/v1/funds (no /limits path exists), though both limits:* and funds:* OAuth scopes are defined; docs.ramp.com still documents the resource as 'spend limits' (checked 2026-08-30). The concept exists — only the path name differs."
     config_expression:
       section: limits
       note: Emit the schema shape (limits). Log the mapping. Do not rename.
