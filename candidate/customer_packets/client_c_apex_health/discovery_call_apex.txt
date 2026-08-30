@@ -1,0 +1,94 @@
+RAMP DEPLOYMENT DISCOVERY CALL — APEX HEALTH PARTNERS
+Date: 2026-08-06 · Duration: 47 min
+Attendees:
+  - Gordon Pryce, CFO, Apex Health Partners (GP)
+  - Millie Vance, Director of Compliance, Apex Health Partners (MV)
+  - Sam Ionescu, Regional Operations Director, Apex Health Partners (SI)
+  - Jordan Lee, Deployment Lead, Genera (on behalf of Ramp) (JL)
+Auto-transcribed; lightly cleaned.
+
+[00:00] JL: We're recording. Thanks all. Apex runs outpatient clinics, correct? Give me the shape of it.
+
+[00:08] GP: Fourteen clinics across three states, about six hundred employees total, but spend is concentrated: each clinic has a clinic manager who buys supplies, and then there's a small central team — finance, procurement, facilities, and Millie's compliance group.
+
+[00:27] JL: So roughly — fourteen clinic managers plus central. Who else spends?
+
+[00:32] SI: Two regional ops directors, me and Karen Doyle. We travel between clinics constantly. And our facilities lead, Bruno, who handles repairs and contractors.
+
+[00:43] JL: Let's do clinic managers first. What do they buy and what should they be able to spend?
+
+[00:49] SI: Medical supplies, cleaning supplies, small equipment, the occasional emergency repair. We want four thousand a month per clinic manager, with a per-transaction cap of a thousand. Anything over a thousand in one purchase should go through procurement, not on a card.
+
+[01:05] JL: $4,000 monthly, $1,000 per-transaction cap. Categories?
+
+[01:09] SI: Medical supply houses, pharmacies, hardware stores, cleaning suppliers, that kind of thing. Definitely no travel, no restaurants, no electronics retail.
+
+[01:19] MV: And this is where I come in with the list. There is one supplier — Joe's Medical Supply — that we terminated for cause last year. Quality issues, and there's pending litigation. It is a compliance requirement that no Apex card can transact with them, ever. Not "please don't" — the card must decline. They operate under Joe's Medical Supply and also as JMS Distribution, same outfit.
+
+[01:44] JL: Understood — a hard block on that specific vendor, both names.
+
+[01:47] MV: Correct. Our previous card program couldn't do vendor-level blocking, only categories, and it was a real problem because they're categorized as a medical supplier — the category is exactly what our managers are supposed to buy from. So I need vendor-level, not category-level.
+
+[02:01] JL: I'll confirm exactly what Ramp supports there and reflect it in the config. Travel for the regional directors?
+
+[02:08] SI: Karen and I get travel cards — three thousand a month, hotels, flights, rental cars, meals. Standard.
+
+[02:15] GP: Bruno in facilities: twenty-five hundred a month, hardware, contractors, that world. Central finance team, minimal — five hundred each for odds and ends.
+
+[02:26] JL: Got it. Millie, you mentioned before the call you have security requirements. Go.
+
+[02:32] MV: Three things, and I want to be clear these come from our board's risk committee, so I have limited flexibility. One: physical cards. Any physical card with a monthly limit over ten thousand dollars may not be activated until the cardholder has signed our liability acknowledgment form in front of a notary and the notarized original is on file with my office. Not DocuSign. Notarized, wet ink. The card must be incapable of transacting until my office confirms receipt.
+
+[03:04] JL: Okay. To make sure I scope that correctly — the requirement is the card is inert until your office confirms the notarized form, and you want that enforced by the card system itself?
+
+[03:14] MV: Enforced, yes. I don't want "we'll remember not to use it." I want it physically unable to work until we say so.
+
+[03:21] JL: Noted, and I'll come back with exactly how much of that the platform can enforce natively versus what we'd wrap process around. Which cards would even hit that threshold?
+
+[03:30] GP: Honestly? Maybe just Bruno's if we raise it for a big project, and the regional directors if travel spikes. It's a handful.
+
+[03:37] MV: The number doesn't matter. The control has to exist.
+
+[03:40] JL: Understood. Second thing?
+
+[03:42] MV: Purchase orders. For any transaction over five hundred dollars, our policy requires a purchase order number to exist *before* the money moves. I want the card to decline at the point of sale if there's no PO attached. The cardholder should have to enter the PO number and the system should check it before the transaction is approved.
+
+[04:02] JL: Before authorization — meaning in the seconds while the card is being swiped.
+
+[04:06] MV: Yes. Our ERP has the PO list; I'm told systems can talk to each other. [laughs] I'm told that about everything.
+
+[04:12] GP: What Millie will actually accept, if the ideal isn't possible, is the tightest thing that gets us audit-proof. She just starts from the maximal ask. It's a negotiating style.
+
+[04:22] MV: It's a compliance style.
+
+[04:24] JL: I'll bring back exactly where the line is between what the platform enforces at authorization time and what gets enforced right after, and we can look at it together. Third thing?
+
+[04:33] MV: Traveling nurses. We bring on contract nurses for coverage, typically eight to twelve at any time, on assignments of thirty to ninety days. They need cards for assignment expenses — lodging near the clinic, meals, mileage. But when the assignment ends, the card must die. Automatically. Not "someone remembers to cancel it." We had a contractor at my last employer spend against a card four months after their contract ended.
+
+[05:01] JL: Auto-expiring cards tied to an end date. That one I can tell you now is well-supported — we'll set a lock date per card and it stops working that day without anyone touching it.
+
+[05:10] MV: Good. That's how it should work.
+
+[05:12] JL: What limits for the nurses?
+
+[05:15] SI: Fifteen hundred a month, lodging, meals, gas. Same vendor block applies, obviously — everything gets the Joe's block.
+
+[05:22] JL: Everything gets the vendor block, company-wide. Approvals?
+
+[05:27] GP: Simple by design. Clinic managers' spend auto-approves within their limits — that's what the limits are for. Central team, manager approval over five hundred. And anything Millie's team flags goes to me. Also — receipts on everything. Every transaction, every amount. We're healthcare; we get audited for sport.
+
+[05:47] JL: Receipts required at any amount. And who administers?
+
+[05:51] GP: Our controller, Dana Whitfield, plus me. Millie's team gets read access to everything — can see, can't touch.
+
+[05:58] MV: And I want that in writing in the config. Auditor-style access, no spend capability, no admin capability.
+
+[06:03] JL: That maps cleanly to a role Ramp has. Anything else?
+
+[06:06] GP: Timeline. We want clinic managers live in three weeks. The nurses program can follow.
+
+[06:11] JL: You'll have a config to review within the week, with a clear list of anything that needs process wrapped around it rather than pure platform enforcement.
+
+[06:18] MV: That list is the part I'll read first.
+
+[END OF TRANSCRIPT]

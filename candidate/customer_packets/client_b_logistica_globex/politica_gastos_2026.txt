@@ -1,0 +1,74 @@
+LOGÍSTICA GLOBEX — POLÍTICA DE GASTOS 2026 / POLÍTICA DE DESPESAS 2026
+Versión 3.2 — actualizada 2026-07-15
+Preparada por: Joaquín Esparza (Gerencia de Contabilidad, Monterrey) con secciones aportadas
+por el equipo de proyecto de São Paulo (Thiago Moreira) y el asesor de Miami (en inglés).
+Nota interna: documento de trabajo. Las secciones no están totalmente armonizadas entre sí.
+
+=====================================================================
+SECCIÓN 1 — ALCANCE (ES)
+=====================================================================
+Esta política aplica a todo el personal de Logística Globex, S.A. de C.V. (México),
+Globex Logistics USA LLC (Miami) y Globex Logística do Brasil Ltda. (São Paulo,
+en constitución). Los montos se expresan en la moneda de la entidad correspondiente
+salvo que se indique lo contrario.
+
+=====================================================================
+SECCIÓN 2 — TOPES POR CATEGORÍA, MÉXICO (ES, montos en MXN)
+=====================================================================
+2.1 Combustible (choferes): $1,500 MXN por día por tarjeta. Solo estaciones de
+    combustible autorizadas. Sin excepciones.
+2.2 Combustible y mantenimiento menor (supervisores de patio): $3,000 MXN por día.
+    Incluye casetas y refacciones menores (< $2,000 MXN por transacción).
+2.3 Viajes (Comercial): $20,000 MXN mensuales por persona. Categorías: transporte
+    aéreo, hospedaje, alimentos, transporte terrestre.
+2.4 Gastos de oficina (Administración): $5,000 MXN mensuales por persona.
+2.5 Software (centralizado, Sistemas): $25,000 MXN mensuales, tarjeta única virtual.
+    Todo proveedor nuevo de software requiere autorización de la Dirección de Finanzas
+    ANTES de la primera compra, sin importar el monto.
+2.6 Los reembolsos en efectivo quedan ELIMINADOS a partir del Q4 2026. Todo gasto
+    debe realizarse con tarjeta corporativa.
+    [Nota de R. Ortega, 07/20: ver mis comentarios en la llamada — esto no es viable
+    para viáticos de carretera. Mantener reembolsos para hoteles/alimentos en ruta.]
+
+=====================================================================
+SEÇÃO 3 — LIMITES POR CATEGORIA, BRASIL (PT, valores em BRL)
+=====================================================================
+3.1 Combustível (motoristas): R$ 450 por dia por cartão. Somente postos de
+    combustível credenciados.
+3.2 Viagens (equipe comercial, quando contratada): R$ 6.000 mensais por pessoa.
+3.3 Despesas de escritório: R$ 1.500 mensais por pessoa.
+3.4 Software: centralizado na matriz (Monterrey). A filial brasileira NÃO deve
+    contratar software por conta própria. Qualquer necessidade de sistema deve ser
+    encaminhada ao time de Sistemas em Monterrey.
+3.5 Observação: os três motoristas já contratados começam em outubro de 2026.
+    Os cartões devem estar prontos no primeiro dia de trabalho.
+3.6 Aprovações: até R$ 400 automático; de R$ 400 a R$ 4.000 gerente direto;
+    acima de R$ 4.000, Diretoria de Finanças (Monterrey).
+
+=====================================================================
+SECTION 4 — MIAMI OFFICE, USD (EN)
+=====================================================================
+4.1 The Miami office operates under Globex Logistics USA LLC. Office manager
+    (Elena Ruiz) administers day-to-day spend locally.
+4.2 Travel (commercial team members visiting from MX/BR or based in Miami):
+    USD $1,200 per person per month. Air, lodging, meals, ground transport.
+4.3 Office expenses: USD $400 per person per month.
+4.4 Fuel: not applicable — Miami has no fleet in 2026. Any fleet spend request
+    should be rejected and escalated to Monterrey.
+4.5 Approvals: under USD $100 auto-approved; USD $100–$1,000 direct manager;
+    over USD $1,000, CFO (Monterrey).
+4.6 All Miami spend reports roll up to Monterrey in USD.
+
+=====================================================================
+SECCIÓN 5 — CONSOLIDACIÓN (ES)
+=====================================================================
+5.1 La consolidación ejecutiva se realiza en USD.
+5.2 Para efectos de consolidación, Contabilidad utiliza el tipo de cambio de cierre
+    de mes publicado por Banco de México (MXN) y Banco Central do Brasil (BRL).
+    Para la configuración de sistemas, utilizar un tipo de cambio razonable y
+    documentarlo; la precisión cambiaria NO es crítica para los límites de tarjeta,
+    la operación local es en moneda local.
+5.3 Cualquier discrepancia entre versiones de idioma de este documento se resuelve
+    a favor de la versión en español, excepto la Sección 4, cuyo original es el inglés.
+
+[FIN DEL DOCUMENTO / FIM DO DOCUMENTO / END OF DOCUMENT]

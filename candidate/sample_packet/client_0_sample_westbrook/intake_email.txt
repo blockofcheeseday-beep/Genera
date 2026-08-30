@@ -1,0 +1,19 @@
+From: Nora Bailey <nora@westbrookdesign.example>
+To: deployments@genera.example
+Subject: Ramp setup info — Westbrook Design Studio
+
+Hi — ahead of our kickoff call, here's the short version of what we need.
+We're a 12-person design agency, two teams for spend purposes: Studio
+(the designers, 9 people) and Ops (me, our owner Priti, and our finance
+contractor). Everyone in Studio gets $800/month for project materials
+and client meals. Priti (the owner) wants her card at $5,000/month.
+
+One virtual card for all our software subscriptions — I hold it, $2,000
+a month, and it shouldn't work for anything that isn't software.
+
+Receipts over $50. Anything over $1,000 needs Priti's approval. Oh — and
+we'd love it if every transaction posted an alert into our #spend Slack
+channel automatically, our last provider had that.
+
+I'll send the full roster with emails before the call.
+— Nora

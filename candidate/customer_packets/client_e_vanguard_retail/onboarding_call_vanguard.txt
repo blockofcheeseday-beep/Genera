@@ -1,0 +1,63 @@
+RAMP ONBOARDING CALL — VANGUARD RETAIL SERVICES
+Date: 2026-08-11 · Duration: 33 min
+Attendees:
+  - Carol Jimenez, VP Field Operations, Vanguard Retail Services (CJ)
+  - Ahmed Nasser, Finance Systems Manager, Vanguard Retail Services (AN)
+  - Camila Duarte, Deployment Lead, Genera (on behalf of Ramp) (CD)
+Auto-transcribed; lightly cleaned.
+
+[00:00] CD: Recording on. Carol, give me the one-minute version of Vanguard.
+
+[00:05] CJ: We do retail execution — merchandising resets, display installations, store audits — for consumer brands inside big-box retailers. The workforce is the story: about one hundred fifty field reps on the road at any time, across thirty states, plus district managers and a small HQ.
+
+[00:24] CD: And the spend problem?
+
+[00:27] CJ: Field reps buy things constantly — gas, parking, materials from hardware stores, occasionally a hotel if a job runs long. Today it's per diems and reimbursements and it's a mess: reps front money, finance drowns in receipts, and we have no controls at all. We want every rep on a card with tight, role-based rules.
+
+[00:47] AN: The key word is role-based. We have six field roles and each one should only be able to buy what their job needs. I built a matrix — you have it, the CSV — mapping each role to allowed and blocked merchant category codes. I pulled the MCC codes from our old amex reporting, so those are real codes from actual historical transactions.
+
+[01:06] CD: I have the matrix. Walk me through the philosophy — allow-first or block-first?
+
+[01:11] AN: Allow-first. Default deny. A merchandising rep has no business at an electronics store, and an installer has no business booking flights. The matrix's ALLOWED column is the whole universe of what that role can buy; the BLOCKED column is me being extra explicit about categories we've had incidents with — belt and suspenders.
+
+[01:31] CD: Understood. I'll map your matrix onto the control primitives the platform actually has — allow-lists and block-lists work a bit differently there — and I'll show you exactly how each rule translates, including anywhere the translation isn't one-to-one.
+
+[01:44] AN: That's what I want to see. If some rule can't be enforced exactly as written I need to know which one and what the closest enforceable version is.
+
+[01:52] CD: Limits per role?
+
+[01:55] CJ: In the matrix — last two columns. Monthly cap and per-transaction cap per role. District managers are higher, seasonal reps are lowest.
+
+[02:03] CD: And the seasonal piece — tell me about that.
+
+[02:07] CJ: That's the part I care most about. Every year, mid-October through late December, we roughly double the field force with seasonal reps — about one hundred forty of them this year, starting October 19th, ending December 24th. They need cards on day one and the cards must stop working December 24th. Not January. Not "when someone deactivates them." December 24th, automatically. We've been burned.
+
+[02:33] CD: Auto-expiry on a fixed date is natively supported — we set an end date on each seasonal card and it locks itself that day. Extension is a one-field change if you keep someone into January.
+
+[02:42] CJ: Perfect. Some do convert to permanent, maybe one in ten.
+
+[02:46] CD: Virtual or physical cards for the field?
+
+[02:49] CJ: Virtual, in the phone wallet — that's how the reps live. Physical only for district managers.
+
+[02:55] AN: One operational thing: we onboard seasonal reps in weekly waves — thirty to forty per week for four weeks. Whatever the setup process is, it can't require me clicking through a UI form one hundred forty times. I have the reps in a spreadsheet: name, email, role, district, start date, end date. I want to hand the system the spreadsheet.
+
+[03:12] CD: Bulk creation from your data is exactly what we'll spec — that's an API-driven flow. I'll flag anything about it that isn't fully automatable.
+
+[03:19] AN: Good. Approvals?
+
+[03:21] CJ: For the field, none — the card rules ARE the policy. That's the whole point of doing role-based controls. If the card allows it, it's approved. District managers review a weekly exceptions report instead of approving in advance.
+
+[03:33] AN: HQ is different — normal manager approvals over five hundred dollars — but HQ is twenty people and boring. The field is the product here.
+
+[03:40] CD: Who administers?
+
+[03:42] AN: Me and our controller. And the six district managers should be able to see their own district's spend — just their district, not everyone's.
+
+[03:50] CD: I'll map what the platform's roles support there and flag any gap between "see their own district only" and what's natively available. Timeline?
+
+[03:57] CJ: The permanent field force migrates in September. Seasonal wave one is October 19th — that date does not move.
+
+[04:03] CD: Understood. Config draft to you both this week.
+
+[END OF TRANSCRIPT]

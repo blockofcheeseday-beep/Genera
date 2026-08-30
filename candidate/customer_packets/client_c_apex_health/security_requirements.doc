@@ -1,0 +1,60 @@
+APEX HEALTH PARTNERS
+CORPORATE CARD PROGRAM — SECURITY & COMPLIANCE REQUIREMENTS
+Document owner: M. Vance, Director of Compliance
+Version 2.1 — approved by Risk Committee 2026-07-30
+(Plaintext export from the compliance document system.)
+
+SCOPE
+These requirements apply to any corporate card or spend-management platform
+adopted by Apex Health Partners and are conditions of go-live. Requirements
+are numbered for reference in vendor responses. Each requirement must be
+answered as one of: ENFORCED BY PLATFORM / ENFORCED BY PROCESS / NOT MET.
+
+REQ-1  VENDOR PROHIBITION (MANDATORY, PLATFORM)
+No Apex card may complete a transaction with the terminated supplier operating
+as "Joe's Medical Supply" and/or "JMS Distribution" (collectively, the
+Prohibited Vendor). Category-level controls are NOT sufficient: the Prohibited
+Vendor is classified as a medical supplier, the same category our clinic
+managers must retain access to. Enforcement must be at the individual
+merchant level and must apply to every card issued under the program,
+including temporary and contractor cards.
+
+REQ-2  HIGH-LIMIT PHYSICAL CARD ACTIVATION GATE (MANDATORY)
+Physical cards with a monthly limit exceeding $10,000 USD must remain
+incapable of transacting until the Compliance Office confirms receipt of the
+cardholder's notarized (wet-ink) Liability Acknowledgment Form. Electronic
+signature is not acceptable for this instrument per our insurance carrier.
+The activation gate must fail closed: absent confirmation, the card must not
+transact. State whether the platform can natively condition card activation
+on an external attestation, and if not, the exact compensating control.
+
+REQ-3  PRE-AUTHORIZATION PURCHASE ORDER MATCH (MANDATORY AS WRITTEN; SEE NOTE)
+Transactions exceeding $500 USD must be declined at authorization unless a
+valid open Purchase Order number from the Apex ERP (NetSuite) is associated
+with the transaction prior to authorization. Note from CFO office: where
+pre-authorization matching is not technically available, Compliance will
+review the tightest available compensating control (e.g., hard transaction
+caps plus same-day post-transaction PO reconciliation with automatic card
+suspension on violation). Vendor response must state clearly which side of
+that line the platform falls on.
+
+REQ-4  CONTRACT STAFF CARD EXPIRY (MANDATORY, PLATFORM)
+Cards issued to contract clinical staff must automatically cease functioning
+on the assignment end date without human action. End dates must be editable
+if an assignment is extended.
+
+REQ-5  COMPLIANCE VISIBILITY (MANDATORY, PLATFORM)
+The Compliance Office must hold read-only access to all transactions, cards,
+limits, and users: full visibility, no spend capability, no administrative
+capability.
+
+REQ-6  RECEIPT CAPTURE (MANDATORY)
+Receipts are required for every transaction regardless of amount. The
+platform must support receipt collection and flag missing receipts.
+
+VENDOR RESPONSE INSTRUCTIONS
+Responses must map each requirement to REQ number, state ENFORCED BY
+PLATFORM / ENFORCED BY PROCESS / NOT MET, and describe the mechanism. Vague
+responses ("the platform supports robust controls") will be returned.
+
+[END OF DOCUMENT]

@@ -1,0 +1,69 @@
+LLAMADA DE DESCUBRIMIENTO — LOGÍSTICA GLOBEX, S.A. DE C.V.
+Fecha: 2026-08-04 · Duración: 38 min
+Participantes:
+  - Alejandra Vidal, Directora de Finanzas (CFO), Logística Globex (AV)
+  - Rubén Ortega, Director de Operaciones, Logística Globex (RO)
+  - Camila Duarte, Deployment Lead, Genera (en representación de Ramp) (CD)
+Transcripción automática; el audio original está en español. Marcas de tiempo aproximadas.
+
+[00:00] CD: Ya estamos grabando. Alejandra, Rubén, gracias por el tiempo. El objetivo de hoy es entender cómo manejan los gastos para configurar su instancia de Ramp. Yo pregunto, ustedes me corrigen.
+
+[00:16] AV: Perfecto. Te doy el contexto primero. Somos una empresa de logística con sede en Monterrey. Unos doscientos empleados en México, de los cuales más o menos sesenta necesitan capacidad de gasto. Y este trimestre estamos abriendo dos oficinas nuevas: São Paulo y Miami.
+
+[00:38] CD: ¿Las dos oficinas nuevas ya existen legalmente?
+
+[00:42] AV: Miami sí — Globex Logistics USA LLC, ya está constituida, ya tiene cuenta bancaria. São Paulo está en proceso. Los abogados dicen que la entidad brasileña — va a ser Globex Logística do Brasil Ltda. — estará lista a fin de septiembre. Pero no queremos esperar a septiembre para diseñar todo; queremos que el día que exista la entidad, todo esté listo para prender el switch.
+
+[01:07] CD: Entendido. Entonces diseñamos las tres estructuras ahora, y lo de Brasil queda pendiente de la entidad legal. ¿Cómo se organiza la operación en México?
+
+[01:18] RO: Tres áreas grandes. Operaciones — choferes, supervisores de patio, coordinadores de ruta. Es el grueso, unas cuarenta personas con gasto. Luego Administración — finanzas, recursos humanos, sistemas. Y Comercial — ventas y atención a clientes, unas doce personas.
+
+[01:39] CD: ¿Y el gasto de Operaciones es principalmente qué?
+
+[01:43] RO: Combustible, casetas, viáticos. Cada chofer carga diésel dos o tres veces por semana. Hoy funciona con vales físicos y es un desastre administrativo. Queremos tarjeta por chofer, restringida a gasolineras — que no sirva en otra cosa, ni OXXO ni nada — con límite diario. Mil quinientos pesos por día por chofer.
+
+[02:08] CD: Mil quinientos pesos mexicanos, límite diario, solo gasolineras. ¿Los supervisores?
+
+[02:15] RO: Los supervisores tres mil pesos al día, y además de combustible pueden pagar refacciones menores y casetas. Los coordinadores de ruta no necesitan tarjeta; ellos no gastan.
+
+[02:27] AV: Y ojo — Camila, esto es importante — todo el gasto de México se maneja en pesos. No quiero que mis gerentes en Monterrey estén pensando en dólares. Los límites, los reportes, todo en moneda local. En Brasil igual: reales. En Miami, dólares.
+
+[02:46] CD: Cada país en su moneda local. ¿Y para consolidar?
+
+[02:50] AV: Para consolidar, mi equipo y yo vemos todo en dólares. La política que les mandé — el memo — tiene los topes por categoría, algunos están en pesos, otros en reales, otros en dólares, según quién lo escribió. Sé que es un revoltijo. Confío en que ustedes lo normalicen y me digan qué asumieron.
+
+[03:09] CD: Lo normalizamos y documentamos el tipo de cambio que usemos. ¿Comercial y Administración?
+
+[03:16] RO: Comercial viaja mucho — visitan clientes en todo el norte del país, y ahora van a empezar a viajar a Brasil y Estados Unidos. Tarjeta física para todos los de Comercial, límite mensual de veinte mil pesos, categorías de viaje: vuelos, hoteles, restaurantes, transporte. Administración casi no gasta; tarjeta virtual con límite bajo, cinco mil pesos al mes, para suscripciones y cosas de oficina.
+
+[03:45] AV: Las suscripciones de software las quiero centralizadas, igual que les comenté que hacía mi colega de otra empresa — una sola tarjeta virtual para todo el software, la maneja sistemas, y cualquier proveedor nuevo pasa por mí.
+
+[03:59] CD: Muy bien — programa de software centralizado, lo mismo que hacemos con otros clientes. ¿Monto?
+
+[04:04] AV: Ponle veinticinco mil pesos mensuales.
+
+[04:08] CD: ¿Aprobaciones en general?
+
+[04:11] AV: Sencillo. Hasta dos mil pesos, automático. De dos mil a veinte mil, aprueba el jefe directo. Arriba de veinte mil, apruebo yo. Y en Brasil y Miami la misma lógica cuando arranquen, con los montos equivalentes — no idénticos, equivalentes. Redondeados a números que tengan sentido localmente.
+
+[04:33] CD: ¿Quién administra la instancia?
+
+[04:37] AV: Yo y Joaquín, mi gerente de contabilidad. Y en cada país va a haber un administrador local cuando arranquen — en Miami ya sabemos que es Elena Ruiz, la gerente de oficina. En São Paulo todavía no contratamos al equipo administrativo. Hay tres choferes brasileños ya contratados, empiezan en octubre, y el gerente de operaciones de allá, Thiago Moreira, ya firmó — él sí ya existe, ya tiene correo de la empresa.
+
+[05:04] CD: ¿Los empleados de Brasil los damos de alta ahora o cuando exista la entidad?
+
+[05:09] AV: Diseñen todo ahora. Si el sistema permite dejarlos listos sin activar, mejor. Si no, díganme qué se puede y qué no — no me inventen. Prefiero una lista de "esto queda manual" a una sorpresa en octubre.
+
+[05:22] CD: Así lo hacemos. ¿Algo más que deba saber?
+
+[05:26] RO: Los viáticos de los choferes — hoteles de carretera, comidas — hoy se manejan con efectivo y reembolsos. Quisiéramos meterlos a la tarjeta también, pero la realidad es que muchos hoteles de carretera en México solo aceptan efectivo. Así que los reembolsos no se pueden matar del todo, aunque el memo diga que sí.
+
+[05:45] AV: El memo es aspiracional en esa parte. [ríe] Hazle caso a Rubén.
+
+[05:49] CD: Entendido — el memo dice una cosa, la operación dice otra; gana la operación y lo dejo anotado. Última: ¿fecha objetivo?
+
+[05:57] AV: México en cuatro semanas. Miami cuando esté el equipo, digamos seis semanas. Brasil, cuando exista la entidad. Y Camila — el resumen ejecutivo que me mandes, en español por favor. Mi consejo lo lee en español.
+
+[06:09] CD: Hecho. Gracias a los dos.
+
+[FIN DE LA TRANSCRIPCIÓN]

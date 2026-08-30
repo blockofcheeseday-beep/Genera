@@ -1,0 +1,7 @@
+Role,Headcount,Card_Type,Allowed_MCCs,Blocked_MCCs,Monthly_Cap_USD,Per_Transaction_Cap_USD,Notes
+Field Rep - Merchandising,58,Virtual,"5541,5542,7523,4121,5411,5812","5732,5944,7995,5813",900,150,Gas/parking/rideshare/grocery-for-supplies/meals. Grocery is for display materials (tape/cleaner) not food - see incident log Q3-25.
+Field Rep - Installation,41,Virtual,"5541,5542,7523,5200,5251,5533,5812","5732,7995,5813",1400,300,Hardware and home-supply access is the differentiator vs merchandising. Auto parts for van consumables.
+Store Auditor,17,Virtual,"5541,5542,7523,4121,5812","5732,5944,7995,5813,5200,5251",600,100,Auditors buy almost nothing. Travel-adjacent only.
+Trainer,9,Virtual,"5541,7523,4121,5812,7011,3000-3299","5732,7995,5813",2200,600,Trainers fly between districts. Airline range 3000-3299 per amex reporting.
+District Manager,6,Physical,"5541,5542,7523,4121,5812,7011,3000-3299,5943","7995,5813",3500,1000,DMs also buy office supplies for district storage units.
+Seasonal Rep,140,Virtual,"5541,7523,4121","5732,5944,7995,5813,5812,7011",400,75,Oct 19 - Dec 24 2026. NO meals NO hotels for seasonal - per diem stays in payroll for them. Cards must hard-stop Dec 24.

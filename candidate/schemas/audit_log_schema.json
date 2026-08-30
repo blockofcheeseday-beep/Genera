@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Genera deployment audit log",
+  "description": "Everything a human deployment rep needs to know before trusting the config: what you assumed, what's missing, what conflicts, and what the customer asked for that the Ramp API cannot do. An empty audit log on a messy packet is a red flag, not an achievement.",
+  "type": "object",
+  "required": ["client_id", "assumptions_made", "missing_information_flags", "conflicts", "unsupported_api_requests"],
+  "additionalProperties": false,
+  "properties": {
+    "client_id": { "type": "string" },
+
+    "assumptions_made": {
+      "type": "array",
+      "description": "Judgment calls you made to produce a complete config. Each one is something a human could veto.",
+      "items": {
+        "type": "object",
+        "required": ["assumption", "source", "impact_if_wrong"],
+        "additionalProperties": false,
+        "properties": {
+          "assumption": { "type": "string" },
+          "source": { "type": "string", "description": "file + line/quote that forced the assumption" },
+          "impact_if_wrong": { "type": "string" }
+        }
+      }
+    },
+
+    "missing_information_flags": {
+      "type": "array",
+      "description": "Things you needed and did not have. Phrase each as the question you'd ask the customer.",
+      "items": {
+        "type": "object",
+        "required": ["question", "blocking"],
+        "additionalProperties": false,
+        "properties": {
+          "question": { "type": "string" },
+          "affected_config": { "type": "string", "description": "which config section is provisional until answered" },
+          "blocking": { "type": "boolean", "description": "true if the config should not be applied before this is answered" }
+        }
+      }
+    },
+
+    "conflicts": {
+      "type": "array",
+      "description": "Places where the customer's own sources disagree. Do not silently pick a winner — record both, say which you provisionally encoded and why, and flag for human resolution.",
+      "items": {
+        "type": "object",
+        "required": ["description", "source_a", "source_b", "provisional_resolution"],
+        "additionalProperties": false,
+        "properties": {
+          "description": { "type": "string" },
+          "source_a": { "type": "string", "description": "file + quote" },
+          "source_b": { "type": "string", "description": "file + quote" },
+          "provisional_resolution": { "type": "string", "description": "what you encoded and why — or 'none, blocking'" }
+        }
+      }
+    },
+
+    "unsupported_api_requests": {
+      "type": "array",
+      "description": "Customer asks the Ramp Developer API cannot fulfill. Cite evidence — the endpoint you checked or the docs page — not vibes. Getting these right (including NOT listing things the API does support) is graded.",
+      "items": {
+        "type": "object",
+        "required": ["requested_feature", "reason_unsupported", "evidence", "proposed_manual_workaround"],
+        "additionalProperties": false,
+        "properties": {
+          "requested_feature": { "type": "string" },
+          "reason_unsupported": { "type": "string" },
+          "evidence": { "type": "string", "description": "e.g. 'docs.ramp.com: /entities exposes GET only' — what you checked, not what you guessed" },
+          "proposed_manual_workaround": { "type": "string", "description": "how a deployment rep gets the customer the outcome anyway (in-app setup, process change, partial API mechanism)" }
+        }
+      }
+    }
+  }
+}

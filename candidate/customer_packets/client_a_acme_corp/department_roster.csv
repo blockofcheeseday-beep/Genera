@@ -1,0 +1,33 @@
+Name,Email,Role,Department,Manager_Email,Start_Date,Target_Limit_USD_Monthly
+Marcus Webb,marcus@acme.example,CEO,G&A,,2019-02-01,NO LIMIT
+Diane Marsh,dmarsh@acme.example,VP Finance,G&A,marcus@acme.example,2019-06-15,7500
+Priya Shetty,pshetty@acme.example,Controller,G&A,dmarsh@acme.example,2020-03-09,5000
+Renata Flores,rflores@acme.example,Office Manager,G&A,dmarsh@acme.example,2021-01-11,3000
+Talia Nguyen,tnguyen@acme.example,Executive Assistant,G&A,marcus@acme.example,2022-08-01,1000
+Kevin O'Rourke,kevin@orourketalent.example,Contractor,G&A,dmarsh@acme.example,2024-05-20,1500
+Sana Qureshi,squreshi@acme.example,IT Administrator,IT,dmarsh@acme.example,2021-09-13,2000
+Val Ostrowski,vostrowski@acme.example,CTO,Engineering,marcus@acme.example,2019-04-22,6000
+Han Zhao,hzhao@acme.example,Staff Engineer,Engineering,vostrowski@acme.example,2020-07-06,500
+Marta Silva,msilva@acme.example,Senior Engineer,Engineering,vostrowski@acme.example,2021-02-15,500
+Devon Clarke,dclarke@acme.example,Senior Engineer,Engineering,vostrowski@acme.example,2021-06-28,500
+Ines Fournier,ifournier@acme.example,Engineer,Engineering,vostrowski@acme.example,2022-01-10,500
+Rob Okafor,rokafor@acme.example,Engineer,Engineering,vostrowski@acme.example,2022-04-04,500
+Jenny Park,jpark@acme.example,Engineer,Engineering,dkim@acme.example,2022-10-17,500
+Sam Whitfield,swhitfield@acme.example,Engineer,Engineering,vostrowski@acme.example,2023-03-06,
+Ana Petrova,apetrova@acme.example,Engineer,Engineering,vostrowski@acme.example,2023-08-21,500
+Luis Herrera,lherrera@acme.example,Junior Engineer,Engineering,vostrowski@acme.example,2024-09-02,300
+Chloe Bennett,cbennett@acme.example,Junior Engineer,Engineering,vostrowski@acme.example,2025-01-13,300
+Omar Haddad,ohaddad@acme.example,VP Sales,Sales,marcus@acme.example,2020-01-20,4000
+Grace Liu,gliu@acme.example,Account Executive,Sales,ohaddad@acme.example,2021-05-03,2000
+Nick Romano,nromano@acme.example,Account Executive,Sales,ohaddad@acme.example,2021-11-15,2000
+Fatima Diallo,fdiallo@acme.example,Account Executive,sales,ohaddad@acme.example,2022-06-06,2000
+Pete Sandoval,psandoval@acme.example,Account Executive,Sales,ohaddad@acme.example,2023-02-27,2000
+Ivy Chen,ichen@acme.example,Sales Development Rep,sales,ohaddad@acme.example,2024-01-08,1000
+Marcus Bell,mbell@acme.example,Sales Development Rep,Sales,ohaddad@acme.example,2024-07-15,1000
+Dana Kowalski,dkowalski@acme.example,Sales Engineer,Sales,ohaddad@acme.example,2023-09-11,1500
+Lucy Tran,ltran@acme.example,Head of Marketing,Marketing,marcus@acme.example,2020-10-05,3500
+Tom Reyes,treyes@acme.example,Events Manager,Marketing,ltran@acme.example,2021-07-19,2500
+Sophie Amado,samado@acme.example,Content Manager,Marketing,ltran@acme.example,2022-11-28,800
+Aisha Bello,abello@acme.example,Marketing Associate,Marketing,ltran@acme.example,2026-05-18,600
+Grant Sokol,gsokol@acme.example,Marketing Associate,Marketing,treyes@acme.example,2026-06-29,600
+Han Zhao,hzhao@acme.example,Staff Engineer,Engineering,vostrowski@acme.example,2020-07-06,1200

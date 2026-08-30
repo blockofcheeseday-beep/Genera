@@ -1,0 +1,26 @@
+{
+  "client_id": "client_0_sample_westbrook",
+  "assumptions_made": [
+    {
+      "assumption": "Receipt threshold ($50) is an in-app policy setting, not part of this config's card objects.",
+      "source": "intake_email.txt — 'Receipts over $50.'",
+      "impact_if_wrong": "None to card behavior; the deployment owner sets it during in-app setup instead."
+    }
+  ],
+  "missing_information_flags": [
+    {
+      "question": "Full roster (names, emails, who the finance contractor is and what access they need) — email says it's coming before the call.",
+      "affected_config": "users, limits",
+      "blocking": true
+    }
+  ],
+  "conflicts": [],
+  "unsupported_api_requests": [
+    {
+      "requested_feature": "Automatic per-transaction alerts posted to the customer's #spend Slack channel.",
+      "reason_unsupported": "The Developer API has no notification/Slack integration configuration surface.",
+      "evidence": "docs.ramp.com API reference, checked 2026-08-24 — no notifications resource; nearest primitive is POST /webhooks (transaction events).",
+      "proposed_manual_workaround": "Ramp's in-app Slack integration may cover this (deployment owner to enable); otherwise a webhook consumer that posts to #spend."
+    }
+  ]
+}

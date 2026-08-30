@@ -1,0 +1,88 @@
+Slack export — #proj-ramp-onboarding — Hypergrowth Inc.
+Exported 2026-08-10 by rachel.kim. Channel created 2026-07-29.
+Members: leo.novak (CEO), rachel.kim (Head of Finance), dev.batra (VP Ops),
+maya.osei (EA to CEO), stan.pollard (IT), jj (Sales lead), genera-jordan (guest)
+
+---------------------------------------------------------------
+
+[2026-07-29 09:12] rachel.kim: welcome @genera-jordan 👋 making this the single place for the ramp rollout. ask us anything, warning: we are not a single-place kind of company
+
+[2026-07-29 09:14] genera-jordan: Thanks Rachel. First pass questions: 1) departments as you want them in Ramp, 2) who approves what, 3) any card programs beyond the default, 4) admin roles.
+
+[2026-07-29 09:20] rachel.kim: 1) keep it simple: Eng, GTM, Ops, Exec. that's it. we internally have product + design + eng as separate teams but for spend they're all "Eng"
+
+[2026-07-29 09:21] rachel.kim: GTM = sales + marketing + partnerships btw
+
+[2026-07-29 09:26] dev.batra: do CS people go in GTM or Ops? asking for a friend (the friend is our org chart, which changes monthly)
+
+[2026-07-29 09:31] rachel.kim: CS goes in Ops. final answer. if anyone asks it's because they report to you
+
+[2026-07-29 09:31] dev.batra: 🫡
+
+[2026-07-29 09:44] jj: while finance is here — can we finally kill the thing where I pay for prospect dinners personally and expense it 45 days later
+
+[2026-07-29 09:46] rachel.kim: that is literally what this project is jj
+
+[2026-07-29 09:46] jj: 🎉🎉🎉
+
+[2026-07-29 10:02] stan.pollard: @genera-jordan flagging early: whatever we set up needs to NOT let random ICs buy software. we have 340 SaaS vendors for 82 employees. i counted. i'm in pain
+
+[2026-07-29 10:05] genera-jordan: Understood — centralized software purchasing is a common pattern, we'll spec a dedicated software card program owned by IT.
+
+[2026-07-29 10:06] stan.pollard: owned by me specifically. i want to see every subscription with my own eyes
+
+[2026-07-29 10:09] rachel.kim: budget for that: $30k/mo. yes really. see above re: 340 vendors, we'll consolidate as we go
+
+[2026-07-30 08:55] leo.novak: catching up on this channel. two things from me and then i'll stay out of the way
+1. every dollar of travel goes through me. i sign off on all of it. we nearly died in 2024 because of a sales team that lived in marriotts. ALL travel needs my direct approval until further notice
+2. nobody gets a card with more than $10k/mo without me knowing. that's it, carry on
+
+[2026-07-30 08:58] rachel.kim: 👍 noted both
+
+[2026-07-30 09:15] dev.batra: re: leo's #1 — is that compatible with what we agreed in the ops planning meeting? (doc coming, maya has my notes)
+
+[2026-07-30 09:22] maya.osei: i'll dig out the feb notes, one sec
+
+[2026-07-30 09:41] maya.osei: posted them to the drive, sending to @genera-jordan directly. they're rough, feb was a rough month
+
+[2026-07-30 11:03] rachel.kim: numbers for default limits since jordan asked in DM:
+eng ICs: $750/mo
+GTM ICs: $2500/mo
+ops ICs: $1000/mo
+managers +50% on top of their team's IC number
+exec: we'll handle individually, ask me
+
+[2026-07-30 11:09] rachel.kim: correction — eng managers don't need +50%, eng managers barely spend. just GTM and ops managers get the bump
+
+[2026-07-30 11:47] jj: rachel does the $2500 include travel or is travel separate
+
+[2026-07-30 11:52] rachel.kim: separate. travel is its own program, we're still designing it (see leo's message 🙃)
+
+[2026-07-31 14:20] stan.pollard: also can ramp integrate with our netsuite instance for the PO stuff — actually nvm, wrong project, ignore me. that's the procurement tool eval. different channel
+
+[2026-07-31 14:31] dev.batra: @genera-jordan one more for the pile: offsite in november, ~30 people, we'll want a one-time budget thing for it. $60k total, expires after the offsite. can ramp do a "this money stops existing on dec 1" thing
+
+[2026-07-31 14:36] genera-jordan: Yes — time-boxed budgets with a hard end date are supported. I'll spec it as a separate program.
+
+[2026-07-31 14:37] dev.batra: great. don't let me forget it exists in december. actually the whole point is i CAN forget it exists 😌
+
+[2026-08-04 10:12] rachel.kim: admin setup: me and maya as admins. stan does user onboarding/offboarding ONLY — he should not be able to touch limits (no offense stan)
+
+[2026-08-04 10:13] stan.pollard: none taken, i don't want your money problems
+
+[2026-08-04 10:15] maya.osei: wait why am i an admin
+
+[2026-08-04 10:16] rachel.kim: because leo will ask you to change things and i'd rather you do it than him. he clicks fast and reads slow
+
+[2026-08-04 10:17] maya.osei: incredible. accepted
+
+[2026-08-05 16:40] rachel.kim: @genera-jordan headcount export is stuck with our PEO, their portal has been "undergoing maintenance" since thursday 🙄 you may need to start without a clean roster. current truth: 82 people, breakdown roughly 40 eng / 22 GTM / 15 ops / 5 exec-ish. names and emails to follow whenever the portal resurrects
+
+[2026-08-05 16:44] genera-jordan: No problem — I'll structure everything so the roster drops in when it arrives, and flag user setup as pending.
+
+[2026-08-06 09:02] leo.novak: saw a demo of a competitor product yesterday at a founder thing. are we sure about ramp
+[2026-08-06 09:04] leo.novak: kidding. mostly. proceed 🚀
+
+[2026-08-06 09:05] rachel.kim: leo i am BEGGING you
+
+[END OF EXPORT]

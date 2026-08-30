@@ -1,0 +1,107 @@
+RAMP DEPLOYMENT DISCOVERY CALL — ACME CORP
+Date: 2026-07-28 · Duration: 41 min
+Attendees:
+  - Diane Marsh, VP Finance, Acme Corp (DM)
+  - Priya Shetty, Controller, Acme Corp (PS)
+  - Jordan Lee, Deployment Lead, Genera (on behalf of Ramp) (JL)
+Auto-transcribed; lightly cleaned.
+
+[00:00] JL: Recording's on. Diane, Priya, thanks for the time. Goal today: I walk away knowing enough to stand up your Ramp instance — departments, people, limits, card programs, approvals. I'll mostly ask questions.
+
+[00:19] DM: Perfect. We want this live before the September close. Our current state is, honestly, Amex cards plus an expense-report tool everyone hates, plus a spreadsheet Priya maintains that is the actual source of truth.
+
+[00:34] PS: The spreadsheet is the roster I sent over. Treat that as current as of last Friday.
+
+[00:41] JL: Got it, I have it. Let's start with structure. Walk me through the org.
+
+[00:47] DM: Four departments for spend purposes. Engineering — that's the biggest, about a dozen people. Sales, eight or nine. Marketing, five. And then everything else we lump into G&A — that's me, Priya, our office manager, recruiting, the EA, and technically the exec team.
+
+[01:10] JL: Does the exec team want to sit inside G&A or separate?
+
+[01:14] DM: Inside G&A is fine. Except — okay, one carve-out. Marcus, our CEO, wants his card to just work. His words: "I never want to see a decline." So whatever the setup is, his card should effectively have no limit.
+
+[01:32] PS: Which — we should talk about that, because our auditors will ask. Can we do very-high instead of none?
+
+[01:38] DM: Whatever "doesn't decline in practice" means. Fifty grand a month? He's not actually spending that. He just doesn't want to think about it.
+
+[01:47] JL: Understood. I'll note it and come back with what Ramp supports there. Okay — spending levels for everyone else?
+
+[01:56] DM: We think about it in tiers. Anything under five hundred dollars, people should just be able to spend. No approval, no friction. Coffee with a candidate, a cable, a book — go.
+
+[02:12] JL: Under $500 per transaction, auto-approved.
+
+[02:14] DM: Right. Then five hundred to five thousand, your manager should sign off. And anything over five thousand comes to me. Personally. That's the whole policy, honestly. Three tiers.
+
+[02:29] PS: With the exception of software.
+
+[02:31] DM: Yes — software is its own animal. We got burned at my last company with shadow SaaS. Nobody buys software on a personal card, period. We want a dedicated software card — virtual — that lives with IT. Every software purchase goes on that card, and any *new* software vendor needs my approval regardless of amount. A ten-dollar-a-month tool still needs my sign-off if it's a new vendor.
+
+[03:02] JL: So a dedicated virtual card program for software, held by IT, monthly budget?
+
+[03:08] DM: Priya, what do we spend? Call it eight thousand a month, cap it at ten to be safe.
+
+[03:14] PS: Ten works. And it should decline anything that isn't software-ish. If someone tries to buy plane tickets on the software card, that should bounce.
+
+[03:22] JL: Category-restricted to software/SaaS, ten thousand monthly. And travel?
+
+[03:27] DM: Travel is the other program. Sales and the exec team travel; Engineering basically doesn't, and when they do it's a conference we've pre-approved. We want a travel program where booking through it is easy but it's restricted to actual travel categories — airlines, hotels, rideshare, restaurants while traveling. Sales folks get, what, Priya?
+
+[03:49] PS: We budgeted two thousand a month per traveling rep. And it should not work for, like, electronics stores. We had an incident.
+
+[03:56] DM: We had an incident. [laughs]
+
+[03:58] JL: Per-person travel limit, two thousand monthly, category-restricted to travel. Who counts as a traveler?
+
+[04:05] DM: Everyone in Sales, plus Marcus, plus me, plus Tom Reyes in Marketing — he does events. Nobody in Engineering by default; they can request.
+
+[04:18] JL: Great. Physical cards or virtual for travel?
+
+[04:21] DM: Physical for travelers. Virtual's fine for everything else. Actually — physical for everyone in Sales anyway, they're client-facing, they expense dinners.
+
+[04:31] PS: On the roster I marked target monthly limits per person. Those are the numbers we actually want, person by person. Where the roster and anything I say today disagree, the roster wins — I did that sheet carefully.
+
+[04:44] JL: Noted — roster wins on per-person numbers. What about the people themselves? Anyone special?
+
+[04:52] PS: A few things. Kevin O'Rourke is a contractor, not an employee — he's our fractional recruiter. He needs to spend on job boards but he should absolutely not see anything about anyone else's spend. Whatever the most locked-down thing you can give him is.
+
+[05:09] JL: Ramp has a notion of limited/guest access — I'll map him to that.
+
+[05:12] PS: Also our office manager Renata handles all the office spend — snacks, supplies, the works. She should have her own card with a decent limit, and honestly she's the one who'll live in this thing day to day besides me.
+
+[05:26] DM: And Priya runs the books. She needs to see everything, close the month, all of it. I need visibility on everything too, obviously, but Priya's in it daily.
+
+[05:35] JL: Who should be able to administer the instance itself — change limits, add users?
+
+[05:41] DM: Priya and me. And probably Sana in IT for the user-management side, since she runs our identity stuff — people join, people leave, she's the one who knows first.
+
+[05:52] PS: Sana should not be able to change spend limits though. Just people stuff.
+
+[05:56] JL: Got it — I'll look at what Ramp's roles support and map as close as I can; where the mapping isn't clean I'll flag it rather than guess.
+
+[06:04] DM: Perfect answer.
+
+[06:06] JL: Approvals — back to the three tiers for a second. The over-five-thousand tier goes to you specifically, Diane, or to "VP Finance" as a role?
+
+[06:15] DM: Me specifically for now. If I'm out, it waits. That's a feature, not a bug.
+
+[06:22] JL: And manager approvals — managers are as listed in the roster's manager column?
+
+[06:26] PS: Yes. One caveat — we just reorged Marketing. The roster's manager column is right for everyone except possibly the two newest Marketing hires; I need to confirm who they report to now. Don't block on it, but don't invent an answer either.
+
+[06:40] JL: I'll flag those two rather than guess. What about reimbursements — people paying out of pocket?
+
+[06:48] DM: We want to basically kill reimbursements. Card-first culture. Keep reimbursements on for edge cases — mileage, the occasional personal-card emergency — but the design goal is card for everything.
+
+[07:01] JL: Understood. Receipts?
+
+[07:03] PS: Required over seventy-five dollars. Below that I don't want anyone's time spent on it. And memo required for anything over five hundred.
+
+[07:12] JL: Okay. Let me read back the big picture... [readback confirmed by DM/PS with no changes] ...last thing from me: anything you're worried about?
+
+[07:58] DM: Just speed. Every week we're on Amex is a week of Priya reconciling by hand.
+
+[08:04] PS: And don't let the CEO thing fall through the cracks — if Marcus's card declines at a client dinner in week one, this whole project gets renamed after that dinner.
+
+[08:11] JL: [laughs] Understood. You'll have a config to review this week.
+
+[END OF TRANSCRIPT]

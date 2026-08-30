@@ -1,0 +1,64 @@
+{
+  "client_id": "client_0_sample_westbrook",
+  "generated_at": "2026-08-24T00:00:00Z",
+  "base_currency": "USD",
+  "entities": [
+    {"name": "Westbrook Design Studio LLC", "country": "US", "currency": "USD", "status": "existing"}
+  ],
+  "departments": [
+    {"name": "Studio"},
+    {"name": "Ops"}
+  ],
+  "users": [
+    {"email": "priti@westbrookdesign.example", "first_name": "Priti", "last_name": "(surname pending roster)", "role": "BUSINESS_ADMIN", "department": "Ops", "direct_manager_email": null, "notes": "Owner. Named in email; full details pending roster."},
+    {"email": "nora@westbrookdesign.example", "first_name": "Nora", "last_name": "Bailey", "role": "BUSINESS_ADMIN", "department": "Ops", "direct_manager_email": "priti@westbrookdesign.example", "notes": "Ops manager; holds the software card."}
+  ],
+  "spend_programs": [
+    {
+      "display_name": "Software",
+      "description": "All software subscriptions, single virtual card held by Nora. New-vendor purchases follow the approval policy.",
+      "permitted_spend_types": {"primary_card_enabled": true, "reimbursements_enabled": false},
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 200000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": null,
+        "lock_date": null,
+        "allowed_categories": ["Software / SaaS"]
+      }
+    }
+  ],
+  "limits": [
+    {
+      "display_name": "Studio member monthly",
+      "assigned_to": {"group": "Studio"},
+      "spending_restrictions": {"limit_amount_cents": 80000, "currency": "USD", "interval": "MONTHLY"},
+      "notes": "One per Studio member (9 people) once the roster arrives."
+    },
+    {
+      "display_name": "Priti (owner)",
+      "assigned_to": {"user_email": "priti@westbrookdesign.example"},
+      "spending_restrictions": {"limit_amount_cents": 500000, "currency": "USD", "interval": "MONTHLY"}
+    }
+  ],
+  "approval_policies": [
+    {
+      "name": "Default",
+      "applies_to": "all",
+      "tiers": [
+        {"threshold_usd_cents": 0, "approver": "AUTO"},
+        {"threshold_usd_cents": 100000, "approver": "Priti (owner, priti@westbrookdesign.example)"}
+      ],
+      "source": "intake_email.txt — 'Anything over $1,000 needs Priti's approval.'"
+    }
+  ],
+  "mcc_controls": [
+    {
+      "applies_to": "Software",
+      "mechanism": "allowed_categories",
+      "values": ["Software / SaaS"],
+      "translation_notes": "Email says 'shouldn't work for anything that isn't software' — expressed as a category allowlist on the program."
+    }
+  ]
+}
