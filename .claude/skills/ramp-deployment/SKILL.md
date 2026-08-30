@@ -38,7 +38,7 @@ rather than aspirational.
 | `references/CAPABILITY_LEDGER.md` | Same content, readable. Generated — never edit it. |
 | `references/AUDIT_PATTERNS.md` | The four trigger classes. The engine of Phase 2. |
 | `references/PRECEDENCE_RULES.md` | How conflicts resolve, per packet, with verbatim quotes. |
-| `references/CATEGORY_MAP.md` | MCC to Ramp's 44 categories. Every mapping is lossy; log it. |
+| `references/CATEGORY_MAP.md` | MCC to Ramp's 43 category codes. Every mapping is lossy; log it. |
 | `candidate/schemas/*.json` | The submission contract. `additionalProperties: false` throughout **both** files. |
 | `candidate/sample_packet/.../example_output/` | Worked example. Study its idioms before writing anything. |
 
@@ -66,6 +66,13 @@ Write `work/<packet>/requirements.json`:
 Reconstructing a quote later from memory is exactly how citations get hallucinated, and
 Phase 4 checks every one of them against the file with a substring match. The audit schema
 wants "file + line/quote"; this is where you earn it.
+
+`source_quote` must be a **contiguous span** — no `...` elision, no stitching two sentences
+together. The check is a substring match after whitespace and unicode-punctuation
+normalization, so an elided quote fails even when it is honest. If the useful material spans
+a gap, either quote the shorter contiguous piece or split it into two requirements. (Prose in
+`NOTES.md` and the reference docs may elide freely; this rule is only about
+`requirements.json`.)
 
 Tag each requirement with the closest ledger `archetype_id`, or `null` if nothing fits.
 A `null` is a signal, not a failure — it means the ledger may need a new row. Say so.

@@ -1,0 +1,19 @@
+{
+  "packet": "client_c_apex_health",
+  "packet_dir": "candidate/customer_packets/client_c_apex_health",
+  "file_count": 2,
+  "files": [
+    {
+      "filename": "discovery_call_apex.txt",
+      "bytes": 7105,
+      "lines": 94,
+      "sha256_12": "68de2c8000e8"
+    },
+    {
+      "filename": "security_requirements.doc",
+      "bytes": 3192,
+      "lines": 60,
+      "sha256_12": "58929860bd76"
+    }
+  ]
+}

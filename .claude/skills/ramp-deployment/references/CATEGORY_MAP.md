@@ -14,9 +14,9 @@ every translation is lossy, and every lossy translation is logged.
 
 Evidence strings to copy verbatim into `unsupported_api_requests[].evidence`:
 
-- `CAP-MCC-ALLOWLIST` — "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 44-code category granularity, in the UI as well as the API."
+- `CAP-MCC-ALLOWLIST` — "openapi snapshot 2026_08_30 — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API."
 - `CAP-MCC-BLOCKLIST` — "openapi snapshot 2026_08_30 — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API."
-- `CAP-CATEGORY-RESTRICT` — "openapi snapshot 2026_08_30 — 44 integer category codes (1-44, no 22) settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
+- `CAP-CATEGORY-RESTRICT` — "openapi snapshot 2026_08_30 — 43 integer category codes, numbered 1-44 with 22 absent, settable via allowed_categories / blocked_categories on spend programs and allowed_category_codes / blocked_category_codes on funds."
 
 ## Do not tell a customer MCCs are unusable
 
@@ -38,11 +38,12 @@ Extracted from `candidate/2026_08_30_Ramp_OpenAPI_Schema.json` — the single
 including `components/schemas/ApiSpendingRestrictionsRequestBody/properties/allowed_categories/items`
 and `.../ApiFundSpendingRestrictionsRequestBody/properties/allowed_category_codes/items`.
 
-**Count discrepancy — read this before quoting a number.** The enum in the snapshot
-carries **43** distinct integer codes: 1–44 with no 22. "1-44, no 22" is 43 values, not
-44. The ledger row `CAP-CATEGORY-RESTRICT` and `SKILL.md` both say "44 categories"; the
-snapshot says 43. Keep copying the ledger `evidence_line` verbatim (that is the rule), but
-do not assert "44" in your own prose, and do not invent a name for code 22.
+**Say 43, not 44.** The enum in the snapshot carries **43** distinct integer codes,
+numbered 1–44 with 22 absent — "1-44 with no 22" is 43 values, not 44. The ledger row
+`CAP-CATEGORY-RESTRICT` says 43 and its `evidence_line` above is the string to copy. The
+handoff that seeded this work said 44 and the ledger inherited it; both were corrected once
+this document and an independent count of the snapshot agreed. Never invent a name for
+code 22.
 
 | Code | Name |
 |---:|---|
