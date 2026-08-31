@@ -1,0 +1,474 @@
+{
+  "client_id": "client_e_vanguard_retail",
+  "generated_at": "2026-08-31T00:00:00Z",
+  "base_currency": "USD",
+  "entities": [
+    {
+      "name": "Vanguard Retail Services",
+      "country": "US",
+      "currency": "USD",
+      "status": "existing"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Field Operations"
+    },
+    {
+      "name": "Finance"
+    },
+    {
+      "name": "HQ"
+    }
+  ],
+  "users": [
+    {
+      "email": "N/A",
+      "first_name": "Carol",
+      "last_name": "Jimenez",
+      "role": "BUSINESS_USER",
+      "department": "Field Operations",
+      "direct_manager_email": null,
+      "notes": "VP Field Operations. Not named as an account administrator. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    },
+    {
+      "email": "N/A",
+      "first_name": "Ahmed",
+      "last_name": "Nasser",
+      "role": "BUSINESS_ADMIN",
+      "department": "Finance",
+      "direct_manager_email": null,
+      "notes": "Finance Systems Manager. Named as an account administrator and author of the role-by-code matrix. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    },
+    {
+      "email": "N/A",
+      "first_name": "(first name not stated)",
+      "last_name": "(surname not stated)",
+      "role": "BUSINESS_ADMIN",
+      "department": "Finance",
+      "direct_manager_email": null,
+      "notes": "Controller, named as the second account administrator by role only — the person is not named in this packet. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    }
+  ],
+  "spend_programs": [
+    {
+      "display_name": "Field Rep - Merchandising",
+      "description": "Field Rep - Merchandising (58 people). Gas/parking/rideshare/grocery-for-supplies/meals. Grocery is for display materials (tape/cleaner) not food - see incident log Q3-25. Monthly cap $900, per-transaction cap $150. Permitted categories are translated from the merchant category codes in the matrix; see the audit log for every imprecise mapping.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 90000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 15000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Supermarkets and grocery stores",
+          "Restaurants"
+        ]
+      }
+    },
+    {
+      "display_name": "Field Rep - Installation",
+      "description": "Field Rep - Installation (41 people). Hardware and home-supply access is the differentiator vs merchandising. Auto parts for van consumables. Monthly cap $1400, per-transaction cap $300. Permitted categories are translated from the merchant category codes in the matrix; see the audit log for every imprecise mapping.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 140000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 30000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "General merchandise",
+          "Car services",
+          "Restaurants"
+        ]
+      }
+    },
+    {
+      "display_name": "Store Auditor",
+      "description": "Store Auditor (17 people). Auditors buy almost nothing. Travel-adjacent only. Monthly cap $600, per-transaction cap $100. Permitted categories are translated from the merchant category codes in the matrix; see the audit log for every imprecise mapping.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 60000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 10000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Restaurants"
+        ]
+      }
+    },
+    {
+      "display_name": "Trainer",
+      "description": "Trainer (9 people). Trainers fly between districts. Airline range 3000-3299 per amex reporting. Monthly cap $2200, per-transaction cap $600. Permitted categories are translated from the merchant category codes in the matrix; see the audit log for every imprecise mapping.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 220000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 60000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Restaurants",
+          "Lodging",
+          "Airlines"
+        ]
+      }
+    },
+    {
+      "display_name": "District Manager",
+      "description": "District Manager (6 people). DMs also buy office supplies for district storage units. Monthly cap $3500, per-transaction cap $1000. Permitted categories are translated from the merchant category codes in the matrix; see the audit log for every imprecise mapping.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 350000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 100000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Restaurants",
+          "Lodging",
+          "Airlines",
+          "Office supplies and cleaning"
+        ]
+      }
+    },
+    {
+      "display_name": "Seasonal Rep",
+      "description": "Seasonal Rep (140 people). Oct 19 - Dec 24 2026. NO meals NO hotels for seasonal - per diem stays in payroll for them. Cards must hard-stop Dec 24. Monthly cap $400, per-transaction cap $75. Cards lock automatically on 24 December 2026. Permitted categories are translated from the merchant category codes in the matrix; see the audit log for every imprecise mapping.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 40000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 7500,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare"
+        ],
+        "lock_date": "2026-12-24"
+      }
+    }
+  ],
+  "limits": [
+    {
+      "display_name": "Field Rep - Merchandising — monthly",
+      "assigned_to": {
+        "group": "Field Rep - Merchandising"
+      },
+      "spend_program": "Field Rep - Merchandising",
+      "spending_restrictions": {
+        "limit_amount_cents": 90000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 15000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Supermarkets and grocery stores",
+          "Restaurants"
+        ]
+      },
+      "notes": "One per field rep - merchandising (58 people per the matrix). No names or districts are available yet — see the audit log."
+    },
+    {
+      "display_name": "Field Rep - Installation — monthly",
+      "assigned_to": {
+        "group": "Field Rep - Installation"
+      },
+      "spend_program": "Field Rep - Installation",
+      "spending_restrictions": {
+        "limit_amount_cents": 140000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 30000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "General merchandise",
+          "Car services",
+          "Restaurants"
+        ]
+      },
+      "notes": "One per field rep - installation (41 people per the matrix). No names or districts are available yet — see the audit log."
+    },
+    {
+      "display_name": "Store Auditor — monthly",
+      "assigned_to": {
+        "group": "Store Auditor"
+      },
+      "spend_program": "Store Auditor",
+      "spending_restrictions": {
+        "limit_amount_cents": 60000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 10000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Restaurants"
+        ]
+      },
+      "notes": "One per store auditor (17 people per the matrix). No names or districts are available yet — see the audit log."
+    },
+    {
+      "display_name": "Trainer — monthly",
+      "assigned_to": {
+        "group": "Trainer"
+      },
+      "spend_program": "Trainer",
+      "spending_restrictions": {
+        "limit_amount_cents": 220000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 60000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Restaurants",
+          "Lodging",
+          "Airlines"
+        ]
+      },
+      "notes": "One per trainer (9 people per the matrix). No names or districts are available yet — see the audit log."
+    },
+    {
+      "display_name": "District Manager — monthly",
+      "assigned_to": {
+        "group": "District Manager"
+      },
+      "spend_program": "District Manager",
+      "spending_restrictions": {
+        "limit_amount_cents": 350000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 100000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare",
+          "Restaurants",
+          "Lodging",
+          "Airlines",
+          "Office supplies and cleaning"
+        ]
+      },
+      "notes": "One per district manager (6 people per the matrix). No names or districts are available yet — see the audit log."
+    },
+    {
+      "display_name": "Seasonal Rep — monthly",
+      "assigned_to": {
+        "group": "Seasonal Rep"
+      },
+      "spend_program": "Seasonal Rep",
+      "spending_restrictions": {
+        "limit_amount_cents": 40000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "transaction_amount_limit_cents": 7500,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Parking",
+          "Taxi and rideshare"
+        ],
+        "lock_date": "2026-12-24"
+      },
+      "notes": "One per seasonal rep (140 people per the matrix). Lock date 24 December 2026 stops each card that day with no human action. No names or districts are available yet — see the audit log."
+    }
+  ],
+  "approval_policies": [
+    {
+      "name": "HQ manager approval",
+      "applies_to": "HQ",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 50000,
+          "approver": "DIRECT_MANAGER"
+        }
+      ],
+      "source": "onboarding_call_vanguard.txt — Ahmed Nasser (Finance Systems Manager), [03:33]: \"HQ is different — normal manager approvals over five hundred dollars\". The field has no approval policy by design — see the audit log."
+    }
+  ],
+  "mcc_controls": [
+    {
+      "applies_to": "Field Rep - Merchandising",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas",
+        "Parking",
+        "Taxi and rideshare",
+        "Supermarkets and grocery stores",
+        "Restaurants"
+      ],
+      "translation_notes": "Allow-list translated from merchant category codes 5541, 5542, 7523, 4121, 5411, 5812. Imprecise: 5541 and 5542 both map to Fuel and gas, so the two cannot be separated; grocery admits food; the matrix intends display materials only. Anything outside these categories is refused, which preserves the default-deny philosophy exactly."
+    },
+    {
+      "applies_to": "Field Rep - Merchandising",
+      "mechanism": "blocked_mcc_codes",
+      "values": [
+        "5732",
+        "5944",
+        "7995",
+        "5813"
+      ],
+      "translation_notes": "The blocked column recorded exactly as written — Ramp can block specific merchant category codes even though it cannot allow-list them. Redundant in effect, since the allow-list above already refuses everything outside it, but kept so the belt-and-suspenders intent stays visible. Blocked codes cannot be read back through the API; confirm in the Ramp application."
+    },
+    {
+      "applies_to": "Field Rep - Installation",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas",
+        "Parking",
+        "General merchandise",
+        "Car services",
+        "Restaurants"
+      ],
+      "translation_notes": "Allow-list translated from merchant category codes 5541, 5542, 7523, 5200, 5251, 5533, 5812. Imprecise: 5541 and 5542 both map to Fuel and gas, so the two cannot be separated; home supply warehouse widens to General merchandise; hardware stores widen to General merchandise; auto parts mapped to Car services; Ramp may classify some retailers as General merchandise. Anything outside these categories is refused, which preserves the default-deny philosophy exactly."
+    },
+    {
+      "applies_to": "Field Rep - Installation",
+      "mechanism": "blocked_mcc_codes",
+      "values": [
+        "5732",
+        "7995",
+        "5813"
+      ],
+      "translation_notes": "The blocked column recorded exactly as written — Ramp can block specific merchant category codes even though it cannot allow-list them. Redundant in effect, since the allow-list above already refuses everything outside it, but kept so the belt-and-suspenders intent stays visible. Blocked codes cannot be read back through the API; confirm in the Ramp application."
+    },
+    {
+      "applies_to": "Store Auditor",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas",
+        "Parking",
+        "Taxi and rideshare",
+        "Restaurants"
+      ],
+      "translation_notes": "Allow-list translated from merchant category codes 5541, 5542, 7523, 4121, 5812. Imprecise: 5541 and 5542 both map to Fuel and gas, so the two cannot be separated. Anything outside these categories is refused, which preserves the default-deny philosophy exactly."
+    },
+    {
+      "applies_to": "Store Auditor",
+      "mechanism": "blocked_mcc_codes",
+      "values": [
+        "5732",
+        "5944",
+        "7995",
+        "5813",
+        "5200",
+        "5251"
+      ],
+      "translation_notes": "The blocked column recorded exactly as written — Ramp can block specific merchant category codes even though it cannot allow-list them. Redundant in effect, since the allow-list above already refuses everything outside it, but kept so the belt-and-suspenders intent stays visible. Blocked codes cannot be read back through the API; confirm in the Ramp application."
+    },
+    {
+      "applies_to": "Trainer",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas",
+        "Parking",
+        "Taxi and rideshare",
+        "Restaurants",
+        "Lodging",
+        "Airlines"
+      ],
+      "translation_notes": "Allow-list translated from merchant category codes 5541, 7523, 4121, 5812, 7011, 3000-3299. Imprecise: an airline code range collapses to the single Airlines category. Anything outside these categories is refused, which preserves the default-deny philosophy exactly."
+    },
+    {
+      "applies_to": "Trainer",
+      "mechanism": "blocked_mcc_codes",
+      "values": [
+        "5732",
+        "7995",
+        "5813"
+      ],
+      "translation_notes": "The blocked column recorded exactly as written — Ramp can block specific merchant category codes even though it cannot allow-list them. Redundant in effect, since the allow-list above already refuses everything outside it, but kept so the belt-and-suspenders intent stays visible. Blocked codes cannot be read back through the API; confirm in the Ramp application."
+    },
+    {
+      "applies_to": "District Manager",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas",
+        "Parking",
+        "Taxi and rideshare",
+        "Restaurants",
+        "Lodging",
+        "Airlines",
+        "Office supplies and cleaning"
+      ],
+      "translation_notes": "Allow-list translated from merchant category codes 5541, 5542, 7523, 4121, 5812, 7011, 3000-3299, 5943. Imprecise: 5541 and 5542 both map to Fuel and gas, so the two cannot be separated; an airline code range collapses to the single Airlines category. Anything outside these categories is refused, which preserves the default-deny philosophy exactly."
+    },
+    {
+      "applies_to": "District Manager",
+      "mechanism": "blocked_mcc_codes",
+      "values": [
+        "7995",
+        "5813"
+      ],
+      "translation_notes": "The blocked column recorded exactly as written — Ramp can block specific merchant category codes even though it cannot allow-list them. Redundant in effect, since the allow-list above already refuses everything outside it, but kept so the belt-and-suspenders intent stays visible. Blocked codes cannot be read back through the API; confirm in the Ramp application."
+    },
+    {
+      "applies_to": "Seasonal Rep",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas",
+        "Parking",
+        "Taxi and rideshare"
+      ],
+      "translation_notes": "Allow-list translated from merchant category codes 5541, 7523, 4121. One-to-one, no precision lost. Anything outside these categories is refused, which preserves the default-deny philosophy exactly."
+    },
+    {
+      "applies_to": "Seasonal Rep",
+      "mechanism": "blocked_mcc_codes",
+      "values": [
+        "5732",
+        "5944",
+        "7995",
+        "5813",
+        "5812",
+        "7011"
+      ],
+      "translation_notes": "The blocked column recorded exactly as written — Ramp can block specific merchant category codes even though it cannot allow-list them. Redundant in effect, since the allow-list above already refuses everything outside it, but kept so the belt-and-suspenders intent stays visible. Blocked codes cannot be read back through the API; confirm in the Ramp application."
+    }
+  ]
+}

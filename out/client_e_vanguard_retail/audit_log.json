@@ -1,0 +1,176 @@
+{
+  "client_id": "client_e_vanguard_retail",
+  "assumptions_made": [
+    {
+      "assumption": "Every ALLOWED merchant category code is translated to a Ramp spend category, because Ramp allow-lists at category level and not at code level. Twelve distinct codes across six roles collapse to ten Ramp categories.",
+      "source": "onboarding_call_vanguard.txt — Ahmed Nasser (Finance Systems Manager, Vanguard Retail Services), [01:11], stating the control philosophy the matrix is built on: \"Allow-first. Default deny.\"",
+      "impact_if_wrong": "Each role's permitted universe becomes the union of the categories its codes fall into, which is wider than the code list in every case where two codes share a category or a code has no exact category. Each individual loss is listed below and in the translation notes on each control."
+    },
+    {
+      "assumption": "The BLOCKED column is preserved exactly. Ramp can block specific merchant category codes even though it cannot allow-list those codes, so every blocked code is recorded verbatim.",
+      "source": "onboarding_call_vanguard.txt — Ahmed Nasser (Finance Systems Manager, Vanguard Retail Services), [01:11], describing the blocked column as deliberate reinforcement: \"the BLOCKED column is me being extra explicit about categories we've had incidents with — belt and suspenders\"",
+      "impact_if_wrong": "None. This is the one half of the matrix that survives translation intact. Note that the allow-list already denies everything outside it, so each blocked code is redundant in effect — the belt-and-suspenders intent is preserved by a stricter mechanism, and the codes are recorded anyway so the intent stays visible."
+    },
+    {
+      "assumption": "Seasonal reps and trainers gain access to automated fuel dispensers, code 5542, which the seasonal and trainer rows do not list.",
+      "source": "mcc_allowlist_matrix.csv, row 7 — listing the seasonal allow-list, which includes attended service stations but not automated fuel dispensers: \"Seasonal Rep,140,Virtual,\"5541,7523,4121\",\"5732,5944,7995,5813,5812,7011\",400,75,Oct 19 - Dec 24 2026. NO meals NO hotels for seasonal - per diem stays in payroll for them. Cards must hard-stop Dec 24.\"",
+      "impact_if_wrong": "Codes 5541 and 5542 are both Ramp's Fuel and gas category, so permitting one permits the other. Seasonal reps and trainers can therefore pay at unattended pumps. If that exclusion was deliberate, no configuration can enforce it and the control has to be a process one; if it was an oversight in the matrix, confirming it costs nothing."
+    },
+    {
+      "assumption": "Grocery access for merchandising reps cannot be limited to display materials. Code 5411 becomes Ramp's Supermarkets and grocery stores category, which admits food.",
+      "source": "mcc_allowlist_matrix.csv, row 2 — recording that grocery access is intended for display materials rather than food: \"Field Rep - Merchandising,58,Virtual,\"5541,5542,7523,4121,5411,5812\",\"5732,5944,7995,5813\",900,150,Gas/parking/rideshare/grocery-for-supplies/meals. Grocery is for display materials (tape/cleaner) not food - see incident log Q3-25.\"",
+      "impact_if_wrong": "A merchandising rep can buy food at a supermarket on the card. The matrix notes a prior incident here, so this gap is known to the customer. The compensating control is the $150 per-transaction cap and the weekly exceptions report the district managers already review."
+    },
+    {
+      "assumption": "Hardware stores and home supply warehouses become Ramp's General merchandise category, which is considerably broader than either.",
+      "source": "mcc_allowlist_matrix.csv, row 3 — identifying hardware and home supply as the distinguishing permission for installation reps: \"Field Rep - Installation,41,Virtual,\"5541,5542,7523,5200,5251,5533,5812\",\"5732,7995,5813\",1400,300,Hardware and home-supply access is the differentiator vs merchandising. Auto parts for van consumables.\"",
+      "impact_if_wrong": "Installation reps at $1,400 a month gain access to general retailers, not only hardware and home supply. This is the widest single loss in the translation. Ramp has no narrower category; the alternative is to remove it entirely, which would stop installers buying the materials the role exists to buy."
+    },
+    {
+      "assumption": "Automotive parts, code 5533, is mapped to Ramp's Car services category.",
+      "source": "mcc_allowlist_matrix.csv, row 3 — explaining why installation reps need automotive parts access: \"Field Rep - Installation,41,Virtual,\"5541,5542,7523,5200,5251,5533,5812\",\"5732,7995,5813\",1400,300,Hardware and home-supply access is the differentiator vs merchandising. Auto parts for van consumables.\"",
+      "impact_if_wrong": "Ramp may classify some auto parts retailers as General merchandise rather than Car services. If van consumables decline at a specific retailer this is the likely cause, and the mapping should be revisited against a real declined transaction."
+    },
+    {
+      "assumption": "The airline range 3000-3299 becomes Ramp's Airlines category.",
+      "source": "mcc_allowlist_matrix.csv, row 5 — recording the airline code range used in the previous card programme: \"Trainer,9,Virtual,\"5541,7523,4121,5812,7011,3000-3299\",\"5732,7995,5813\",2200,600,Trainers fly between districts. Airline range 3000-3299 per amex reporting.\"",
+      "impact_if_wrong": "The range is roughly three hundred individual carrier codes and Ramp has no range concept, so every carrier code collapses to one category. In practice this is close to equivalent, and it is wider only in that any carrier Ramp classifies as an airline is permitted, including carriers outside the original range."
+    },
+    {
+      "assumption": "Seasonal cards carry a lock date of 24 December 2026, which stops the card that day with no human action.",
+      "source": "onboarding_call_vanguard.txt — Carol Jimenez (VP Field Operations, Vanguard Retail Services), [02:07], requiring seasonal cards to stop automatically on a fixed date: \"December 24th, automatically. We've been burned.\"",
+      "impact_if_wrong": "None expected — this is native and is the requirement most precisely met. For the roughly one in ten seasonal reps who convert to permanent, the date is a single-field edit rather than a re-issue."
+    },
+    {
+      "assumption": "The field has no approval policy at all. This is a decision recorded on the call, not an omission.",
+      "source": "onboarding_call_vanguard.txt — Carol Jimenez (VP Field Operations, Vanguard Retail Services), [03:21], stating that role-based card controls replace approvals for the field: \"For the field, none — the card rules ARE the policy.\"",
+      "impact_if_wrong": "Any field spend inside the card rules is approved by definition. If a category or cap turns out to be wrong, there is no approval step to catch it — the weekly exceptions report is the only backstop."
+    },
+    {
+      "assumption": "Reimbursements are not enabled on any field programme. The stated goal is to move reps off fronting money, and seasonal per diems remain in payroll.",
+      "source": "mcc_allowlist_matrix.csv, row 7 — confirming that seasonal per diems stay outside the card programme: \"Seasonal Rep,140,Virtual,\"5541,7523,4121\",\"5732,5944,7995,5813,5812,7011\",400,75,Oct 19 - Dec 24 2026. NO meals NO hotels for seasonal - per diem stays in payroll for them. Cards must hard-stop Dec 24.\"",
+      "impact_if_wrong": "A rep who pays out of pocket cannot claim it back through Ramp. Given the stated aim of ending reimbursements this is the intended direction, but it is a change from how reps work today and should be confirmed before the October wave."
+    },
+    {
+      "assumption": "No email address is recorded for anyone. This packet contains no address and no email domain, so every address is written as N/A.",
+      "source": "onboarding_call_vanguard.txt — Ahmed Nasser (Finance Systems Manager, Vanguard Retail Services), [03:42], naming the administrators without giving any email address, and without naming the controller: \"Me and our controller.\"",
+      "impact_if_wrong": "No user can be invited until Vanguard Retail Services supplies the roster. The spreadsheet described on the call contains name, email, role, district, start date and end date, and is the natural source."
+    },
+    {
+      "assumption": "District manager visibility is modelled through the reporting line: each rep's manager is set to the district manager for that district.",
+      "source": "onboarding_call_vanguard.txt — Ahmed Nasser (Finance Systems Manager, Vanguard Retail Services), [03:42], requiring district-scoped visibility for district managers: \"the six district managers should be able to see their own district's spend — just their district, not everyone's\"",
+      "impact_if_wrong": "Ramp scopes spend visibility by reporting line, so this delivers the requirement without a custom role — but the packet contains no district assignments, so no reporting line can be built yet. Until the spreadsheet arrives, district managers see nothing."
+    }
+  ],
+  "missing_information_flags": [
+    {
+      "question": "Can the reps spreadsheet be supplied — name, email, role, district, start date, end date? It is the only source of names, addresses and district assignments, and nothing can be created without it. The first seasonal wave is 19 October and that date was described as immovable.",
+      "affected_config": "users, limits",
+      "blocking": true
+    },
+    {
+      "question": "Who is the controller named as the second administrator? The role is named on the call, the person is not.",
+      "affected_config": "users",
+      "blocking": true
+    },
+    {
+      "question": "Is the exclusion of automated fuel dispensers, code 5542, from the seasonal and trainer rows deliberate, or a matrix oversight? Ramp treats 5541 and 5542 as one category, so the distinction cannot be enforced either way — but it changes whether this is a gap to manage or a non-issue.",
+      "affected_config": "mcc_controls",
+      "blocking": true
+    },
+    {
+      "question": "How many permanent field staff are there? The call says about one hundred fifty field reps; the matrix headcounts total 131 including district managers, or 125 field reps. See the conflicts section.",
+      "affected_config": "users, limits",
+      "blocking": false
+    },
+    {
+      "question": "Is General merchandise acceptable as the permitted category for installation reps? It is the closest Ramp category to hardware and home supply and is considerably broader. The alternative is to exclude it, which would stop installers buying job materials.",
+      "affected_config": "spend_programs, mcc_controls",
+      "blocking": false
+    },
+    {
+      "question": "Should HQ staff be included in this configuration? HQ is described as about twenty people with normal manager approvals over five hundred dollars, but no HQ roles, names or limits were provided.",
+      "affected_config": "users, limits, approval_policies",
+      "blocking": false
+    },
+    {
+      "question": "Should any receipt or memo requirement be configured? Neither is mentioned in this packet, and the current process was described as finance drowning in receipts.",
+      "blocking": false
+    },
+    {
+      "question": "What shipping addresses should be used for the six district managers' physical cards? Ramp requires one per physical card.",
+      "affected_config": "users",
+      "blocking": false
+    }
+  ],
+  "conflicts": [
+    {
+      "description": "The size of the permanent field force. The call describes about one hundred fifty field reps on the road at any time. The matrix gives exact headcounts per role which total 125 field reps, or 131 once the six district managers are included.",
+      "source_a": "onboarding_call_vanguard.txt — Carol Jimenez (VP Field Operations, Vanguard Retail Services), [00:05], describing the field force size in round terms: \"about one hundred fifty field reps on the road at any time, across thirty states\"",
+      "source_b": "mcc_allowlist_matrix.csv, row 2 — the first of six matrix rows carrying exact per-role headcounts: \"Field Rep - Merchandising,58,Virtual,\"5541,5542,7523,4121,5411,5812\",\"5732,5944,7995,5813\",900,150,Gas/parking/rideshare/grocery-for-supplies/meals. Grocery is for display materials (tape/cleaner) not food - see incident log Q3-25.\"",
+      "provisional_resolution": "Used the matrix headcounts, which are exact and per-role, over the spoken round figure. The gap of roughly twenty people may be vacancies, contractors outside the matrix, or simple rounding upward in conversation. Non-blocking, because limits are defined per role rather than per head — but the total card count at go-live depends on it."
+    }
+  ],
+  "unsupported_api_requests": [
+    {
+      "requested_feature": "Allow-first, default-deny controls defined at merchant category code level, as set out in the six-role matrix.",
+      "reason_unsupported": "Ramp allow-lists at the level of its own spend categories, which it derives from the merchant category code together with other signals, so a code-level allow-list cannot be applied through the API or in the Ramp application. Each role's codes are translated to the nearest Ramp categories and every imprecise mapping is listed in the assumptions above and in the translation notes on each control. The default-deny philosophy itself is preserved exactly: anything outside a role's permitted categories is refused.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — 'allowed_mcc' appears nowhere in the spec; only blocked_mcc_codes exists (request bodies only). support.ramp.com 'Setting up category and merchant restrictions', checked 2026-08-30 — Ramp derives its own category from the MCC plus other factors and restricts on that, so allow-listing is available only at Ramp's 43-code category granularity, in the UI as well as the API.",
+      "proposed_manual_workaround": "Ramp restricts spend using its own 43 spend categories, which Ramp derives from the merchant category code together with other signals, so an allow-list written at raw merchant-category-code granularity cannot be applied through the API or in the Ramp application. Each requested code is mapped to the nearest Ramp category and every imprecise mapping is listed for review; ranges that span more than one category, such as 3000-3299 for airlines, need the deployment owner to confirm the substitute before go-live."
+    },
+    {
+      "requested_feature": "The BLOCKED column of the matrix, recorded exactly as written.",
+      "reason_unsupported": "Blocking specific merchant category codes is supported, which is why the blocked column survives translation intact while the allowed column does not. One caveat: blocked codes can be set through the API but cannot be read back through it, so confirmation has to happen in the Ramp application rather than programmatically.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — blocked_mcc_codes is settable on fund and spend-program request bodies but absent from every response (*Dump) schema, so it is write-only via the API.",
+      "proposed_manual_workaround": "Blocked merchant category codes can be set through the API but cannot be read back from it, so the values that took effect are confirmed by opening the spend limit or spend program in the Ramp application. The deployment owner should check each block there after setup, and any later reconciliation tooling should not expect to retrieve these codes from the API."
+    },
+    {
+      "requested_feature": "One limit per role covering all reps in that role, at six different monthly and per-transaction caps.",
+      "reason_unsupported": "Ramp limits belong to one person, so each role limit becomes one limit per rep. At 131 permanent staff and 140 seasonal reps that is roughly 271 individual limits, which is why the bulk onboarding question below matters.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /funds requires a single user_id, so a group limit becomes one fund per member; is_shareable with /funds/{id}/members is the nearest shared-pool primitive and has different semantics (one shared pot, not N).",
+      "proposed_manual_workaround": "Ramp attaches a spend limit to one person at a time, so a limit described for a team becomes either a separate limit of that size for each member or a single shared pot the whole team draws down. Those are materially different outcomes and the wording of a request rarely settles which is meant, so the deployment owner should confirm the intent for each team-level limit before setup."
+    },
+    {
+      "requested_feature": "Handing the system a spreadsheet of 140 seasonal reps rather than creating each by hand, in weekly waves of thirty to forty.",
+      "reason_unsupported": "Ramp creates users one at a time rather than from a file, so no spreadsheet upload exists. The requirement not to click a form 140 times is still met — creation is driven from the spreadsheet by script rather than by hand — but it is a loop over an API rather than a file import, and each creation is processed in the background. Idempotency keys make a wave safely re-runnable if it is interrupted part way.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no bulk user endpoint; POST /users/deferred is per-user and async (poll /users/deferred/status/{task_id}), with idempotency_key required in the body.",
+      "proposed_manual_workaround": "Ramp has no bulk user import: people are created one at a time and each creation is processed in the background. At the volumes described this is not a practical constraint, since the roster is loaded in a single automated pass rather than typed in, and each request carries a duplicate-protection key so a re-run of a weekly wave cannot create the same person twice."
+    },
+    {
+      "requested_feature": "Virtual cards in the phone wallet for the field, physical cards only for the six district managers.",
+      "reason_unsupported": "Ramp creates virtual cards as part of issuing a spend limit rather than on request, so the field requirement is met by default. Physical cards must be requested individually and require a shipping address for each holder, and this packet contains none.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — POST /cards/physical exists (requires shipping_address and user_id) but virtual cards are GET-only and are issued via funds rather than created directly.",
+      "proposed_manual_workaround": "Both card types are available: a virtual card is issued alongside a spend limit, while a physical card is ordered explicitly and needs a shipping address for each recipient. Shipping addresses are not present in the material provided, so the deployment owner supplies one per physical cardholder before those cards can be ordered."
+    },
+    {
+      "requested_feature": "Six district managers each seeing only the spend of one district.",
+      "reason_unsupported": "Ramp scopes spend visibility to a manager's own reporting line, so setting each rep's manager to the district manager for that district delivers this without a custom role. The packet contains no district assignments, so the reporting lines cannot be built until the reps spreadsheet arrives.",
+      "evidence": "support.ramp.com 'User roles overview', checked 2026-08-30 — transaction visibility follows the reporting chain, not department labels, and manager permissions are scoped to the manager's own team; that chain is settable via direct_manager_id on POST /users/deferred. Finer scoping (Custom Roles, entity restriction) exists in-app on Ramp Plus but is not API-creatable — Ramp Developer API specification (snapshot dated 2026-08-30) shows GET /roles is read-only.",
+      "proposed_manual_workaround": "Ramp scopes spend visibility to a manager's own reporting line, so setting each person's manager correctly delivers most of this requirement directly. Anything beyond that — visibility that does not follow reporting lines — requires a Custom Role, which is configured in the Ramp application and is available on Ramp Plus. Confirm the plan tier before relying on it."
+    },
+    {
+      "requested_feature": "A weekly exceptions report for district managers to review in place of approving spend in advance.",
+      "reason_unsupported": "Ramp has no configurable report scheduler or notification rule surface, so the weekly exceptions report is not something this configuration can create. This matters more here than it would elsewhere: the field has no approvals by design, so the exceptions report is the only review step in the whole field programme.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no notifications resource; nearest primitive is POST /webhooks (transaction events), which delivers events but does not evaluate threshold or routing rules.",
+      "proposed_manual_workaround": "Ramp has no rule engine for routing spend alerts to a chat channel or to a named person. Ramp's Slack integration, switched on by the deployment owner in the Ramp application, covers the common case of posting card activity to a channel; anything conditional, such as alerting only above a set monthly amount, needs a webhook subscription with the threshold applied by the receiving system."
+    },
+    {
+      "requested_feature": "Manager approval above five hundred dollars for HQ staff, with no approvals at all for the field.",
+      "reason_unsupported": "Ramp has no endpoint for creating approval policies. The HQ policy is recorded here as desired state and must be built in the Ramp application. The field requirement — no approvals — needs no configuration and is met by simply not creating a policy.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — no approval-policy write endpoint; only /blank-canvas-approvals/* (acts on existing instances) and GET /spend-programs/{id}/workflow-nodes (read-only); zero approval OAuth scopes. support.ramp.com 'Set up your spend approval policies', checked 2026-08-30 — tiered approval chains ARE configurable in Ramp's in-app approvals workflow builder, so this is a UI-only capability rather than a missing one.",
+      "proposed_manual_workaround": "Tiered approval chains are a standard Ramp feature, but are built in the approvals workflow builder inside the Ramp application rather than through the API. The tier structure requested is recorded here as desired state, and the deployment owner recreates it in Ramp before go-live. Routing by amount and by user role is available on every plan; more elaborate conditions require Ramp Plus, so confirm the plan tier first."
+    },
+    {
+      "requested_feature": "Adjusting the six role programmes once real spend shows which categories were mapped too widely.",
+      "reason_unsupported": "Ramp spend programmes cannot be edited through the API once created. Given that several category mappings in this packet are known to be approximate, the six programmes should be reviewed carefully before creation.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) — /spend-programs has GET and POST only and /spend-programs/{id} is GET-only; there is no PATCH or DELETE, so programs are immutable via the API.",
+      "proposed_manual_workaround": "A spend program cannot be edited through the API once created; later changes are made in the Ramp application instead. That makes the review of program definitions before go-live the cheapest point to change anything, and the deployment owner should treat it as the moment to settle names, limits and restrictions."
+    },
+    {
+      "requested_feature": "Six distinct field roles plus district managers, administrators and HQ staff.",
+      "reason_unsupported": "Ramp offers a fixed set of roles with no seniority or scoping dimension. The six field roles are distinguished by spend programmes and limits rather than by Ramp roles, which is the correct mechanism here — the matrix is about what each role can buy, not about what each role can administer.",
+      "evidence": "Ramp Developer API specification (snapshot dated 2026-08-30) plus support.ramp.com 'User roles overview', checked 2026-08-30 — Ramp exposes six assignable roles with fixed, documented permission sets and no seniority or scoping dimension, so mapping customer job titles onto Ramp roles is a per-person judgement call.",
+      "proposed_manual_workaround": "Ramp offers a fixed set of six assignable roles with defined permissions and no seniority or scoping dimension, so each job title is matched to the closest role by judgement rather than by rule. Every non-obvious match is recorded with the job title, the role chosen, and what that role can see and do, for the deployment owner to confirm before invitations go out."
+    }
+  ]
+}

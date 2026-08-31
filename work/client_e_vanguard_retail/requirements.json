@@ -1,0 +1,229 @@
+{
+  "packet": "client_e_vanguard_retail",
+  "requirements": [
+    {
+      "req_id": "REQ-001",
+      "claim": "About 150 field reps on the road at any time across thirty states, plus district managers and a small HQ",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "about one hundred fifty field reps on the road at any time, across thirty states, plus district managers and a small HQ",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-002",
+      "claim": "Six field roles, each able to buy only what that job needs",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "We have six field roles and each one should only be able to buy what their job needs.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-003",
+      "claim": "The matrix maps each role to allowed and blocked merchant category codes, taken from historical Amex reporting",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "mapping each role to allowed and blocked merchant category codes. I pulled the MCC codes from our old amex reporting, so those are real codes from actual historical transactions.",
+      "archetype_id": "CAP-MCC-ALLOWLIST",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-004",
+      "claim": "The control philosophy is allow-first, default deny",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "Allow-first. Default deny.",
+      "archetype_id": "CAP-MCC-ALLOWLIST",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-005",
+      "claim": "The ALLOWED column is the whole universe of what a role can buy; BLOCKED is explicit belt and suspenders",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "The matrix's ALLOWED column is the whole universe of what that role can buy; the BLOCKED column is me being extra explicit about categories we've had incidents with — belt and suspenders.",
+      "archetype_id": "CAP-MCC-BLOCKLIST",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-006",
+      "claim": "Any rule that cannot be enforced exactly as written must be named, with its closest enforceable version",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "If some rule can't be enforced exactly as written I need to know which one and what the closest enforceable version is.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-007",
+      "claim": "Merchandising reps: 58 people, virtual cards, $900 monthly and $150 per transaction",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "Field Rep - Merchandising,58,Virtual",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-008",
+      "claim": "Grocery access for merchandising is for display materials, not food",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "Grocery is for display materials (tape/cleaner) not food - see incident log Q3-25.",
+      "archetype_id": "CAP-MCC-ALLOWLIST",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-009",
+      "claim": "Installation reps: 41 people, $1,400 monthly and $300 per transaction, with hardware and home-supply access as the differentiator",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "Hardware and home-supply access is the differentiator vs merchandising. Auto parts for van consumables.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-010",
+      "claim": "Store auditors: 17 people, $600 monthly and $100 per transaction, travel-adjacent purchases only",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "Auditors buy almost nothing. Travel-adjacent only.",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-011",
+      "claim": "Trainers: 9 people, $2,200 monthly and $600 per transaction, flying between districts",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "Trainers fly between districts. Airline range 3000-3299 per amex reporting.",
+      "archetype_id": "CAP-MCC-ALLOWLIST",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-012",
+      "claim": "District managers: 6 people, physical cards, $3,500 monthly and $1,000 per transaction, also buying office supplies for district storage",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "DMs also buy office supplies for district storage units.",
+      "archetype_id": "CAP-CARD-TYPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-013",
+      "claim": "Seasonal reps: 140 people, $400 monthly and $75 per transaction, no meals and no hotels",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "NO meals NO hotels for seasonal - per diem stays in payroll for them.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-014",
+      "claim": "Seasonal cards run 19 October to 24 December 2026 and must hard-stop on 24 December",
+      "source_file": "mcc_allowlist_matrix.csv",
+      "source_quote": "Oct 19 - Dec 24 2026. NO meals NO hotels for seasonal",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-015",
+      "claim": "Seasonal cards must stop automatically on 24 December, not in January and not on manual deactivation",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "the cards must stop working December 24th. Not January. Not \"when someone deactivates them.\" December 24th, automatically. We've been burned.",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-016",
+      "claim": "About 140 seasonal reps start on 19 October and end on 24 December, roughly doubling the field force",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "about one hundred forty of them this year, starting October 19th, ending December 24th",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-017",
+      "claim": "Roughly one in ten seasonal reps convert to permanent",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "Some do convert to permanent, maybe one in ten.",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-018",
+      "claim": "Virtual cards in the phone wallet for the field; physical only for district managers",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "Virtual, in the phone wallet — that's how the reps live. Physical only for district managers.",
+      "archetype_id": "CAP-CARD-TYPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-019",
+      "claim": "Seasonal reps are onboarded in weekly waves of thirty to forty for four weeks",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "we onboard seasonal reps in weekly waves — thirty to forty per week for four weeks",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-020",
+      "claim": "Setup must not require clicking a UI form 140 times; the rep data exists in a spreadsheet",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "it can't require me clicking through a UI form one hundred forty times. I have the reps in a spreadsheet: name, email, role, district, start date, end date. I want to hand the system the spreadsheet.",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-021",
+      "claim": "The field gets no approvals — the card rules are the policy",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "For the field, none — the card rules ARE the policy.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-022",
+      "claim": "District managers review a weekly exceptions report rather than approving in advance",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "District managers review a weekly exceptions report instead of approving in advance.",
+      "archetype_id": "CAP-NOTIFICATIONS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-023",
+      "claim": "HQ has normal manager approvals over five hundred dollars and is about twenty people",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "HQ is different — normal manager approvals over five hundred dollars — but HQ is twenty people and boring.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-024",
+      "claim": "Ahmed Nasser and the controller administer the instance",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "Me and our controller.",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-025",
+      "claim": "The six district managers should see only their own district's spend",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "the six district managers should be able to see their own district's spend — just their district, not everyone's",
+      "archetype_id": "CAP-SCOPED-VISIBILITY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-026",
+      "claim": "The permanent field force migrates in September; seasonal wave one is 19 October and that date does not move",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "The permanent field force migrates in September. Seasonal wave one is October 19th — that date does not move.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-027",
+      "claim": "Field reps currently front money through per diems and reimbursements, with no controls",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "Today it's per diems and reimbursements and it's a mess: reps front money, finance drowns in receipts, and we have no controls at all.",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-028",
+      "claim": "Every rep should be on a card with tight role-based rules",
+      "source_file": "onboarding_call_vanguard.txt",
+      "source_quote": "We want every rep on a card with tight, role-based rules.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    }
+  ]
+}
