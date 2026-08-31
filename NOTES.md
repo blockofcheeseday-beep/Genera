@@ -1,50 +1,52 @@
 # NOTES
 
+Pointers are session-export turn numbers and commit hashes.
+
 ## Key Decisions and Verification Delta Points Informing Design
 
 Please note that the key decisions and verification delta sections have been consolidated into this one section in order to reflect the cadence of this exercise, in which verification deltas ended up constructively and substantively contributing to pipeline design and agent behavior. 
 
 ### 1. Reference samples setting the form of an output but never its parameters
 
-In the middle of discussing permission scope and agent inference, the skill and pipeline orchestrating agent caught that the capability ledger was informed by the Westbrook sample’s design. As noted in the case study packet, the sample is “not an exercise” and “there’s nothing to run or submit for it.” The risk here was having the agent build on a reference file that provides some general guidance on form to the pipeline but should not provide strict parameters to follow.
+In the middle of discussing permission scope and agent inference, the skill and pipeline orchestrating agent caught that the capability ledger was informed by the Westbrook sample’s design (turns 17 to 18). As noted in the case study packet, the sample is “not an exercise” and “there’s nothing to run or submit for it.” The risk here was having the agent build on a reference file that provides some general guidance on form to the pipeline but should not provide strict parameters to follow.
 
-**Passed on:** treating the sample as a template where mid-session.
+**Passed on:** treating the sample as a template (turn 18).
 
 **Issue:** an owner maps to `BUSINESS_ADMIN`, generalised from the sample's one administrator. Acme names its administrators as "Priya and me" and Hypergrowth as "me and maya", the assistant existing precisely to keep account changes off the CEO's desk. Neither CEO is in either list.
 
-**Change:** In addition to correcting for role (both became `BUSINESS_USER` and were mapped by administrative responsibility rather than job title (`29059cd`)), the same reading found two more sample-derived errors: a "(surname pending roster)" placeholder on a packet with no roster (`85d83cf`), and reimbursements enabled on three Apex programmes the packet never mentions. None was caught by tooling, so before submission I spun off a system of 3 agents to conduct a final review: one catalogued, one judged each against "would this still be here if the sample had never existed", and one applied only the contamination.
+**Change:** In addition to correcting for role (both became `BUSINESS_USER` and were mapped by administrative responsibility rather than job title (`29059cd`)), the same reading found two more sample-derived errors: a "(surname pending roster)" placeholder on a packet with no roster (`85d83cf`), and reimbursements enabled on three Apex programmes the packet never mentions. None was caught by tooling, so before submission I spun off a system of 3 agents to conduct a final review (turn 25): one catalogued, one judged each against "would this still be here if the sample had never existed", and one applied only the contamination.
 
 ### 2. Assigning deterministic and customer-agnostic behavior to code while keeping judgement with the orchestrating agent
 
-I was pointed from the get go in wanting scalability of process and reliability and, as a result, from the initial brainstorming I led with a key decision to build deterministic forty-three ledger rows in YAML, keyed on what customers say rather than on endpoints, plus nine scripted checks. The agent would in turn be in charge for parsing through and applying judgment to messy transcripts, conflicting documents, or what Ramp cannot do. 
+I was pointed from the get go in wanting scalability of process and reliability and, as a result, from the initial brainstorming I led with a key decision to build deterministic forty-three ledger rows in YAML, keyed on what customers say rather than on endpoints, plus nine scripted checks (turns 1 to 2; `references/capabilities.yaml`). The agent would in turn be in charge for parsing through and applying judgment to messy transcripts, conflicting documents, or what Ramp cannot do. 
 
 **Passed on:** Handwritten helpers to extract citations from transcripts each time Claude is invoked on a packet.
 
-**Issue:** Inconsistency in audit log output decision making across packets A and C.
+**Issue:** Inconsistency in audit log output decision making across packets A and C (turns 7 to 9).
 
-**Change:** cite.py added to scripts folder to help enforce rules mechanically.
+**Change:** cite.py added to scripts folder to help enforce rules mechanically (`fae09ab`, from the packet C pass at turn 9).
 
 ### 3. Ensuring pipeline is both affirmatively flagging discrepancies as well as never silently overlooking flags
 
 With the original design, the pipeline and agent were putting forward key assumptions that would likely be misinterpreted by a client. Some of the key changes below demonstrate guidance informing the agent of a broader stance on what should be flagged.   
 
-**Example:** Random use of pronouns in audit log that do not clearly reference the key user involved. 
+**Example:** Random use of pronouns in audit log that do not clearly reference the key user involved (turn 7). 
 
-**Change:** Pivoted agent to write users as names only. 
+**Change:** Pivoted agent to write users as names only, gated by check 5 (`9ee2b59`). 
 
 **Example:** The agent pulled transcript citations in packet A that did not sufficiently provide context backing configuration decisions. 
 
-**Change:** Expanded agent to pull in more citation lines per configuration assumption.
+**Change:** Expanded agent to pull in more citation lines per configuration assumption (turn 7).
 
 During the first pass run, the agent also failed to surface areas of incomplete information and would take on the aggressive stance of filling in these holes with placeholders. For client configurations and audit logs, clear, simple communication is critical to avoiding misinterpretation of what they see as a source of truth. As a result, I pivoted the agent to specifically note areas where no information was provided: 
 
-**Example**: where a packet gave no email address, the config carried a constructed one at the customer's apparent domain. 
+**Example**: where a packet gave no email address, the config carried a constructed one at the customer's apparent domain (turn 16). 
 
-**Change**: Mark explicitly as N/A in the field. 
+**Change**: Mark explicitly as N/A in the field (`20a0360`). 
 
 **Example**: packet D's software card had been widened to Cloud computing on the inference that a subscription budget covers infrastructure, disclosed only in a `translation_notes` field (`29059cd`).
 
-**Change:** Cloud computing removed as a possible aspect of subscription budget. 
+**Change:** Cloud computing removed as a possible aspect of subscription budget, and the rule applied back over packets A and C (turn 17). 
 
 ## Ramp Doc Design Impact
 
