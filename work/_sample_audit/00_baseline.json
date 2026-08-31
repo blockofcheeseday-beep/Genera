@@ -1,0 +1,56 @@
+{
+  "recorded_at_commit": "9883a43",
+  "purpose": "Array lengths must be unchanged after the audit. Any change means an entry was spliced, which silently shifts every later index-based audit_ref.",
+  "packets": {
+    "client_a_acme_corp": {
+      "audit_lengths": {
+        "assumptions_made": 17,
+        "missing_information_flags": 10,
+        "conflicts": 5,
+        "unsupported_api_requests": 11
+      },
+      "audit_refs": 54,
+      "config_paths": 38
+    },
+    "client_b_logistica_globex": {
+      "audit_lengths": {
+        "assumptions_made": 14,
+        "missing_information_flags": 10,
+        "conflicts": 3,
+        "unsupported_api_requests": 11
+      },
+      "audit_refs": 61,
+      "config_paths": 47
+    },
+    "client_c_apex_health": {
+      "audit_lengths": {
+        "assumptions_made": 13,
+        "missing_information_flags": 13,
+        "conflicts": 3,
+        "unsupported_api_requests": 11
+      },
+      "audit_refs": 64,
+      "config_paths": 34
+    },
+    "client_d_hypergrowth": {
+      "audit_lengths": {
+        "assumptions_made": 15,
+        "missing_information_flags": 14,
+        "conflicts": 5,
+        "unsupported_api_requests": 7
+      },
+      "audit_refs": 57,
+      "config_paths": 33
+    },
+    "client_e_vanguard_retail": {
+      "audit_lengths": {
+        "assumptions_made": 12,
+        "missing_information_flags": 8,
+        "conflicts": 1,
+        "unsupported_api_requests": 10
+      },
+      "audit_refs": 48,
+      "config_paths": 35
+    }
+  }
+}
