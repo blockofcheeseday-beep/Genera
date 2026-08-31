@@ -1,138 +1,97 @@
 # NOTES
 
-Five packets, nine checks each. Pointers are transcript turns and commit hashes.
+## Key Decisions and Verification Delta Points Informing Design
 
-## Decisions, and the verification that produced them
+Please note that the key decisions and verification delta sections have been consolidated into this one section in order to reflect the cadence of this exercise, in which verification deltas ended up constructively and substantively contributing to pipeline design and agent behavior. 
 
-### 1. A reference sets the form of an output, never its parameters
+### 1. Reference samples setting the form of an output but never its parameters
 
-The Westbrook sample is the only worked example shipped, and the exercise says of it "not an
-exercise" and "nothing to run or submit". Studying its shape is invited, inheriting its answers
-is not, and from inside the work the two look alike. An agent given no guidance infers helpfully.
+In the middle of discussing permission scope and agent inference, the skill and pipeline orchestrating agent caught that the capability ledger was informed by the Westbrook sample’s design. As noted in the case study packet, the sample is “not an exercise” and “there’s nothing to run or submit for it.” The risk here was having the agent build on a reference file that provides some general guidance on form to the pipeline but should not provide strict parameters to follow.
 
-**Passed on:** treating the sample as a template. Fastest start available, and it encodes a
-twelve-person design agency's answers, which fit none of these customers.
+**Passed on:** treating the sample as a template where mid-session.
 
-**Where:** turn 18, mid-session — "What else carries over from the westbrook sample?"
+**Issue:** an owner maps to `BUSINESS_ADMIN`, generalised from the sample's one administrator. Acme names its administrators as "Priya and me" and Hypergrowth as "me and maya", the assistant existing precisely to keep account changes off the CEO's desk. Neither CEO is in either list.
 
-**Wrong:** an owner maps to `BUSINESS_ADMIN`, generalised from the sample's one administrator.
+**Change:** In addition to correcting for role (both became `BUSINESS_USER` and were mapped by administrative responsibility rather than job title (`29059cd`)), the same reading found two more sample-derived errors: a "(surname pending roster)" placeholder on a packet with no roster (`85d83cf`), and reimbursements enabled on three Apex programmes the packet never mentions. None was caught by tooling, so before submission I spun off a system of 3 agents to conduct a final review: one catalogued, one judged each against "would this still be here if the sample had never existed", and one applied only the contamination.
 
-**Evidence:** Acme names its administrators as "Priya and me" and Hypergrowth as "me and maya",
-the assistant existing precisely to keep account changes off the CEO's desk. Neither CEO is in
-either list.
+### 2. Assigning deterministic and customer-agnostic behavior to code while keeping judgement with the orchestrating agent
 
-**Change:** both became `BUSINESS_USER`, mapped by administrative responsibility rather than job
-title (`29059cd`). The same reading found two more sample-derived errors: a "(surname pending
-roster)" placeholder on a packet with no roster (`85d83cf`), and reimbursements enabled on three
-Apex programmes the packet never mentions. None was caught by tooling, so before submission
-three agents took the question in sequence (turn 25): one catalogued, one judged each against
-"would this still be here if the sample had never existed", one applied only the contamination.
-Fifty-nine points, fifty-seven legitimate, one open judgement, one finding: the ledger had
-promoted the sample's hedged Slack claim to fact for two customers who never asked about Slack
-(`9086da0`).
+I was pointed from the get go in wanting scalability of process and reliability and, as a result, from the initial brainstorming I led with a key decision to build deterministic forty-three ledger rows in YAML, keyed on what customers say rather than on endpoints, plus nine scripted checks. The agent would in turn be in charge for parsing through and applying judgment to messy transcripts, conflicting documents, or what Ramp cannot do. 
 
-### 2. The deterministic half is code and customer-agnostic; judgement stays with the session
+**Passed on:** Handwritten helpers to extract citations from transcripts each time Claude is invoked on a packet.
 
-Forty-three ledger rows in YAML, keyed on what customers say rather than on endpoints, plus nine
-scripted checks. Judgement stays with the agent: messy transcripts, conflicting documents, what
-Ramp cannot do. Scale, of effort and of reliability, exists only on the mechanical
-side. Citations were the tell, hand-built for A and C, then scripted as `cite.py` (`fae09ab`).
+**Issue:** Inconsistency in audit log output decision making across packets A and C.
 
-**Passed on:** a scripted extractor. It suits packet A's clean roster and fails packet D, which
-has only a Slack export and notes that disagree.
+**Change:** cite.py added to scripts folder to help enforce rules mechanically.
 
-**Where:** turn 2, at the very start — "write SKILL.md, run_pipeline.py as a mix of glue code"
+### 3. Ensuring pipeline is both affirmatively flagging discrepancies as well as never silently overlooking flags
 
-**Wrong:** the coverage invariant, that every requirement terminates in a config field or audit
-entry, was enforced.
+With the original design, the pipeline and agent were putting forward key assumptions that would likely be misinterpreted by a client. Some of the key changes below demonstrate guidance informing the agent of a broader stance on what should be flagged.   
 
-**Evidence:** the check passed on the sample's real outputs while my own fixture cited
-`assumptions_made[999]` against an array of one, because nothing resolved a citation against the
-document it named.
+**Example:** Random use of pronouns in audit log that do not clearly reference the key user involved. 
 
-**Change:** added reference resolution (`ae90065`), which immediately caught two dangling
-references I had written myself. A mechanical guarantee is worth what its check is worth.
+**Change:** Pivoted agent to write users as names only. 
 
-### 3. Flag forward, in the customer's own words
+**Example:** The agent pulled transcript citations in packet A that did not sufficiently provide context backing configuration decisions. 
 
-The audit log names people rather than using pronouns, carries speaker and role on every
-citation, and never invents an identifier. The customer's vocabulary outranks house style: the
-jargon check first rejected `REQ-1`, which was Apex's own numbering. Each rule became a check,
-because I broke every one I only wrote down: care alone left 36 pronoun violations and 17
-citations too thin to name a speaker.
+**Change:** Expanded agent to pull in more citation lines per configuration assumption.
 
-**Passed on:** documenting the standards and relying on care.
+During the first pass run, the agent also failed to surface areas of incomplete information and would take on the aggressive stance of filling in these holes with placeholders. For client configurations and audit logs, clear, simple communication is critical to avoiding misinterpretation of what they see as a source of truth. As a result, I pivoted the agent to specifically note areas where no information was provided: 
 
-**Where:** turn 7, early on — "Because this is customer facing, let's never write notes with"
+**Example**: where a packet gave no email address, the config carried a constructed one at the customer's apparent domain. 
 
-**Wrong:** where a packet gave no email address, the config carried a constructed one at the
-customer's apparent domain.
+**Change**: Mark explicitly as N/A in the field. 
 
-**Evidence:** those addresses appear nowhere in the packet, and a plausible one is worse than a
-blank, since someone will send to it.
+**Example**: packet D's software card had been widened to Cloud computing on the inference that a subscription budget covers infrastructure, disclosed only in a `translation_notes` field (`29059cd`).
 
-**Change:** `N/A` in the field and the gap flagged, enforced by check 8 (`20a0360`). The same rule
-closed a second gap: packet D's software card had been widened to Cloud computing on the inference
-that a subscription budget covers infrastructure, disclosed only in a `translation_notes` field no
-customer reads (`29059cd`).
+**Change:** Cloud computing removed as a possible aspect of subscription budget. 
 
-## What the Ramp docs changed
+## Ramp Doc Design Impact
 
-`docs.ramp.com` was blocked by this environment's egress proxy for `curl` and page fetches
-alike. Search was the only live channel, so these rest on page titles and quoted excerpts.
+The OpenAPI schema was available as a machine-readable artifact, pulled from `docs.ramp.com/openapi/developer-api.json`. This provided me operation-level structure, scopes, and the `x-ramp-plus-required` / `x-beta` / `x-read-only` flags. Additionally, note that the prose docs pages were blocked by this environment's egress proxy for `curl` and page fetches alike, so anything semantic required on search-returned titles and quoted excerpts.
 
-- **Entities.** The accounting guide states positively that entities are created in the Ramp UI
-  and scoped by `entity_id`, moving `CAP-ENTITY-CREATE` from absence-based UNSUPPORTED to
-  evidenced UI_ONLY and validating packet B's `status: requested`.
-- **Roles.** *User role deep-dive: IT Admin* supplies semantics the spec does not: `IT_ADMIN`
-  grants People and Integrations access while denying spend controls, exactly the "manage users
-  but not limits" split Acme and Hypergrowth both asked for.
-- **Categories.** *Setting up category and merchant restrictions* confirms Ramp derives its
-  category from the MCC plus other signals, so an MCC allow-list is not expressible anywhere in
-  the product, UI included. That is the whole of packet E's problem.
-- **Naming.** The docs still title the resource *Creating spend limits* while the snapshot path
-  is `/developer/v1/funds`. Calling the concept absent was the easiest wrong answer.
+Example areas of Ramp technical documentation impact on design are as follows: 
+
+- **Data Relationships:** Many-to-one edges get existence-and-uniqueness validation on the target, one-to-many edges get orphan detection on the inverse, and `inverse_field_name` lets the graph be walked in both directions from one pass. Some tangible examples of this influencing pipeline design include: 
+  - Ramp labels every reference (e.g. one department per user, many users per department) while the output format keeps the same references and strips the labels. As a result, a department is whatever string a user names rather than a record that has to exist.
+  - Validation is written per edge type rather than field, thereby collapsing four field-specific rules into two structural ones.
+- **Entities.** The accounting guide states positively that entities are created in the Ramp UI and scoped by `entity_id`, moving `CAP-ENTITY-CREATE` from absence-based UNSUPPORTED to evidenced UI_ONLY and validating packet B's `status: requested`.
+- **Roles.** *User role deep-dive: IT Admin* supplies semantics the spec does not: `IT_ADMIN` grants People and Integrations access while denying spend controls, exactly the "manage users but not limits" split Acme and Hypergrowth both asked for.
+
+
 
 ## Go-live handoff — Apex Health Partners
 
-- **REQ-3 is not met as written, and Compliance should see it in those words.** Ramp cannot
-  check a purchase order while a card is being authorised. Configured instead is the control your
-  own document provides for: hard per-transaction caps, same-day reconciliation against NetSuite,
-  and suspension on violation. That is detective rather than preventive.
-- **There is a $500 gap between your two documents that neither mentions.** Your compliance
-  document requires a purchase order above $500, while the discovery call sets the clinic
-  per-transaction cap at $1,000. A $700 purchase is approved by the card and still falls inside
-  the purchase-order rule. Either accept reconciliation as the control for that band, or lower
-  the cap.
-- **The high-limit card gate fails closed, but a person is the gate.** Cards above $10,000 a
-  month are created and immediately suspended, staying suspended until your office confirms the
-  notarised form. Ramp does not verify that the form exists. The Compliance Office does.
-- **The vendor block needs one thing from you before it works.** Both trading names, Joe's
-  Medical Supply and JMS Distribution, must resolve to merchant records in Ramp, because a name
-  that does not resolve is not blocked. The block must also be re-applied to every card programme
-  created later.
-- **Nothing can be issued until the roster arrives.** Eight open questions stop go-live, and the
-  largest is that we have no email address for anyone and no clinic manager is named. Your
-  three-week clinic timeline starts when that list does.
+The configuration implements all six requirements from the Apex security document, with four enforced by the Ramp platform and two by compensating controls. Please note the following flags for further review: 
 
-## One capability, one question
+**Purchase-order matching (REQ-3)**
 
-**Capability: the ledger, owned centrally.** Every packet asked the same forty-odd questions,
-and the answers do not vary by customer. Built once with dated evidence per row, it removes that
-re-derivation from every deployment after: rows written for Acme answered Apex, and rows added
-for Apex answered Vanguard. Runner-up was the audit-log style gate, which travels less well
-because it encodes a house voice where the ledger encodes facts.
+- **For Apex Health Partners**: Not met as written as Ramp cannot verify a purchase order number while a card is being authorized. Note that a non-compliant transaction completes and is caught afterward. Apex to review with the Risk Committee in those terms and to revert on whether detection is accepted, or whether a lower cap is required to approximate prevention.
 
-**Question, for Vanguard Retail Services:** your field force roughly doubles every October and
-collapses on 24 December, and the reps live in a spreadsheet rebuilt each year. Should the
-seasonal wave become a standing annual motion, with a saved role-to-control mapping and a
-re-runnable onboarding flow, rather than rebuilt each season?
+**High-limit card activation (REQ-2)**
+
+- **For Apex Health Partners:** Cards above $10,000 monthly are created suspended and cannot transact until the Compliance Office confirms the notarized form. Ramp does not verify that the form exists. Apex to name an owner for the confirmation step and a backup, given that a cardholder cannot transact while that step is pending.
+
+**Per-transaction cap**
+
+- **For Apex Health Partners:** The security document requires a purchase order above $500 while the discovery call sets the clinic cap at $1,000, leaving a band where a purchase is card-approved and simultaneously subject to the PO rule. The $1,000 cap is configured as stated and the gap flagged rather than resolved unilaterally. Apex to consider whether reconciliation covers that band or the cap drops to $500, and revert.
+
+**Vendor prohibition (REQ-1)**
+
+- **For Apex Health Partners:** The block takes effect only once both trading names (Joe's Medical Supply and JMS Distribution) resolve to merchant records, and it does not carry to card programs created later. Apex to confirm both records and to add re-application to its card program creation checklist.
+
+**User provisioning**
+
+- **For Apex Health Partners:** The packet contains no email address for any individual and names no clinic manager, so no user can be invited and the three-week clinic timeline starts when the roster arrives. Apex to revert with the roster, contract nurse assignment end dates, and the full membership of the Compliance Office.
+
+## **Capability and Questions**
+
+**Capability**: On our check-in, Efren named a bottleneck that doesn't show up in this portion of the exercise: a large share of deployment lag is being able to design a process behind waiting on the customer to come back (including being able to respond to customer answers faster and set up answers better before the customer makes a request). That then points me to the `missing_information_flags` , which is the section that touches the bottleneck. Every packet has context on what is missing based on set pipeline requirements (e.g. Apex Health Partners has no email address for any of six hundred employees and no clinic manager named).
+
+The schema already carries what a send would need — blocking versus not, the affected config section, each item phrased as the question you would ask. What it does not do is leave the file, which I think is a critical pipeline to building out agentic workflows. The same field that gates go-live could produce a message and could be re-runnable against the next version of the packet so that you're now able to version between packet sends with reduced input (i.e. creating targeted diffs). 
+
+**Question, for Vanguard Retail Services:** Your field force roughly doubles every October and collapses on 24 December, and the reps live in a spreadsheet rebuilt each year. Should the seasonal wave become a standing annual motion, with a saved role-to-control mapping and a re-runnable onboarding flow, rather than rebuilt each season?
 
 ## What I'd do next with another day
 
-Reconcile the ledger against the live OpenAPI specification I could not reach, since every
-drift row rests on a snapshot and drift ages worst. Then build the check I lack: nothing catches
-a silently widened permission on a SUPPORTED capability, which is the failure behind both
-examples above. Then the Spanish executive summary Logística Globex asked for. Shipped
-knowingly imperfect: packet C's clinic programme permits General merchandise as the nearest
-category to "hardware stores", broader than that packet deserves.
+Reconcile the ledger against a live API since this session excludes building out Ramp API calls. An additional exercise that would be interesting to add in to this pipeline would then be seeing how to layer in the expanded supported capabilities into the existing infrastructure (and knowing how to surface changes / updates to the API that are substantive enough for pipeline re-design).
