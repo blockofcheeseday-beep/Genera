@@ -1,0 +1,301 @@
+{
+  "packet": "client_d_hypergrowth",
+  "requirements": [
+    {
+      "req_id": "REQ-001",
+      "claim": "Four departments for spend: Eng, GTM, Ops, Exec",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "keep it simple: Eng, GTM, Ops, Exec. that's it.",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-002",
+      "claim": "Product, design and engineering are separate internal teams but one 'Eng' department for spend",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "we internally have product + design + eng as separate teams but for spend they're all \"Eng\"",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-003",
+      "claim": "GTM covers sales, marketing and partnerships",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "GTM = sales + marketing + partnerships btw",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-004",
+      "claim": "Customer Success belongs to Ops, resolving the February parking-lot item",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "CS goes in Ops. final answer.",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-005",
+      "claim": "Default monthly limits: engineering ICs $750",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "eng ICs: $750/mo",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-006",
+      "claim": "Default monthly limits: GTM ICs $2,500",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "GTM ICs: $2500/mo",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-007",
+      "claim": "Default monthly limits: ops ICs $1,000",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "ops ICs: $1000/mo",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-008",
+      "claim": "Managers receive 50% above their team's IC limit",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "managers +50% on top of their team's IC number",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-009",
+      "claim": "Correction: engineering managers do not get the 50% uplift; only GTM and ops managers do",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "correction — eng managers don't need +50%, eng managers barely spend. just GTM and ops managers get the bump",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-010",
+      "claim": "Executive limits are handled individually rather than by a default",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "exec: we'll handle individually, ask me",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-011",
+      "claim": "A dedicated software card programme is needed so individual contributors cannot buy software",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "whatever we set up needs to NOT let random ICs buy software",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-012",
+      "claim": "The software programme is owned by Stan Pollard personally, who wants sight of every subscription",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "owned by me specifically. i want to see every subscription with my own eyes",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-013",
+      "claim": "Software programme budget is $30,000 per month, expected to fall as vendors consolidate",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "budget for that: $30k/mo. yes really.",
+      "archetype_id": "CAP-SP-UPDATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-014",
+      "claim": "There are 340 SaaS vendors for 82 employees",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "we have 340 SaaS vendors for 82 employees",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "medium"
+    },
+    {
+      "req_id": "REQ-015",
+      "claim": "All travel requires Leo Novak's direct approval until further notice",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "ALL travel needs my direct approval until further notice",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-016",
+      "claim": "February proposal: travel under $2,500 auto-approved by department manager, above that to Leo Novak",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "tiered — travel under $2,500 total trip cost auto-approved by\n  department manager, over $2,500 goes to leo",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-017",
+      "claim": "February meeting landed on a Q2 trial of the $2,500 threshold, to be revisited end of June",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "leo agreed to try the $2,500 threshold for Q2",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-018",
+      "claim": "The note-taker was not present and could not find confirmation the Q2 trial was confirmed or cancelled",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "i wasn't in this meeting. i can't find\n  the follow-up where the Q2 trial was confirmed or cancelled",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-019",
+      "claim": "The June revisit meeting was cancelled and never rescheduled",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "the \"travel policy revisit\" meeting on jun 26 was cancelled (conflict w/\n  board prep) and never rescheduled",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-020",
+      "claim": "The VP Ops asked whether the all-travel rule is compatible with the February agreement, and received no answer in the channel",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "re: leo's #1 — is that compatible with what we agreed in the ops planning meeting?",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-021",
+      "claim": "Travel spend is a separate programme from the GTM default limit",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "separate. travel is its own program, we're still designing it",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-022",
+      "claim": "Leo Novak wants to know about any card above $10,000 per month",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "nobody gets a card with more than $10k/mo without me knowing",
+      "archetype_id": "CAP-NOTIFICATIONS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-023",
+      "claim": "A one-time offsite budget of $60,000 that stops working after the offsite",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "offsite in november, ~30 people, we'll want a one-time budget thing for it. $60k total, expires after the offsite",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-024",
+      "claim": "The offsite budget must stop existing on 1 December",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "can ramp do a \"this money stops existing on dec 1\" thing",
+      "archetype_id": "CAP-AUTO-EXPIRY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-025",
+      "claim": "The offsite budget must be a hard cap that cannot be accidentally overspent",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "wants a dedicated budget \"that i cannot accidentally\n  overspend\" — hard cap not soft",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-026",
+      "claim": "The offsite budget was estimated at $50-60k in February before being fixed at $60k",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "november, tahoe probably, ~30 ppl, budget TBD (rachel guessing $50-60k)",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-027",
+      "claim": "Rachel Kim and Maya Osei are account administrators",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "admin setup: me and maya as admins",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-028",
+      "claim": "Stan Pollard handles user onboarding and offboarding only and must not be able to change limits",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "stan does user onboarding/offboarding ONLY — he should not be able to touch limits",
+      "archetype_id": "CAP-IT-ADMIN-SCOPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-029",
+      "claim": "Maya Osei is an administrator so that changes requested by the CEO are made by her rather than by him",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "because leo will ask you to change things and i'd rather you do it than him",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "medium"
+    },
+    {
+      "req_id": "REQ-030",
+      "claim": "The three offshore QA contractors must not receive cards and continue reimbursing by invoice",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "contractors (the 3 offshore QA folks): DO NOT give them cards. reimburse via\n  invoice like now.",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-031",
+      "claim": "There are 82 employees, roughly 40 engineering, 22 GTM, 15 ops and 5 executive",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "82 people, breakdown roughly 40 eng / 22 GTM / 15 ops / 5 exec-ish",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-032",
+      "claim": "No roster is available: the headcount export is stuck with the PEO and names and emails follow later",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "headcount export is stuck with our PEO",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-033",
+      "claim": "A shared Amex card number is used by four people, one of whom left the company in January",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "kill the shared amex. there are FOUR PEOPLE using one card number.\n  one of them left the company in january",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-034",
+      "claim": "Sales prospect dinners are currently paid on a personal card and expensed 45 days later",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "can we finally kill the thing where I pay for prospect dinners personally and expense it 45 days later",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-035",
+      "claim": "Engineering spends very little and small limits are acceptable",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "eng basically doesn't spend. keep their limits tiny, nobody's mad",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "medium"
+    },
+    {
+      "req_id": "REQ-036",
+      "claim": "Late travel booking is estimated to cost about $18,000 a year in fare differences",
+      "source_file": "fragmented_notes_feb2026.md",
+      "source_quote": "jj estimates late booking costs\n  us ~$18k/yr in fare difference alone",
+      "archetype_id": null,
+      "confidence": "medium"
+    },
+    {
+      "req_id": "REQ-037",
+      "claim": "A NetSuite purchase-order integration was raised and then explicitly retracted as belonging to a different project",
+      "source_file": "slack_export_finance.txt",
+      "source_quote": "actually nvm, wrong project, ignore me. that's the procurement tool eval. different channel",
+      "archetype_id": null,
+      "confidence": "high"
+    }
+  ]
+}

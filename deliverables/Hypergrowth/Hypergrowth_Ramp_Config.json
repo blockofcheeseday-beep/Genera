@@ -1,0 +1,233 @@
+{
+  "client_id": "client_d_hypergrowth",
+  "generated_at": "2026-08-31T00:00:00Z",
+  "base_currency": "USD",
+  "entities": [
+    {
+      "name": "Hypergrowth Inc.",
+      "country": "US",
+      "currency": "USD",
+      "status": "existing"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Eng"
+    },
+    {
+      "name": "GTM"
+    },
+    {
+      "name": "Ops"
+    },
+    {
+      "name": "Exec"
+    }
+  ],
+  "users": [
+    {
+      "email": "leo.novak@hypergrowth.example",
+      "first_name": "Leo",
+      "last_name": "Novak",
+      "role": "BUSINESS_ADMIN",
+      "department": "Exec",
+      "direct_manager_email": null,
+      "notes": "CEO. Approves all travel under the standing rule recorded in the audit log. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+    },
+    {
+      "email": "rachel.kim@hypergrowth.example",
+      "first_name": "Rachel",
+      "last_name": "Kim",
+      "role": "BUSINESS_ADMIN",
+      "department": "Exec",
+      "direct_manager_email": null,
+      "notes": "Head of Finance. Named as an account administrator. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+    },
+    {
+      "email": "maya.osei@hypergrowth.example",
+      "first_name": "Maya",
+      "last_name": "Osei",
+      "role": "BUSINESS_ADMIN",
+      "department": "Ops",
+      "direct_manager_email": null,
+      "notes": "Executive Assistant to the CEO. Named as an administrator so that changes the CEO requests are made by Maya Osei rather than by the CEO directly. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+    },
+    {
+      "email": "dev.batra@hypergrowth.example",
+      "first_name": "Dev",
+      "last_name": "Batra",
+      "role": "BUSINESS_USER",
+      "department": "Ops",
+      "direct_manager_email": null,
+      "notes": "VP Ops. Owns offsite logistics. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+    },
+    {
+      "email": "stan.pollard@hypergrowth.example",
+      "first_name": "Stan",
+      "last_name": "Pollard",
+      "role": "IT_ADMIN",
+      "department": "Ops",
+      "direct_manager_email": null,
+      "notes": "IT. The IT Admin role grants user onboarding and offboarding without any ability to change spend limits, which is the stated restriction. It also prevents holding the software card — see the conflict in the audit log. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+    },
+    {
+      "email": "jj@hypergrowth.example",
+      "first_name": "jj",
+      "last_name": "(full name pending roster)",
+      "role": "BUSINESS_USER",
+      "department": "GTM",
+      "direct_manager_email": null,
+      "notes": "Sales lead, recorded under the only name this packet contains. Currently pays for prospect dinners personally. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+    }
+  ],
+  "spend_programs": [
+    {
+      "display_name": "Software",
+      "description": "Central software and SaaS purchasing so individual contributors cannot buy software directly. $30,000 per month against 340 existing vendor subscriptions, expected to fall as vendors consolidate. Intended to be owned by Stan Pollard; see the audit log, because the role granting the requested restriction also prevents holding this card.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 3000000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "SaaS / Software",
+          "Cloud computing"
+        ]
+      }
+    },
+    {
+      "display_name": "November Offsite",
+      "description": "One-time budget for the November offsite in Tahoe for roughly 30 people. Hard cap of $60,000, not a soft target. Stops working on 1 December 2026 without anyone acting.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 6000000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "lock_date": "2026-12-01"
+      }
+    }
+  ],
+  "limits": [
+    {
+      "display_name": "Engineering IC monthly",
+      "assigned_to": {
+        "group": "Eng"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 75000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "One per engineering individual contributor (roughly 40; no roster available). Engineering managers receive no uplift, per the correction recorded in the audit log."
+    },
+    {
+      "display_name": "GTM IC monthly",
+      "assigned_to": {
+        "group": "GTM"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 250000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "One per GTM individual contributor (roughly 22; no roster available). At 22 people this is $55,000 a month, the largest exposure in this configuration. Separate from travel, which is its own programme."
+    },
+    {
+      "display_name": "Ops IC monthly",
+      "assigned_to": {
+        "group": "Ops"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 100000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "One per ops individual contributor (roughly 15; no roster available). Customer Success is counted within Ops."
+    },
+    {
+      "display_name": "GTM manager monthly",
+      "assigned_to": {
+        "group": "GTM Managers"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 375000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "GTM IC limit plus 50%. No manager is named anywhere in this packet, so this cannot yet be assigned to anyone."
+    },
+    {
+      "display_name": "Ops manager monthly",
+      "assigned_to": {
+        "group": "Ops Managers"
+      },
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "USD",
+        "interval": "MONTHLY"
+      },
+      "notes": "Ops IC limit plus 50%. No manager is named anywhere in this packet, so this cannot yet be assigned to anyone."
+    },
+    {
+      "display_name": "November offsite budget",
+      "assigned_to": {
+        "group": "Offsite Organisers"
+      },
+      "spend_program": "November Offsite",
+      "spending_restrictions": {
+        "limit_amount_cents": 6000000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "lock_date": "2026-12-01"
+      },
+      "notes": "Hard cap of $60,000 expiring 1 December 2026. Dev Batra owns offsite logistics; the packet does not say whether the budget sits with one person or is shared, so the holder is unresolved."
+    }
+  ],
+  "approval_policies": [
+    {
+      "name": "All travel to the CEO",
+      "applies_to": "all",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "Leo Novak (CEO, leo.novak@hypergrowth.example)"
+        }
+      ],
+      "source": "slack_export_finance.txt — Leo Novak (CEO), [2026-07-30 08:55]: \"ALL travel needs my direct approval until further notice\". Encoded at a zero threshold because Ramp approval rules trigger on amount and this rule has none. PROVISIONAL — conflicts with the February agreement recorded in fragmented_notes_feb2026.md; see the audit log."
+    },
+    {
+      "name": "February travel proposal (not encoded as active)",
+      "applies_to": "all",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 250000,
+          "approver": "Leo Novak (CEO, leo.novak@hypergrowth.example)"
+        }
+      ],
+      "source": "fragmented_notes_feb2026.md, line 19: \"leo agreed to try the $2,500 threshold for Q2\". Recorded so both arrangements are visible side by side. Hypergrowth Inc. must confirm which is in force — the note-taker could find no record that this trial was confirmed or cancelled."
+    }
+  ],
+  "mcc_controls": [
+    {
+      "applies_to": "Software",
+      "mechanism": "allowed_categories",
+      "values": [
+        "SaaS / Software",
+        "Cloud computing"
+      ],
+      "translation_notes": "Central software purchasing mapped to Ramp categories SaaS / Software (40) and Cloud computing (41). Cloud computing is included because 340 vendor subscriptions at this size almost certainly include infrastructure; confirm, since it was not named explicitly."
+    }
+  ]
+}
