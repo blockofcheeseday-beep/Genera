@@ -1,0 +1,19 @@
+{
+  "packet": "client_d_hypergrowth",
+  "packet_dir": "candidate/customer_packets/client_d_hypergrowth",
+  "file_count": 2,
+  "files": [
+    {
+      "filename": "fragmented_notes_feb2026.md",
+      "bytes": 2588,
+      "lines": 55,
+      "sha256_12": "c30af9854714"
+    },
+    {
+      "filename": "slack_export_finance.txt",
+      "bytes": 5398,
+      "lines": 88,
+      "sha256_12": "2cb49e2c2a97"
+    }
+  ]
+}
