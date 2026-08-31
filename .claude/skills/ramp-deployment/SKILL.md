@@ -67,11 +67,17 @@ customer's language.
 named six people, one without a surname, and contained **no email address and no email
 domain at all**. When identity is missing, do not stall and do not quietly invent:
 
-- Derive addresses from a stated convention where one exists; otherwise construct
-  `firstname.lastname@<company>.example` and say plainly, in `assumptions_made`, that the
-  domain is invented.
-- Use the sample's placeholder idiom for a missing name part: `"(surname pending roster)"`.
-- Raise a **blocking** flag saying no user may be invited until real addresses arrive.
+- **Never invent an email address.** Use a real one only where the packet contains it. Where
+  it does not, the value is the literal string `N/A` — not a constructed
+  `firstname.lastname@company.example`. A plausible-looking address is indistinguishable
+  from a real one to whoever runs the deployment, and inviting it either fails silently or
+  reaches a stranger. `--verify` check 8 enforces this: every email domain must appear
+  somewhere in the customer's own documents, or the value must be `N/A`.
+- Use the sample's placeholder idiom for a missing *name* part: `"(surname pending roster)"`.
+  A name is descriptive; an address is actionable, which is why they differ.
+- Raise a **blocking** flag saying no user may be invited until real addresses arrive, and
+  identify each cardholder by name in the limit's `display_name` so an `N/A` address does not
+  make the limit ambiguous.
 
 A configuration naming known people with flagged placeholders is useful. An empty `users`
 array is not.
@@ -250,6 +256,18 @@ Consult the ledger per requirement. What a verdict means for where the requireme
 | `UNSUPPORTED` | yes if the schema has a home; otherwise omit | **always** |
 | `DRIFT` | emit the **schema** shape, not the live API's | **always** — once per packet is enough |
 
+**Never widen a permission by inference.** Narrowing on a judgement call is recoverable — a
+decline gets reported and fixed. Widening is not: a category, vendor or limit nobody asked
+for grants spend the customer never authorised, and nothing surfaces it. Packet D's software
+programme was drafted with Ramp's Cloud computing category added on the reasoning that a
+company with 340 vendors probably runs infrastructure. Nothing in the packet mentioned
+infrastructure. It was withdrawn, the narrower mapping kept, and the question asked instead.
+
+The corollary: when you narrow, say so where the customer will see it. A note buried in the
+config's `translation_notes` is not a flag — the audit log is what gets read. Any inference
+that changes what a card will accept or refuse belongs in `assumptions_made` with its
+consequence spelled out, and usually in `missing_information_flags` as a question.
+
 `UNSUPPORTED` and `UI_ONLY` items still belong in the config as desired state wherever the
 schema has somewhere to put them — the schema descriptions for `entities` and
 `approval_policies` explicitly invite exactly this. Where there is no home (receipt
@@ -351,10 +369,11 @@ These will bite. The validator catches none of them.
 python3 run_pipeline.py --packet <packet> --verify
 ```
 
-Eight checks, in order: outputs parse; both files validate against the shipped schemas;
+Nine checks, in order: outputs parse; both files validate against the shipped schemas;
 every Phase 1 quote matches its source file; the coverage invariant plus both graded sweeps;
 audit-log style (pronouns, citation quality, jargon, blocking order, dated evidence); the
-`assigned_to` exactly-one rule; config cross-references; ledger freshness.
+`assigned_to` exactly-one rule; config cross-references; no invented identifiers;
+ledger freshness.
 
 The two sweeps are the ones the exercise grades explicitly, in **both** directions:
 

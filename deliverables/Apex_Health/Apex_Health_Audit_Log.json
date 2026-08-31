@@ -12,9 +12,9 @@
       "impact_if_wrong": "None to the mechanism. Only Millie Vance is named in the packet, so any other member of the Compliance Office is absent from this configuration and would have no access at go-live."
     },
     {
-      "assumption": "Email addresses follow the pattern firstname.lastname@apexhealth.example. No email address and no email domain appears anywhere in this packet; the domain is invented to produce a usable configuration.",
-      "source": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [05:51], naming an administrator without giving any email address, as is the case for every person in this packet: \"Our controller, Dana Whitfield, plus me.\"",
-      "impact_if_wrong": "Every address in this configuration is wrong. Invitations would fail or, worse, reach an unintended recipient. No user should be invited until Apex Health Partners supplies the real addresses."
+      "assumption": "No email address is recorded for anyone. This packet contains no address and no email domain, so every address is written as N/A rather than constructed from a pattern.",
+      "source": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [05:51], naming an administrator without giving any email address, as is the case for every person named in this packet: \"Our controller, Dana Whitfield, plus me.\"",
+      "impact_if_wrong": "No user can be invited and no card issued until Apex Health Partners supplies real addresses. Recording N/A rather than a plausible-looking placeholder is deliberate: a constructed address is indistinguishable from a real one to whoever runs the deployment, and inviting it either fails or reaches a stranger."
     },
     {
       "assumption": "Bruno, the facilities lead, is recorded with the surname placeholder shown rather than a guessed name.",
@@ -64,7 +64,7 @@
   ],
   "missing_information_flags": [
     {
-      "question": "No email address appears anywhere in this packet. What are the real email addresses, and what is the correct email domain for Apex Health Partners? Every address in this configuration is a placeholder.",
+      "question": "What are the real email addresses for everyone named here, and what is the correct email domain for Apex Health Partners? Every address in this configuration is recorded as N/A because the packet contains none.",
       "affected_config": "users",
       "blocking": true
     },

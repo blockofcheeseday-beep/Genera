@@ -18,6 +18,7 @@ SCRIPTS = ROOT / ".claude" / "skills" / "ramp-deployment" / "scripts"
 VALIDATE = ROOT / "candidate" / "tools" / "validate.py"
 WORK, OUT = ROOT / "work", ROOT / "out"
 DELIVERABLES = ROOT / "deliverables"
+NA = "N/A"   # the only permitted stand-in for an unknown identifier
 SKILL = ".claude/skills/ramp-deployment/SKILL.md"
 SECTIONS = ("entities, departments, locations, users, spend_programs, "
             "limits, approval_policies, mcc_controls")
@@ -172,7 +173,7 @@ def check_cross_refs(cfg):
         if u.get("department") not in depts:
             bad.append(f"users[{i}] department {u.get('department')!r} is not in departments[]")
         m = u.get("direct_manager_email")
-        if m and m not in users:
+        if m and m != NA and m not in users:
             bad.append(f"users[{i}] direct_manager_email {m!r} is not a user in this config")
     for i, m in enumerate(cfg.get("mcc_controls", [])):
         if m.get("applies_to") not in progs | lims:
@@ -184,6 +185,37 @@ def check_cross_refs(cfg):
     if bad:
         return False, "\n".join("FAIL " + b for b in bad)
     return True, f"{len(cfg.get('users', []))} users, {len(cfg.get('mcc_controls', []))} mcc_controls all resolve"
+
+
+def check_invented_identifiers(config, packet_dir):
+    """No email may be invented. An address that looks real gets used.
+
+    A placeholder like alice.smith@company.example is indistinguishable from a real
+    address to whoever runs the deployment, and inviting it either fails silently or
+    reaches a stranger. The test is mechanical: every domain must actually appear
+    somewhere in the customer's own documents. Where an address is unknown, the config
+    says so with the literal N/A rather than guessing a plausible one.
+    """
+    if not isinstance(config, dict):
+        return None, "skipped — ramp_config.json unreadable"
+    src = "".join(f.read_text(errors="ignore") for f in packet_dir.iterdir() if f.is_file())
+    bad, checked = [], 0
+    def audit(where, addr):
+        nonlocal checked
+        if not addr or addr == NA:
+            return
+        checked += 1
+        dom = addr.rsplit("@", 1)[-1]
+        if "@" not in addr or dom not in src:
+            bad.append(f"{where}: {addr!r} — domain not found in the packet; use {NA} if unknown")
+    for i, u in enumerate(config.get("users", [])):
+        audit(f"users[{i}].email", u.get("email"))
+        audit(f"users[{i}].direct_manager_email", u.get("direct_manager_email"))
+    for i, l in enumerate(config.get("limits", [])):
+        audit(f"limits[{i}].assigned_to.user_email", (l.get("assigned_to") or {}).get("user_email"))
+    if bad:
+        return False, "\n".join("FAIL " + b for b in bad)
+    return True, f"{checked} address(es) trace to the packet; the rest declared {NA}"
 
 
 def check_assigned_to(config):
@@ -248,6 +280,7 @@ def verify(pkt):
         rows.append(("assigned_to exactly-one", *check_assigned_to(config)))
 
     rows.append(("config cross-references", *check_cross_refs(config)))
+    rows.append(("no invented identifiers", *check_invented_identifiers(config, pkt)))
     rows.append(("ledger freshness", *run([sys.executable, str(SCRIPTS / "gen_ledger.py"), "--check"])[:2]))
 
     print(f"\nVERIFY {name}")

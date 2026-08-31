@@ -32,58 +32,58 @@
   ],
   "users": [
     {
-      "email": "gordon.pryce@apexhealth.example",
+      "email": "N/A",
       "first_name": "Gordon",
       "last_name": "Pryce",
       "role": "BUSINESS_ADMIN",
       "department": "Central Finance",
       "direct_manager_email": null,
-      "notes": "CFO. Administers the account alongside the Controller. Compliance escalations route here. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+      "notes": "CFO. Administers the account alongside the Controller. Compliance escalations route here. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "dana.whitfield@apexhealth.example",
+      "email": "N/A",
       "first_name": "Dana",
       "last_name": "Whitfield",
       "role": "BUSINESS_ADMIN",
       "department": "Central Finance",
-      "direct_manager_email": "gordon.pryce@apexhealth.example",
-      "notes": "Controller. Named as an account administrator. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+      "direct_manager_email": "N/A",
+      "notes": "Controller. Named as an account administrator. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "millie.vance@apexhealth.example",
+      "email": "N/A",
       "first_name": "Millie",
       "last_name": "Vance",
       "role": "AUDITOR",
       "department": "Compliance",
-      "direct_manager_email": "gordon.pryce@apexhealth.example",
-      "notes": "Director of Compliance. Auditor role gives read access across transactions, cards, limits and users with no spend or administrative capability, satisfying REQ-5. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+      "direct_manager_email": "N/A",
+      "notes": "Director of Compliance. Auditor role gives read access across transactions, cards, limits and users with no spend or administrative capability, satisfying REQ-5. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "sam.ionescu@apexhealth.example",
+      "email": "N/A",
       "first_name": "Sam",
       "last_name": "Ionescu",
       "role": "BUSINESS_USER",
       "department": "Regional Operations",
-      "direct_manager_email": "gordon.pryce@apexhealth.example",
-      "notes": "Regional Operations Director. Travel limit of $3,000 per month. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+      "direct_manager_email": "N/A",
+      "notes": "Regional Operations Director. Travel limit of $3,000 per month. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "karen.doyle@apexhealth.example",
+      "email": "N/A",
       "first_name": "Karen",
       "last_name": "Doyle",
       "role": "BUSINESS_USER",
       "department": "Regional Operations",
-      "direct_manager_email": "gordon.pryce@apexhealth.example",
-      "notes": "Regional Operations Director. Travel limit of $3,000 per month. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+      "direct_manager_email": "N/A",
+      "notes": "Regional Operations Director. Travel limit of $3,000 per month. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "bruno.surname-pending@apexhealth.example",
+      "email": "N/A",
       "first_name": "Bruno",
       "last_name": "(surname pending roster)",
       "role": "BUSINESS_USER",
       "department": "Facilities",
-      "direct_manager_email": "gordon.pryce@apexhealth.example",
-      "notes": "Facilities lead, named by first name only in the packet. Surname required before this record can be issued. Email address is a placeholder — no address or domain appears in the packet. Confirm before inviting."
+      "direct_manager_email": "N/A",
+      "notes": "Facilities lead, named by first name only in the packet. Surname required before this record can be issued. No email address appears anywhere in this packet, so the address is recorded as N/A."
     }
   ],
   "spend_programs": [
@@ -208,7 +208,7 @@
     {
       "display_name": "Sam Ionescu — regional travel",
       "assigned_to": {
-        "user_email": "sam.ionescu@apexhealth.example"
+        "user_email": "N/A"
       },
       "spend_program": "Regional Travel",
       "spending_restrictions": {
@@ -225,12 +225,13 @@
           "Joe's Medical Supply",
           "JMS Distribution"
         ]
-      }
+      },
+      "notes": "No email address is available for this person; the cardholder is identified by name in the display name above."
     },
     {
       "display_name": "Karen Doyle — regional travel",
       "assigned_to": {
-        "user_email": "karen.doyle@apexhealth.example"
+        "user_email": "N/A"
       },
       "spend_program": "Regional Travel",
       "spending_restrictions": {
@@ -247,12 +248,13 @@
           "Joe's Medical Supply",
           "JMS Distribution"
         ]
-      }
+      },
+      "notes": "No email address is available for this person; the cardholder is identified by name in the display name above."
     },
     {
       "display_name": "Bruno — facilities",
       "assigned_to": {
-        "user_email": "bruno.surname-pending@apexhealth.example"
+        "user_email": "N/A"
       },
       "spend_program": "Facilities",
       "spending_restrictions": {
@@ -268,7 +270,7 @@
           "JMS Distribution"
         ]
       },
-      "notes": "Cannot be issued until the facilities lead's surname and email address are confirmed."
+      "notes": "Cannot be issued until the facilities lead's surname and email address are confirmed. No email address is available for this person; the cardholder is identified by name in the display name above."
     },
     {
       "display_name": "Central finance monthly",
@@ -342,7 +344,7 @@
       "tiers": [
         {
           "threshold_usd_cents": 0,
-          "approver": "Gordon Pryce (CFO, gordon.pryce@apexhealth.example)"
+          "approver": "Gordon Pryce (CFO)"
         }
       ],
       "source": "discovery_call_apex.txt — Gordon Pryce (CFO), [05:27]: \"And anything Millie's team flags goes to me.\" Encoded at a zero threshold because Ramp approval rules are triggered by amount and cannot be triggered by a compliance flag — see the unsupported requests section."

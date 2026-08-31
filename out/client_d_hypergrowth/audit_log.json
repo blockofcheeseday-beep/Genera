@@ -12,9 +12,9 @@
       "impact_if_wrong": "Conflating the two would either cap GTM cards at a travel threshold or let travel spend draw on the GTM card limit. The two were confirmed separate on the call."
     },
     {
-      "assumption": "Email addresses follow the pattern firstname.lastname@hypergrowth.example. No email address and no domain appears anywhere in this packet; the domain is invented so the configuration is usable.",
+      "assumption": "No email address is recorded for anyone. This packet contains no address and no email domain, so every address is written as N/A rather than constructed from the Slack handles.",
       "source": "slack_export_finance.txt — Rachel Kim (Head of Finance), [2026-08-05 16:40], confirming that no names or email addresses are available yet: \"names and emails to follow whenever the portal resurrects\"",
-      "impact_if_wrong": "Every address is wrong. Invitations would fail or reach an unintended recipient. No user may be invited until the real roster arrives."
+      "impact_if_wrong": "No user can be invited until the roster arrives from the PEO. Recording N/A rather than deriving an address from each Slack handle is deliberate: a constructed address is indistinguishable from a real one to whoever runs the deployment, and inviting it either fails or reaches a stranger."
     },
     {
       "assumption": "The Sales lead is recorded under the handle jj, which is the only name this packet contains for that person.",
@@ -65,11 +65,16 @@
       "assumption": "No receipt or memo policy is configured, because the packet never mentions either.",
       "source": "slack_export_finance.txt — Rachel Kim (Head of Finance), [2026-07-29 09:12], opening the only channel in which requirements were gathered, which never raises receipts or memos: \"making this the single place for the ramp rollout. ask us anything\"",
       "impact_if_wrong": "Hypergrowth Inc. goes live with no receipt requirement. Every other customer in this programme has asked for one, so its absence here is more likely an omission than a decision."
+    },
+    {
+      "assumption": "The software programme permits the Ramp category SaaS / Software only. Cloud computing and infrastructure spend is NOT permitted, because this packet never mentions it.",
+      "source": "slack_export_finance.txt — Stan Pollard (IT), [2026-07-29 10:02], describing the software programme entirely in terms of software subscriptions, with no mention of cloud or infrastructure spend: \"whatever we set up needs to NOT let random ICs buy software\"",
+      "impact_if_wrong": "If Hypergrowth Inc. runs infrastructure such as AWS, Google Cloud or Azure through this card, those charges will decline. At 340 vendor subscriptions and $30,000 a month that is a realistic possibility, and it would surface on the first billing cycle. An earlier draft of this configuration added Cloud computing on the reasoning that a company this size probably has infrastructure spend; that was withdrawn, because widening a card beyond what a customer asked for is a worse error than a decline that gets reported."
     }
   ],
   "missing_information_flags": [
     {
-      "question": "What are the names and email addresses of the 82 employees, and what is the correct email domain? The headcount export is stuck with the PEO. No user can be created until this arrives.",
+      "question": "What are the names and email addresses of the 82 employees, and what is the correct email domain? The headcount export is stuck with the PEO. Every address in this configuration is recorded as N/A because the packet contains none.",
       "affected_config": "users, limits",
       "blocking": true
     },
@@ -123,6 +128,11 @@
     },
     {
       "question": "Should meals be reimbursed on a per diem or on actuals? The February notes park this and record that no proposal followed.",
+      "blocking": false
+    },
+    {
+      "question": "Should the software card also cover cloud infrastructure — AWS, Google Cloud, Azure and similar? The packet describes software subscriptions only, so infrastructure is currently excluded and would decline. With 340 vendors and a $30,000 monthly budget this is worth confirming before the first billing cycle.",
+      "affected_config": "spend_programs, mcc_controls",
       "blocking": false
     }
   ],

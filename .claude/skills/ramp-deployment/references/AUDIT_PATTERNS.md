@@ -238,10 +238,17 @@ and contained no email address and no email domain anywhere. The convention:
 
 | Situation | What to emit | Flag |
 |---|---|---|
-| No email domain stated | `firstname.lastname@<company>.example`, with the invention stated in `assumptions_made` | blocking — no user may be invited until real addresses arrive |
+| No email address or domain in the packet | the literal `N/A` — never a constructed address | blocking — no user may be invited until real addresses arrive |
 | Name part missing | `"(surname pending roster)"`, as the Westbrook sample does | blocking |
 | Headcount given, no names ("fourteen clinic managers") | a group limit with the count and its basis in `notes` | blocking |
 | Population that varies ("eight to twelve nurses") | plan on the upper figure and say so | blocking |
+
+**Why `N/A` and not a placeholder address.** A missing *name* can be marked
+`"(surname pending roster)"` because a name is descriptive — a reader sees the gap and moves
+on. An address is actionable: `leo.novak@hypergrowth.example` looks exactly like a real
+address, and the deployment owner who invites it either gets a silent failure or mails a
+stranger. The rule is enforced by `--verify` check 8, which requires every email domain to
+appear somewhere in the customer's own documents.
 
 Name every person the packet does name. A configuration listing known people with flagged
 placeholders is useful to a deployment owner; an empty `users` array is not.

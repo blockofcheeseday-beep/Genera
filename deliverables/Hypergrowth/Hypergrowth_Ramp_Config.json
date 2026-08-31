@@ -26,58 +26,58 @@
   ],
   "users": [
     {
-      "email": "leo.novak@hypergrowth.example",
+      "email": "N/A",
       "first_name": "Leo",
       "last_name": "Novak",
       "role": "BUSINESS_ADMIN",
       "department": "Exec",
       "direct_manager_email": null,
-      "notes": "CEO. Approves all travel under the standing rule recorded in the audit log. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+      "notes": "CEO. Approves all travel under the standing rule recorded in the audit log. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "rachel.kim@hypergrowth.example",
+      "email": "N/A",
       "first_name": "Rachel",
       "last_name": "Kim",
       "role": "BUSINESS_ADMIN",
       "department": "Exec",
       "direct_manager_email": null,
-      "notes": "Head of Finance. Named as an account administrator. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+      "notes": "Head of Finance. Named as an account administrator. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "maya.osei@hypergrowth.example",
+      "email": "N/A",
       "first_name": "Maya",
       "last_name": "Osei",
       "role": "BUSINESS_ADMIN",
       "department": "Ops",
       "direct_manager_email": null,
-      "notes": "Executive Assistant to the CEO. Named as an administrator so that changes the CEO requests are made by Maya Osei rather than by the CEO directly. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+      "notes": "Executive Assistant to the CEO. Named as an administrator so that changes the CEO requests are made by Maya Osei rather than by the CEO directly. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "dev.batra@hypergrowth.example",
+      "email": "N/A",
       "first_name": "Dev",
       "last_name": "Batra",
       "role": "BUSINESS_USER",
       "department": "Ops",
       "direct_manager_email": null,
-      "notes": "VP Ops. Owns offsite logistics. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+      "notes": "VP Ops. Owns offsite logistics. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "stan.pollard@hypergrowth.example",
+      "email": "N/A",
       "first_name": "Stan",
       "last_name": "Pollard",
       "role": "IT_ADMIN",
       "department": "Ops",
       "direct_manager_email": null,
-      "notes": "IT. The IT Admin role grants user onboarding and offboarding without any ability to change spend limits, which is the stated restriction. It also prevents holding the software card — see the conflict in the audit log. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+      "notes": "IT. The IT Admin role grants user onboarding and offboarding without any ability to change spend limits, which is the stated restriction. It also prevents holding the software card — see the conflict in the audit log. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
-      "email": "jj@hypergrowth.example",
+      "email": "N/A",
       "first_name": "jj",
       "last_name": "(full name pending roster)",
       "role": "BUSINESS_USER",
       "department": "GTM",
       "direct_manager_email": null,
-      "notes": "Sales lead, recorded under the only name this packet contains. Currently pays for prospect dinners personally. Email address is a placeholder — this packet contains no address and no domain. Confirm before inviting."
+      "notes": "Sales lead, recorded under the only name this packet contains. Currently pays for prospect dinners personally. No email address appears anywhere in this packet, so the address is recorded as N/A."
     }
   ],
   "spend_programs": [
@@ -94,8 +94,7 @@
         "currency": "USD",
         "interval": "MONTHLY",
         "allowed_categories": [
-          "SaaS / Software",
-          "Cloud computing"
+          "SaaS / Software"
         ]
       }
     },
@@ -198,7 +197,7 @@
       "tiers": [
         {
           "threshold_usd_cents": 0,
-          "approver": "Leo Novak (CEO, leo.novak@hypergrowth.example)"
+          "approver": "Leo Novak (CEO)"
         }
       ],
       "source": "slack_export_finance.txt — Leo Novak (CEO), [2026-07-30 08:55]: \"ALL travel needs my direct approval until further notice\". Encoded at a zero threshold because Ramp approval rules trigger on amount and this rule has none. PROVISIONAL — conflicts with the February agreement recorded in fragmented_notes_feb2026.md; see the audit log."
@@ -213,7 +212,7 @@
         },
         {
           "threshold_usd_cents": 250000,
-          "approver": "Leo Novak (CEO, leo.novak@hypergrowth.example)"
+          "approver": "Leo Novak (CEO)"
         }
       ],
       "source": "fragmented_notes_feb2026.md, line 19: \"leo agreed to try the $2,500 threshold for Q2\". Recorded so both arrangements are visible side by side. Hypergrowth Inc. must confirm which is in force — the note-taker could find no record that this trial was confirmed or cancelled."
@@ -224,10 +223,9 @@
       "applies_to": "Software",
       "mechanism": "allowed_categories",
       "values": [
-        "SaaS / Software",
-        "Cloud computing"
+        "SaaS / Software"
       ],
-      "translation_notes": "Central software purchasing mapped to Ramp categories SaaS / Software (40) and Cloud computing (41). Cloud computing is included because 340 vendor subscriptions at this size almost certainly include infrastructure; confirm, since it was not named explicitly."
+      "translation_notes": "Central software purchasing mapped to the single Ramp category SaaS / Software (40). Cloud computing (41) is deliberately NOT included: the packet describes software subscriptions only and never mentions infrastructure, so adding it would widen the card beyond what was requested. Infrastructure spend will decline — raised as an open question in the audit log."
     }
   ]
 }
