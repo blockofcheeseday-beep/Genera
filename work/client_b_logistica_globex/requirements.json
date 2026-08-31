@@ -1,0 +1,349 @@
+{
+  "packet": "client_b_logistica_globex",
+  "requirements": [
+    {
+      "req_id": "REQ-001",
+      "claim": "Three entities: Mexico, Miami (USA LLC) and São Paulo (Brazil, in formation)",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Logística Globex, S.A. de C.V. (México),\nGlobex Logistics USA LLC (Miami) y Globex Logística do Brasil Ltda. (São Paulo,\nen constitución)",
+      "archetype_id": "CAP-ENTITY-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-002",
+      "claim": "Miami is legally constituted and already has a bank account",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Miami sí — Globex Logistics USA LLC, ya está constituida, ya tiene cuenta bancaria.",
+      "archetype_id": "CAP-ENTITY-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-003",
+      "claim": "The Brazilian entity is expected to be ready at the end of September",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "estará lista a fin de septiembre",
+      "archetype_id": "CAP-ENTITY-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-004",
+      "claim": "Design all three structures now so everything is ready the day the Brazilian entity exists",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "queremos que el día que exista la entidad, todo esté listo para prender el switch",
+      "archetype_id": "CAP-DRAFT-USER",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-005",
+      "claim": "Leave Brazilian staff ready without activating if the system allows; do not invent an answer if it does not",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Si el sistema permite dejarlos listos sin activar, mejor. Si no, díganme qué se puede y qué no — no me inventen.",
+      "archetype_id": "CAP-DRAFT-USER",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-006",
+      "claim": "Around 200 employees in Mexico, roughly 60 needing spend capability",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Unos doscientos empleados en México, de los cuales más o menos sesenta necesitan capacidad de gasto.",
+      "archetype_id": "CAP-BULK-USERS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-007",
+      "claim": "Three Mexican areas: Operaciones, Administración and Comercial",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Tres áreas grandes. Operaciones — choferes, supervisores de patio, coordinadores de ruta.",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-008",
+      "claim": "Operations is about forty people with spend; Comercial about twelve",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "unas cuarenta personas con gasto. Luego Administración — finanzas, recursos humanos, sistemas. Y Comercial — ventas y atención a clientes, unas doce personas.",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-009",
+      "claim": "Drivers get 1,500 MXN per day, restricted to fuel stations only",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Queremos tarjeta por chofer, restringida a gasolineras — que no sirva en otra cosa, ni OXXO ni nada — con límite diario. Mil quinientos pesos por día por chofer.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-010",
+      "claim": "Driver fuel cards are limited to authorised fuel stations, with no exceptions",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Solo estaciones de combustible autorizadas. Sin excepciones.",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-011",
+      "claim": "Yard supervisors get 3,000 MXN per day covering fuel, tolls and minor parts",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Los supervisores tres mil pesos al día, y además de combustible pueden pagar refacciones menores y casetas.",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-012",
+      "claim": "Minor parts for supervisors are capped below 2,000 MXN per transaction",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Incluye casetas y refacciones menores (< $2,000 MXN por transacción).",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-013",
+      "claim": "Route coordinators do not need cards",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Los coordinadores de ruta no necesitan tarjeta; ellos no gastan.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-014",
+      "claim": "Comercial gets physical cards, 20,000 MXN monthly, travel categories",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Tarjeta física para todos los de Comercial, límite mensual de veinte mil pesos, categorías de viaje: vuelos, hoteles, restaurantes, transporte.",
+      "archetype_id": "CAP-CARD-TYPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-015",
+      "claim": "Administración gets a virtual card with 5,000 MXN monthly for subscriptions and office items",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Administración casi no gasta; tarjeta virtual con límite bajo, cinco mil pesos al mes, para suscripciones y cosas de oficina.",
+      "archetype_id": "CAP-CARD-TYPE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-016",
+      "claim": "Software purchasing is centralised on one virtual card held by Sistemas",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "una sola tarjeta virtual para todo el software, la maneja sistemas, y cualquier proveedor nuevo pasa por mí",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-017",
+      "claim": "The software card carries 25,000 MXN monthly",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Ponle veinticinco mil pesos mensuales.",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-018",
+      "claim": "Every new software vendor requires Finance approval before the first purchase, whatever the amount",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Todo proveedor nuevo de software requiere autorización de la Dirección de Finanzas\n    ANTES de la primera compra, sin importar el monto.",
+      "archetype_id": "CAP-NEW-VENDOR-APPROVAL",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-019",
+      "claim": "The Brazilian branch must not contract software itself; requests route to Sistemas in Monterrey",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "A filial brasileira NÃO deve\n    contratar software por conta própria.",
+      "archetype_id": "CAP-SP-CREATE",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-020",
+      "claim": "All spend is handled in local currency: pesos in Mexico, reais in Brazil, dollars in Miami",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "todo el gasto de México se maneja en pesos. No quiero que mis gerentes en Monterrey estén pensando en dólares. Los límites, los reportes, todo en moneda local. En Brasil igual: reales. En Miami, dólares.",
+      "archetype_id": "CAP-LOCAL-CURRENCY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-021",
+      "claim": "Executive consolidation is done in USD",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "La consolidación ejecutiva se realiza en USD.",
+      "archetype_id": "CAP-MONEY-MINOR-UNITS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-022",
+      "claim": "A reasonable documented exchange rate is acceptable for system configuration; FX precision is not critical for card limits",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "utilizar un tipo de cambio razonable y\n    documentarlo; la precisión cambiaria NO es crítica para los límites de tarjeta",
+      "archetype_id": "CAP-MONEY-MINOR-UNITS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-023",
+      "claim": "Mexican approvals: automatic to 2,000 MXN, direct manager to 20,000 MXN, CFO above",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Hasta dos mil pesos, automático. De dos mil a veinte mil, aprueba el jefe directo. Arriba de veinte mil, apruebo yo.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-024",
+      "claim": "Brazilian approvals: automatic to R$400, direct manager to R$4,000, Finance above",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Aprovações: até R$ 400 automático; de R$ 400 a R$ 4.000 gerente direto;\n    acima de R$ 4.000, Diretoria de Finanças (Monterrey).",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-025",
+      "claim": "Miami approvals: automatic under $100, direct manager to $1,000, CFO above",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Approvals: under USD $100 auto-approved; USD $100–$1,000 direct manager;\n    over USD $1,000, CFO (Monterrey).",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-026",
+      "claim": "Brazil and Miami follow the same approval logic with equivalent, not identical, locally sensible amounts",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "con los montos equivalentes — no idénticos, equivalentes. Redondeados a números que tengan sentido localmente.",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-027",
+      "claim": "Alejandra Vidal and Joaquín Esparza administer the instance",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Yo y Joaquín, mi gerente de contabilidad.",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-028",
+      "claim": "Each country gets a local administrator; Miami's is Elena Ruiz",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "en cada país va a haber un administrador local cuando arranquen — en Miami ya sabemos que es Elena Ruiz, la gerente de oficina",
+      "archetype_id": "CAP-SCOPED-VISIBILITY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-029",
+      "claim": "Elena Ruiz administers Miami day-to-day spend locally",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Office manager\n    (Elena Ruiz) administers day-to-day spend locally.",
+      "archetype_id": "CAP-SCOPED-VISIBILITY",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-030",
+      "claim": "São Paulo has no administrative team hired yet",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "En São Paulo todavía no contratamos al equipo administrativo.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-031",
+      "claim": "Thiago Moreira is the Brazilian operations manager, already signed and holding a company email",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "el gerente de operaciones de allá, Thiago Moreira, ya firmó — él sí ya existe, ya tiene correo de la empresa",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-032",
+      "claim": "Three Brazilian drivers are already hired and start in October",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "Hay tres choferes brasileños ya contratados, empiezan en octubre",
+      "archetype_id": "CAP-DRAFT-USER",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-033",
+      "claim": "Brazilian driver cards must be ready on the first day of work",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Os cartões devem estar prontos no primeiro dia de trabalho.",
+      "archetype_id": "CAP-DRAFT-USER",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-034",
+      "claim": "Brazilian drivers get R$450 per day at accredited fuel stations",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Combustível (motoristas): R$ 450 por dia por cartão. Somente postos de\n    combustível credenciados.",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-035",
+      "claim": "Miami travel is USD $1,200 per person per month; office expenses USD $400",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "USD $1,200 per person per month. Air, lodging, meals, ground transport.",
+      "archetype_id": "CAP-USER-LIMIT",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-036",
+      "claim": "Miami has no fleet in 2026; fleet spend requests are rejected and escalated to Monterrey",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Fuel: not applicable — Miami has no fleet in 2026.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-037",
+      "claim": "Cash reimbursements are eliminated from Q4 2026 and all spend must go on a corporate card",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Los reembolsos en efectivo quedan ELIMINADOS a partir del Q4 2026.",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-038",
+      "claim": "Road hotels often take cash only, so reimbursements cannot be eliminated entirely",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "muchos hoteles de carretera en México solo aceptan efectivo. Así que los reembolsos no se pueden matar del todo, aunque el memo diga que sí.",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-039",
+      "claim": "The memo is aspirational on reimbursements; follow operations",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "El memo es aspiracional en esa parte. [ríe] Hazle caso a Rubén.",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-040",
+      "claim": "Language discrepancies resolve in favour of the Spanish version, except Section 4 whose original is English",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Cualquier discrepancia entre versiones de idioma de este documento se resuelve\n    a favor de la versión en español, excepto la Sección 4, cuyo original es el inglés.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-041",
+      "claim": "The memo sections are not fully harmonised with each other",
+      "source_file": "politica_gastos_2026.txt",
+      "source_quote": "Las secciones no están totalmente armonizadas entre sí.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-042",
+      "claim": "Target dates: Mexico four weeks, Miami around six weeks, Brazil when the entity exists",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "México en cuatro semanas. Miami cuando esté el equipo, digamos seis semanas. Brasil, cuando exista la entidad.",
+      "archetype_id": null,
+      "confidence": "high"
+    },
+    {
+      "req_id": "REQ-043",
+      "claim": "The executive summary must be delivered in Spanish",
+      "source_file": "entrevista_descubrimiento_es.txt",
+      "source_quote": "el resumen ejecutivo que me mandes, en español por favor. Mi consejo lo lee en español.",
+      "archetype_id": null,
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,489 @@
+{
+  "packet": "client_b_logistica_globex",
+  "entries": [
+    {
+      "req_id": "REQ-001",
+      "archetype_id": "CAP-ENTITY-CREATE",
+      "disposition": "both",
+      "config_paths": [
+        "entities[0]",
+        "entities[1]",
+        "entities[2]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[0]",
+        "assumptions_made[6]"
+      ]
+    },
+    {
+      "req_id": "REQ-002",
+      "archetype_id": "CAP-ENTITY-CREATE",
+      "disposition": "both",
+      "config_paths": [
+        "entities[1]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[0]"
+      ]
+    },
+    {
+      "req_id": "REQ-003",
+      "archetype_id": "CAP-ENTITY-CREATE",
+      "disposition": "both",
+      "config_paths": [
+        "entities[2]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[0]",
+        "assumptions_made[3]"
+      ]
+    },
+    {
+      "req_id": "REQ-004",
+      "archetype_id": "CAP-DRAFT-USER",
+      "disposition": "both",
+      "config_paths": [
+        "users[4].notes"
+      ],
+      "audit_refs": [
+        "assumptions_made[4]"
+      ]
+    },
+    {
+      "req_id": "REQ-005",
+      "archetype_id": "CAP-DRAFT-USER",
+      "disposition": "both",
+      "config_paths": [
+        "users[4].notes"
+      ],
+      "audit_refs": [
+        "assumptions_made[4]"
+      ]
+    },
+    {
+      "req_id": "REQ-006",
+      "archetype_id": "CAP-BULK-USERS",
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "unsupported_api_requests[8]",
+        "missing_information_flags[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-007",
+      "archetype_id": "CAP-DEPT-CREATE",
+      "disposition": "both",
+      "config_paths": [
+        "departments[0]",
+        "departments[1]",
+        "departments[2]"
+      ],
+      "audit_refs": [
+        "assumptions_made[5]"
+      ]
+    },
+    {
+      "req_id": "REQ-008",
+      "archetype_id": "CAP-GROUP-LIMIT",
+      "disposition": "both",
+      "config_paths": [
+        "limits[2]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[5]",
+        "missing_information_flags[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-009",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[0]",
+        "mcc_controls[0]"
+      ],
+      "audit_refs": [
+        "assumptions_made[9]"
+      ]
+    },
+    {
+      "req_id": "REQ-010",
+      "archetype_id": "CAP-VENDOR-BLOCK",
+      "disposition": "both",
+      "config_paths": [
+        "mcc_controls[0]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[6]",
+        "assumptions_made[9]",
+        "missing_information_flags[2]"
+      ]
+    },
+    {
+      "req_id": "REQ-011",
+      "archetype_id": "CAP-USER-LIMIT",
+      "disposition": "config",
+      "config_paths": [
+        "limits[1]"
+      ],
+      "audit_refs": []
+    },
+    {
+      "req_id": "REQ-012",
+      "archetype_id": "CAP-USER-LIMIT",
+      "disposition": "both",
+      "config_paths": [
+        "limits[1].spending_restrictions.transaction_amount_limit_cents"
+      ],
+      "audit_refs": [
+        "assumptions_made[8]"
+      ]
+    },
+    {
+      "req_id": "REQ-013",
+      "archetype_id": null,
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "assumptions_made[12]"
+      ]
+    },
+    {
+      "req_id": "REQ-014",
+      "archetype_id": "CAP-CARD-TYPE",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[2]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[7]"
+      ]
+    },
+    {
+      "req_id": "REQ-015",
+      "archetype_id": "CAP-CARD-TYPE",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[3]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[7]",
+        "conflicts[1]",
+        "assumptions_made[11]"
+      ]
+    },
+    {
+      "req_id": "REQ-016",
+      "archetype_id": "CAP-SP-CREATE",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[4]"
+      ],
+      "audit_refs": [
+        "conflicts[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-017",
+      "archetype_id": "CAP-SP-CREATE",
+      "disposition": "config",
+      "config_paths": [
+        "spend_programs[4].spending_restrictions"
+      ],
+      "audit_refs": []
+    },
+    {
+      "req_id": "REQ-018",
+      "archetype_id": "CAP-NEW-VENDOR-APPROVAL",
+      "disposition": "both",
+      "config_paths": [
+        "approval_policies[3]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[2]"
+      ]
+    },
+    {
+      "req_id": "REQ-019",
+      "archetype_id": "CAP-SP-CREATE",
+      "disposition": "config",
+      "config_paths": [
+        "spend_programs[4].description"
+      ],
+      "audit_refs": []
+    },
+    {
+      "req_id": "REQ-020",
+      "archetype_id": "CAP-LOCAL-CURRENCY",
+      "disposition": "both",
+      "config_paths": [
+        "limits[0].spending_restrictions.currency",
+        "limits[1].spending_restrictions.currency",
+        "limits[2].spending_restrictions.currency"
+      ],
+      "audit_refs": [
+        "assumptions_made[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-021",
+      "archetype_id": "CAP-MONEY-MINOR-UNITS",
+      "disposition": "both",
+      "config_paths": [
+        "base_currency"
+      ],
+      "audit_refs": [
+        "assumptions_made[0]"
+      ]
+    },
+    {
+      "req_id": "REQ-022",
+      "archetype_id": "CAP-MONEY-MINOR-UNITS",
+      "disposition": "both",
+      "config_paths": [
+        "approval_policies[0]",
+        "approval_policies[1]"
+      ],
+      "audit_refs": [
+        "assumptions_made[0]",
+        "missing_information_flags[3]"
+      ]
+    },
+    {
+      "req_id": "REQ-023",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "disposition": "both",
+      "config_paths": [
+        "approval_policies[0]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[1]",
+        "assumptions_made[0]"
+      ]
+    },
+    {
+      "req_id": "REQ-024",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "disposition": "both",
+      "config_paths": [
+        "approval_policies[1]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[1]",
+        "assumptions_made[0]"
+      ]
+    },
+    {
+      "req_id": "REQ-025",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "disposition": "both",
+      "config_paths": [
+        "approval_policies[2]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-026",
+      "archetype_id": "CAP-APPROVAL-CHAIN",
+      "disposition": "both",
+      "config_paths": [
+        "approval_policies[1]",
+        "approval_policies[2]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[1]",
+        "assumptions_made[0]"
+      ]
+    },
+    {
+      "req_id": "REQ-027",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "disposition": "both",
+      "config_paths": [
+        "users[0]",
+        "users[1]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[10]"
+      ]
+    },
+    {
+      "req_id": "REQ-028",
+      "archetype_id": "CAP-SCOPED-VISIBILITY",
+      "disposition": "both",
+      "config_paths": [
+        "users[3]"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[3]",
+        "assumptions_made[7]"
+      ]
+    },
+    {
+      "req_id": "REQ-029",
+      "archetype_id": "CAP-SCOPED-VISIBILITY",
+      "disposition": "both",
+      "config_paths": [
+        "users[3].role"
+      ],
+      "audit_refs": [
+        "unsupported_api_requests[3]",
+        "assumptions_made[7]"
+      ]
+    },
+    {
+      "req_id": "REQ-030",
+      "archetype_id": null,
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "missing_information_flags[4]"
+      ]
+    },
+    {
+      "req_id": "REQ-031",
+      "archetype_id": "CAP-ROLE-MAPPING",
+      "disposition": "both",
+      "config_paths": [
+        "users[4]"
+      ],
+      "audit_refs": [
+        "missing_information_flags[0]"
+      ]
+    },
+    {
+      "req_id": "REQ-032",
+      "archetype_id": "CAP-DRAFT-USER",
+      "disposition": "both",
+      "config_paths": [
+        "limits[5]"
+      ],
+      "audit_refs": [
+        "assumptions_made[3]",
+        "assumptions_made[4]",
+        "missing_information_flags[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-033",
+      "archetype_id": "CAP-DRAFT-USER",
+      "disposition": "both",
+      "config_paths": [
+        "limits[5].notes"
+      ],
+      "audit_refs": [
+        "assumptions_made[3]",
+        "missing_information_flags[1]"
+      ]
+    },
+    {
+      "req_id": "REQ-034",
+      "archetype_id": "CAP-CATEGORY-RESTRICT",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[5]",
+        "mcc_controls[1]"
+      ],
+      "audit_refs": [
+        "assumptions_made[9]",
+        "missing_information_flags[2]"
+      ]
+    },
+    {
+      "req_id": "REQ-035",
+      "archetype_id": "CAP-USER-LIMIT",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[8]",
+        "spend_programs[9]"
+      ],
+      "audit_refs": [
+        "missing_information_flags[8]"
+      ]
+    },
+    {
+      "req_id": "REQ-036",
+      "archetype_id": null,
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[9].description"
+      ],
+      "audit_refs": [
+        "assumptions_made[12]"
+      ]
+    },
+    {
+      "req_id": "REQ-037",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "conflicts[0]",
+        "assumptions_made[10]"
+      ]
+    },
+    {
+      "req_id": "REQ-038",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[0].permitted_spend_types"
+      ],
+      "audit_refs": [
+        "conflicts[0]",
+        "assumptions_made[10]"
+      ]
+    },
+    {
+      "req_id": "REQ-039",
+      "archetype_id": "CAP-REIMBURSEMENTS",
+      "disposition": "both",
+      "config_paths": [
+        "spend_programs[0].permitted_spend_types"
+      ],
+      "audit_refs": [
+        "conflicts[0]",
+        "assumptions_made[10]"
+      ]
+    },
+    {
+      "req_id": "REQ-040",
+      "archetype_id": null,
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "conflicts[2]"
+      ]
+    },
+    {
+      "req_id": "REQ-041",
+      "archetype_id": null,
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "conflicts[2]"
+      ]
+    },
+    {
+      "req_id": "REQ-042",
+      "archetype_id": null,
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "unsupported_api_requests[8]"
+      ]
+    },
+    {
+      "req_id": "REQ-043",
+      "archetype_id": null,
+      "disposition": "audit",
+      "config_paths": [],
+      "audit_refs": [
+        "assumptions_made[13]"
+      ]
+    }
+  ]
+}

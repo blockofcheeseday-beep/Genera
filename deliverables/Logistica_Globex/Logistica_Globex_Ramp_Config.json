@@ -1,0 +1,574 @@
+{
+  "client_id": "client_b_logistica_globex",
+  "generated_at": "2026-08-31T00:00:00Z",
+  "base_currency": "USD",
+  "entities": [
+    {
+      "name": "Logística Globex, S.A. de C.V.",
+      "country": "MX",
+      "currency": "MXN",
+      "status": "existing"
+    },
+    {
+      "name": "Globex Logistics USA LLC",
+      "country": "US",
+      "currency": "USD",
+      "status": "existing"
+    },
+    {
+      "name": "Globex Logística do Brasil Ltda.",
+      "country": "BR",
+      "currency": "BRL",
+      "status": "requested"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Operaciones"
+    },
+    {
+      "name": "Administración"
+    },
+    {
+      "name": "Comercial"
+    },
+    {
+      "name": "Sistemas"
+    }
+  ],
+  "locations": [
+    {
+      "name": "Monterrey",
+      "country": "MX"
+    },
+    {
+      "name": "Miami",
+      "country": "US"
+    },
+    {
+      "name": "São Paulo",
+      "country": "BR"
+    }
+  ],
+  "users": [
+    {
+      "email": "N/A",
+      "first_name": "Alejandra",
+      "last_name": "Vidal",
+      "role": "BUSINESS_ADMIN",
+      "department": "Administración",
+      "location": "Monterrey",
+      "direct_manager_email": null,
+      "notes": "CFO. Named as an account administrator, and the approver above the top threshold in all three countries. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    },
+    {
+      "email": "N/A",
+      "first_name": "Joaquín",
+      "last_name": "Esparza",
+      "role": "BUSINESS_ADMIN",
+      "department": "Administración",
+      "location": "Monterrey",
+      "direct_manager_email": null,
+      "notes": "Accounting manager, Monterrey. Named as the second account administrator and author of the expense policy memo. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    },
+    {
+      "email": "N/A",
+      "first_name": "Rubén",
+      "last_name": "Ortega",
+      "role": "BUSINESS_USER",
+      "department": "Operaciones",
+      "location": "Monterrey",
+      "direct_manager_email": null,
+      "notes": "Operations director. Not named as an administrator. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    },
+    {
+      "email": "N/A",
+      "first_name": "Elena",
+      "last_name": "Ruiz",
+      "role": "BUSINESS_ADMIN",
+      "department": "Administración",
+      "location": "Miami",
+      "direct_manager_email": null,
+      "notes": "Miami office manager, named as the local administrator for Miami. Ramp administrative access is company-wide, so this grant is broader than the Miami-only intent — see the audit log. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    },
+    {
+      "email": "N/A",
+      "first_name": "Thiago",
+      "last_name": "Moreira",
+      "role": "BUSINESS_USER",
+      "department": "Operaciones",
+      "location": "São Paulo",
+      "direct_manager_email": null,
+      "notes": "Brazilian operations manager. Already signed and, per the call, already holds a company email address — the address itself was not supplied. Must not be activated until the Brazilian entity exists; create as a draft. No email address appears anywhere in this packet, so the address is recorded as N/A."
+    }
+  ],
+  "spend_programs": [
+    {
+      "display_name": "Combustible México — choferes",
+      "description": "Fuel cards for Mexican drivers. 1,500 MXN per day per card, fuel stations only. The memo requires authorised stations specifically; no list was supplied, so the restriction is at category level — see the audit log.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "MXN",
+        "interval": "DAILY",
+        "allowed_categories": [
+          "Fuel and gas"
+        ]
+      }
+    },
+    {
+      "display_name": "Combustible y mantenimiento México — supervisores",
+      "description": "Yard supervisors: 3,000 MXN per day covering fuel, tolls and minor parts, with minor parts capped below 2,000 MXN per transaction.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 300000,
+        "currency": "MXN",
+        "interval": "DAILY",
+        "transaction_amount_limit_cents": 200000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Professional services"
+        ]
+      }
+    },
+    {
+      "display_name": "Viajes México — Comercial",
+      "description": "Mexican commercial team travel: 20,000 MXN monthly per person, physical cards, travel categories.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 2000000,
+        "currency": "MXN",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Restaurants",
+          "Taxi and rideshare"
+        ]
+      }
+    },
+    {
+      "display_name": "Oficina México — Administración",
+      "description": "Administración office expenses: 5,000 MXN monthly per person, virtual cards. Software subscriptions are excluded and handled on the central software card — see the audit log.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 500000,
+        "currency": "MXN",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Office supplies and cleaning",
+          "Office"
+        ]
+      }
+    },
+    {
+      "display_name": "Software centralizado",
+      "description": "All software and subscriptions company-wide on one virtual card held by Sistemas in Monterrey. 25,000 MXN monthly. The Brazilian branch must not contract software itself; requests route to Monterrey. Every new vendor requires Finance approval before the first purchase.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": false
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 2500000,
+        "currency": "MXN",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "SaaS / Software"
+        ]
+      }
+    },
+    {
+      "display_name": "Combustível Brasil — motoristas",
+      "description": "Fuel cards for the three Brazilian drivers starting October 2026. R$450 per day per card, accredited fuel stations. Cannot be activated until the Brazilian entity exists.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 45000,
+        "currency": "BRL",
+        "interval": "DAILY",
+        "allowed_categories": [
+          "Fuel and gas"
+        ]
+      }
+    },
+    {
+      "display_name": "Viagens Brasil — Comercial",
+      "description": "Brazilian commercial team travel: R$6,000 monthly per person. The team is not yet hired.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 600000,
+        "currency": "BRL",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Restaurants",
+          "Taxi and rideshare"
+        ]
+      }
+    },
+    {
+      "display_name": "Escritório Brasil",
+      "description": "Brazilian office expenses: R$1,500 monthly per person.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "BRL",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Office supplies and cleaning",
+          "Office"
+        ]
+      }
+    },
+    {
+      "display_name": "Miami travel",
+      "description": "Miami travel for commercial staff based in or visiting Miami: USD 1,200 per person per month.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": true,
+      "spending_restrictions": {
+        "limit_amount_cents": 120000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Restaurants",
+          "Taxi and rideshare"
+        ]
+      }
+    },
+    {
+      "display_name": "Miami office",
+      "description": "Miami office expenses: USD 400 per person per month. Miami has no fleet in 2026, so no fuel programme exists; fleet spend requests are rejected and escalated to Monterrey.",
+      "permitted_spend_types": {
+        "primary_card_enabled": true,
+        "reimbursements_enabled": true
+      },
+      "issue_physical_card_if_needed": false,
+      "spending_restrictions": {
+        "limit_amount_cents": 40000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Office supplies and cleaning",
+          "Office"
+        ]
+      }
+    }
+  ],
+  "limits": [
+    {
+      "display_name": "Chofer — combustible diario",
+      "assigned_to": {
+        "group": "Operaciones — choferes (México)"
+      },
+      "spend_program": "Combustible México — choferes",
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "MXN",
+        "interval": "DAILY",
+        "allowed_categories": [
+          "Fuel and gas"
+        ]
+      },
+      "notes": "One per Mexican driver. Operations has roughly forty people with spend and none are named in the packet, so the count is not yet known."
+    },
+    {
+      "display_name": "Supervisor de patio — diario",
+      "assigned_to": {
+        "group": "Operaciones — supervisores de patio (México)"
+      },
+      "spend_program": "Combustible y mantenimiento México — supervisores",
+      "spending_restrictions": {
+        "limit_amount_cents": 300000,
+        "currency": "MXN",
+        "interval": "DAILY",
+        "transaction_amount_limit_cents": 200000,
+        "allowed_categories": [
+          "Fuel and gas",
+          "Professional services"
+        ]
+      },
+      "notes": "One per yard supervisor. Count not stated in the packet. The 2,000 MXN per-transaction cap applies to minor parts and is a different rule from the 2,000 MXN approval threshold that shares the same figure."
+    },
+    {
+      "display_name": "Comercial México — viajes",
+      "assigned_to": {
+        "group": "Comercial (México)"
+      },
+      "spend_program": "Viajes México — Comercial",
+      "spending_restrictions": {
+        "limit_amount_cents": 2000000,
+        "currency": "MXN",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Restaurants",
+          "Taxi and rideshare"
+        ]
+      },
+      "notes": "One per commercial team member, roughly twelve people. None are named in the packet."
+    },
+    {
+      "display_name": "Administración México — oficina",
+      "assigned_to": {
+        "group": "Administración (México)"
+      },
+      "spend_program": "Oficina México — Administración",
+      "spending_restrictions": {
+        "limit_amount_cents": 500000,
+        "currency": "MXN",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Office supplies and cleaning",
+          "Office"
+        ]
+      },
+      "notes": "One per Administración member. Count not stated. Software subscriptions are excluded from this card."
+    },
+    {
+      "display_name": "Software centralizado — Sistemas",
+      "assigned_to": {
+        "group": "Sistemas (México)"
+      },
+      "spend_program": "Software centralizado",
+      "spending_restrictions": {
+        "limit_amount_cents": 2500000,
+        "currency": "MXN",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "SaaS / Software"
+        ]
+      },
+      "notes": "A single shared virtual card held by Sistemas, not one per person. The holder is not named in the packet."
+    },
+    {
+      "display_name": "Motorista Brasil — combustível diário",
+      "assigned_to": {
+        "group": "Operações — motoristas (Brasil)"
+      },
+      "spend_program": "Combustível Brasil — motoristas",
+      "spending_restrictions": {
+        "limit_amount_cents": 45000,
+        "currency": "BRL",
+        "interval": "DAILY",
+        "allowed_categories": [
+          "Fuel and gas"
+        ]
+      },
+      "notes": "One per Brazilian driver — three are hired and start in October 2026, and none are named. Cards must work on their first day, which depends on the Brazilian entity existing first."
+    },
+    {
+      "display_name": "Comercial Brasil — viagens",
+      "assigned_to": {
+        "group": "Comercial (Brasil)"
+      },
+      "spend_program": "Viagens Brasil — Comercial",
+      "spending_restrictions": {
+        "limit_amount_cents": 600000,
+        "currency": "BRL",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Restaurants",
+          "Taxi and rideshare"
+        ]
+      },
+      "notes": "One per Brazilian commercial team member. The memo makes this conditional on that team being hired, and it has not been."
+    },
+    {
+      "display_name": "Escritório Brasil",
+      "assigned_to": {
+        "group": "Administração (Brasil)"
+      },
+      "spend_program": "Escritório Brasil",
+      "spending_restrictions": {
+        "limit_amount_cents": 150000,
+        "currency": "BRL",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Office supplies and cleaning",
+          "Office"
+        ]
+      },
+      "notes": "One per Brazilian administrative staff member. No administrative team has been hired in São Paulo yet."
+    },
+    {
+      "display_name": "Miami — travel",
+      "assigned_to": {
+        "group": "Comercial (Miami)"
+      },
+      "spend_program": "Miami travel",
+      "spending_restrictions": {
+        "limit_amount_cents": 120000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Airlines",
+          "Lodging",
+          "Restaurants",
+          "Taxi and rideshare"
+        ]
+      },
+      "notes": "One per Miami-based or visiting commercial team member. Headcount for Miami is not stated beyond the office manager."
+    },
+    {
+      "display_name": "Miami — office",
+      "assigned_to": {
+        "group": "Administración (Miami)"
+      },
+      "spend_program": "Miami office",
+      "spending_restrictions": {
+        "limit_amount_cents": 40000,
+        "currency": "USD",
+        "interval": "MONTHLY",
+        "allowed_categories": [
+          "Office supplies and cleaning",
+          "Office"
+        ]
+      },
+      "notes": "One per Miami administrative staff member. Elena Ruiz is the only Miami person named in the packet."
+    }
+  ],
+  "approval_policies": [
+    {
+      "name": "Aprobaciones México",
+      "applies_to": "Logística Globex, S.A. de C.V. (México)",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 11111,
+          "approver": "DIRECT_MANAGER"
+        },
+        {
+          "threshold_usd_cents": 111111,
+          "approver": "Alejandra Vidal (CFO, Monterrey)"
+        }
+      ],
+      "source": "entrevista_descubrimiento_es.txt — Alejandra Vidal (CFO), [04:11]: \"Hasta dos mil pesos, automático. De dos mil a veinte mil, aprueba el jefe directo. Arriba de veinte mil, apruebo yo.\" Local thresholds are 2,000 and 20,000 MXN; converted at 18.0 MXN to the dollar because this format expresses thresholds only in USD. See the audit log."
+    },
+    {
+      "name": "Aprovações Brasil",
+      "applies_to": "Globex Logística do Brasil Ltda. (São Paulo)",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 7273,
+          "approver": "DIRECT_MANAGER"
+        },
+        {
+          "threshold_usd_cents": 72727,
+          "approver": "Diretoria de Finanças, Monterrey (Alejandra Vidal)"
+        }
+      ],
+      "source": "politica_gastos_2026.txt, section 3.6 — \"até R$ 400 automático; de R$ 400 a R$ 4.000 gerente direto; acima de R$ 4.000, Diretoria de Finanças (Monterrey).\" Local thresholds are 400 and 4,000 BRL; converted at 5.5 BRL to the dollar. See the audit log."
+    },
+    {
+      "name": "Miami approvals",
+      "applies_to": "Globex Logistics USA LLC (Miami)",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "AUTO"
+        },
+        {
+          "threshold_usd_cents": 10000,
+          "approver": "DIRECT_MANAGER"
+        },
+        {
+          "threshold_usd_cents": 100000,
+          "approver": "Alejandra Vidal (CFO, Monterrey)"
+        }
+      ],
+      "source": "politica_gastos_2026.txt, section 4.5 — \"under USD $100 auto-approved; USD $100–$1,000 direct manager; over USD $1,000, CFO (Monterrey).\" Already in USD; no conversion applied."
+    },
+    {
+      "name": "Nuevo proveedor de software",
+      "applies_to": "Software centralizado",
+      "tiers": [
+        {
+          "threshold_usd_cents": 0,
+          "approver": "Alejandra Vidal (CFO, Monterrey)"
+        }
+      ],
+      "source": "politica_gastos_2026.txt, section 2.5 — \"Todo proveedor nuevo de software requiere autorización de la Dirección de Finanzas ANTES de la primera compra, sin importar el monto.\" Encoded at a zero threshold because approval rules trigger on amount; this therefore routes ALL software spend to the CFO, not only new vendors. See the audit log."
+    }
+  ],
+  "mcc_controls": [
+    {
+      "applies_to": "Combustible México — choferes",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas"
+      ],
+      "translation_notes": "'Solo estaciones de combustible autorizadas. Sin excepciones.' mapped to Ramp category Fuel and gas (18). This is broader than the memo requires: it permits any station Ramp classifies as fuel, not only authorised ones. Ramp can restrict to named merchants once the list of authorised stations is supplied — raised in the audit log."
+    },
+    {
+      "applies_to": "Combustível Brasil — motoristas",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Fuel and gas"
+      ],
+      "translation_notes": "'Somente postos de combustível credenciados' mapped to Ramp category Fuel and gas (18), with the same broadening as the Mexican fuel programme: accredited stations are not enumerated in the packet."
+    },
+    {
+      "applies_to": "Viajes México — Comercial",
+      "mechanism": "allowed_categories",
+      "values": [
+        "Airlines",
+        "Lodging",
+        "Restaurants",
+        "Taxi and rideshare"
+      ],
+      "translation_notes": "'vuelos, hoteles, restaurantes, transporte' mapped to Airlines (4), Lodging (6), Restaurants (19) and Taxi and rideshare (8). Car rental (5) was not named and is excluded."
+    },
+    {
+      "applies_to": "Software centralizado",
+      "mechanism": "allowed_categories",
+      "values": [
+        "SaaS / Software"
+      ],
+      "translation_notes": "Centralised software mapped to the single Ramp category SaaS / Software (40). Cloud and infrastructure categories are not included because the packet does not mention them."
+    }
+  ]
+}
