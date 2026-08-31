@@ -182,6 +182,10 @@ Endpoints: `POST /developer/v1/webhooks`
 >
 > No notification or chat-integration configuration resource. The nearest primitive is POST /developer/v1/webhooks (transaction events), which is a delivery mechanism, not a rule engine — thresholds and routing would live in the consumer.
 
+> **openapi_snapshot_2026_08_30** (checked 2026-08-30)
+>
+> The only substantive Slack reference in the specification is a read-only is_integrated_with_slack boolean on the business object ("whether the business has integrated with slack"). It establishes that a Slack integration exists; it does not describe what the integration posts, so any claim about its behaviour must stay hedged.
+
 Evidence line (verbatim into audit logs):
 
 ```

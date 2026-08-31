@@ -683,6 +683,14 @@ capabilities:
           No notification or chat-integration configuration resource. The nearest primitive
           is POST /developer/v1/webhooks (transaction events), which is a delivery mechanism,
           not a rule engine — thresholds and routing would live in the consumer.
+      - source: openapi_snapshot_2026_08_30
+        checked_on: 2026-08-30
+        note: >-
+          The only substantive Slack reference in the specification is a read-only
+          is_integrated_with_slack boolean on the business object ("whether the business has
+          integrated with slack"). It establishes that a Slack integration exists; it does
+          not describe what the integration posts, so any claim about its behaviour must
+          stay hedged.
     evidence_line: "Ramp Developer API specification (snapshot dated 2026-08-30) — no notifications resource; nearest primitive is POST /webhooks (transaction events), which delivers events but does not evaluate threshold or routing rules."
     config_expression:
       section: audit_log_only
@@ -691,11 +699,14 @@ capabilities:
       otherwise a webhook consumer applies the threshold and posts. Note when the customer's
       phrasing is a wish rather than a rule — "I want to know about" is not a limit.
     customer_workaround: >-
-      Ramp has no rule engine for routing spend alerts to a chat channel or to a named
-      person. Ramp's Slack integration, switched on by the deployment owner in the Ramp
-      application, covers the common case of posting card activity to a channel; anything
-      conditional, such as alerting only above a set monthly amount, needs a webhook
-      subscription with the threshold applied by the receiving system.
+      Ramp has no rule engine for routing spend alerts to a chat channel or to a named person.
+      Ramp does have a Slack integration, switched on by the deployment owner in the Ramp
+      application, which may cover the simple case of posting card activity to a channel. The
+      API specification records only a read-only is_integrated_with_slack flag on the business
+      object and does not describe what that integration posts, so its scope should be
+      confirmed in the Ramp application before anyone relies on it. Anything conditional, such
+      as alerting only above a set monthly amount, needs a webhook subscription with the
+      threshold applied by the receiving system.
     seen_in: [client_0_sample, client_d_hypergrowth]
 
   - id: CAP-SCOPED-VISIBILITY
