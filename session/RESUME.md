@@ -1,86 +1,53 @@
-# Session state — paused 2026-08-30 19:43 UTC
+# Session state — paused 2026-08-31 12:46 UTC
 
-Branch `claude/genera-capability-ledger-d3ygam`, everything committed and pushed.
+Branch `claude/genera-capability-ledger-d3ygam`, everything committed and pushed at `3988969`.
 This container is ephemeral; the repo is the only durable record.
 
-## Done
+## All required work is done
 
 | | Status |
 |---|---|
-| Capability ledger | 43 rows, 3 evidence-verified passes (snapshot -> live docs -> packet A) |
-| Pipeline | SKILL.md + run_pipeline.py + 7 scripts |
-| Packet A (Acme Corp) | complete, 8/8 checks green |
-| Packet C (Apex Health) | complete, 8/8 checks green |
+| Capability ledger | 43 rows, three evidence passes (snapshot, live docs, packet A dry run) |
+| Pipeline | SKILL.md + run_pipeline.py + 9 scripts, 9 checks per packet |
+| Packets A, B, C, D, E | all complete, each 9/9 green |
+| NOTES.md | written, 1,299 words, structure and pointers verified |
 
-Outputs in `out/<packet>/` (canonical names, for grading) and `deliverables/<Client>/`
-(customer-facing names). Packaging only fires on a fully green run.
+180 requirements extracted, every quote verified against source, 193 audit entries,
+28 of them blocking. Outputs in `out/<packet>/` (canonical names, for grading) and
+`deliverables/<Client>/` (customer-facing names). Packaging only fires on a green run.
 
-## Next, in order
+## If we resume, the open items are
 
-1. **Packet D — `client_d_hypergrowth`.** The hard one and the last of the required three.
-   No clean documents: a Slack export and fragmented second-hand notes that disagree.
-   The headline conflict is travel approvals — February notes say tiered with a $2,500
-   auto-approve; Leo's 2026-07-30 Slack message says ALL travel needs direct approval.
-   The later source wins on recency, but the earlier one documents an agreement Leo made,
-   and the note-taker explicitly records being unable to confirm the trial was cancelled.
-   **This must stay a blocking conflict, not be resolved by recency.**
-   Also: the NetSuite/PO message is explicitly retracted ("wrong project, ignore me") —
-   do not build on it. "CS goes in Ops. final answer" DOES resolve the department question.
-   `cite.py` already handles both D formats (verified).
-2. **NOTES.md** — the graded write-up. Never cut this.
-3. B and E only if time remains. Cut order if over: E, then B.
-
-## Banked for NOTES.md
-
-**Verification delta** (the README requires two concrete cases; there are five):
-- Three ledger verdicts corrected by live docs — `CAP-SCOPED-VISIBILITY`
-  UNSUPPORTED -> PARTIAL is the significant one; visibility follows the reporting chain,
-  reachable via `direct_manager_id`. Snapshot-only reading said no surface existed.
-- `permitted_spend_types` was planned as schema drift; the snapshot shows the exercise
-  schema matches the spend-program API exactly. Kept as an explicit NOT-drift row.
-- Category vocabulary is 43 codes, not 44 (1-44, no 22). The handoff was self-contradictory.
-- The coverage invariant was hollow — `assumptions_made[999]` passed until check (e).
-- My own `.title()` normalizer turned `IT` into `It`, orphaning a user from the department
-  the same config creates. Both valid strings, so schema validation passed.
-
-**Open item worth a sentence:** the new-vendor approval in packet A is encoded as a
-zero-threshold tier that over-captures (catches all software spend, not just new vendors).
-Recurs in packet C as the compliance-escalation policy. Honest in the audit log, still a
-semantic mismatch.
-
-**Script budget exception:** `cite.py` is 220 lines and `money_map.py` 182, against a ~40-line
-guardrail. Defensible
-(16 and 9 small functions, longest 40 lines, replacing work otherwise redone per packet) but
-should be named in NOTES.md, not hidden.
-
-## money_map.py — documented limits
-
-Its own author listed these; keep them in NOTES.md rather than implying full coverage.
-The tool is a prompt to look, not a guarantee that everything was found.
-
-1. A bare unit word with no scale and no currency is not detected — packet A's "cap it at
-   ten to be safe" is invisible as a figure. Deliberate: it is indistinguishable from "ten
-   clinics". The text does appear in the context line printed for the $8,000 figure on the
-   same line (verified), so a reader still sees it.
-2. Spanish/Portuguese hundreds words beyond quinientos/quinhentos are not in the table.
-   None appear as money in packet B; adding more raises headcount-noise risk.
-3. `period` is read from a short window around the figure, so a line stating two amounts can
-   leave the further one's period blank rather than wrong. `scope` is line-wide by design and
-   can be over-inclusive on dense lines.
-4. Currency is inferred from the nearest marker; a spelled-out amount with no marker on its
-   line defaults to USD. Non-USD figures are marked, but an unmarked figure is an inference.
-5. A range becomes two endpoints, both tagged `range` — "between X and Y" is not one object.
-6. Repeated identical amounts on one line are reported once per occurrence, intentionally,
-   since each carries different surrounding text.
-
-**Already surfaced, unprompted:** on packet B, 2,000 MXN appears both as a per-transaction
-ceiling in the memo and as the auto-approve threshold on the call — the same straddle class
-as packet C. Worth checking properly if B gets run.
+1. **Session export.** Required deliverable, not yet produced. The transcript is at
+   `~/.claude/projects/-home-user-Genera/e3e4a895-aaba-57b2-b330-579835165a83.jsonl`
+   (23 user turns, 2026-08-30 to 08-31). It lives on this container and will not survive it.
+   Export or copy it into `session/` before anything else.
+2. **Spanish executive summary for Logística Globex.** Alejandra Vidal asked for it because
+   the board reads Spanish. Recorded in packet B's audit log as a delivery obligation the
+   two JSON files cannot satisfy. Not written.
+3. **The widening check.** Nothing catches a silently widened permission on a SUPPORTED
+   capability. Three real cases were caught by reading rather than tooling: Cloud computing
+   on Hypergrowth's software card, and both CEOs holding admin nobody granted.
+4. **Ledger vs live OpenAPI.** Every drift row rests on the 2026-08-30 snapshot.
+   `docs.ramp.com/openapi/developer-api.json` was unreachable from here.
 
 ## Constraints found
 
-- `docs.ramp.com` is blocked by org egress for curl and WebFetch. **WebSearch works** and
-  was the only live-docs channel — live-docs rows cite page titles and snippets, not full
-  pages. Say so in NOTES.md rather than implying deeper reading.
-- Session rate limit was hit once mid-run (an agent died during its own self-verification).
-  Verify agent work directly rather than trusting completion reports.
+- `docs.ramp.com` and `ramp.com` are blocked by org egress policy for `curl` and WebFetch.
+  **WebSearch works** and was the only live-docs channel, so live-docs rows cite page titles
+  and quoted snippets rather than full pages. NOTES.md states this.
+- The `notes` skill synced only `SKILL.md`; its `session_index.py` and `check_notes.py` did
+  not arrive. The structure and pointer checks on NOTES.md were reimplemented by hand and
+  passed against that reimplementation, not the shipped verifier. Re-run the real one if it
+  becomes available.
+- A session rate limit killed a background agent mid-verification once. Verify agent work
+  directly rather than trusting completion reports.
+
+## Style preferences recorded
+
+- No em-dashes in prose; conjunctions preferred. NOTES.md has zero in prose; the five that
+  remain are structural (the `**Where:**` separators and the go-live header) because the
+  notes skill's format prescribes and parses them.
+- The audit log is customer-facing: never a pronoun for a person, never an invented email
+  (`N/A` instead), citations carry speaker, role and context. All enforced by check 5 and
+  check 8.
