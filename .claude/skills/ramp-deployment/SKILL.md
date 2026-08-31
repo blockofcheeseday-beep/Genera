@@ -73,8 +73,16 @@ domain at all**. When identity is missing, do not stall and do not quietly inven
   from a real one to whoever runs the deployment, and inviting it either fails silently or
   reaches a stranger. `--verify` check 8 enforces this: every email domain must appear
   somewhere in the customer's own documents, or the value must be `N/A`.
-- Use the sample's placeholder idiom for a missing *name* part: `"(surname pending roster)"`.
-  A name is descriptive; an address is actionable, which is why they differ.
+- **A missing name is declared, not invented or blanked.** Two approved forms, and the choice
+  between them is a factual claim about the packet:
+  `"(surname pending roster)"` where a roster genuinely is coming, and
+  `"(surname not stated)"` where the packet simply never gives one. Substitute the part that
+  is missing — `(full name not stated)`, `(first name pending roster)`. Do not write `TBD`,
+  `Unknown`, `N/A` or an empty string in a name field: those read as a blank rather than a
+  decision, and `N/A` is reserved for addresses. Pair any placeholder with a **blocking** flag
+  that names the person. Check 8 enforces the form, the vocabulary, and the pairing.
+  A name is descriptive; an address is actionable, which is why they differ — but an invented
+  surname still produces a person who does not exist, so neither is guessable.
 - Raise a **blocking** flag saying no user may be invited until real addresses arrive, and
   identify each cardholder by name in the limit's `display_name` so an `N/A` address does not
   make the limit ambiguous.

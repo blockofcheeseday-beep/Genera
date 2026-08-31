@@ -17,7 +17,7 @@
       "impact_if_wrong": "No user can be invited and no card issued until Apex Health Partners supplies real addresses. Recording N/A rather than a plausible-looking placeholder is deliberate: a constructed address is indistinguishable from a real one to whoever runs the deployment, and inviting it either fails or reaches a stranger."
     },
     {
-      "assumption": "Bruno, the facilities lead, is recorded with the surname placeholder shown rather than a guessed name.",
+      "assumption": "Bruno, the facilities lead, is recorded with a surname placeholder stating that the packet never gives one, rather than a guessed name. This packet contains no roster, so the surname is not pending a document — it is simply absent.",
       "source": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [00:32], naming the facilities lead by first name only: \"And our facilities lead, Bruno, who handles repairs and contractors.\"",
       "impact_if_wrong": "The record cannot be matched to a real person until the surname is supplied, so Bruno's $2,500 facilities limit cannot be issued."
     },

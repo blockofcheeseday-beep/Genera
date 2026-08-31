@@ -239,9 +239,17 @@ and contained no email address and no email domain anywhere. The convention:
 | Situation | What to emit | Flag |
 |---|---|---|
 | No email address or domain in the packet | the literal `N/A` — never a constructed address | blocking — no user may be invited until real addresses arrive |
-| Name part missing | `"(surname pending roster)"`, as the Westbrook sample does | blocking |
+| Name part missing, roster coming | `"(surname pending roster)"`, as the Westbrook sample does | blocking, naming the person |
+| Name part missing, no roster exists | `"(surname not stated)"` — do not assert a document that is not coming | blocking, naming the person |
 | Headcount given, no names ("fourteen clinic managers") | a group limit with the count and its basis in `notes` | blocking |
 | Population that varies ("eight to twelve nurses") | plan on the upper figure and say so | blocking |
+
+**Pick the placeholder that is true of this packet.** Westbrook and Hypergrowth both have a
+roster on the way, so `pending roster` is accurate there. Apex Health has no roster at all —
+nobody in that packet ever mentions one — so a surname there is `not stated`, not pending.
+The wording is a small claim about the customer's own situation and it should be a true one.
+Never write `TBD`, `Unknown`, `N/A` or an empty string in a name field: `N/A` is reserved for
+addresses, and the rest read as a blank rather than a decision.
 
 **Why `N/A` and not a placeholder address.** A missing *name* can be marked
 `"(surname pending roster)"` because a name is descriptive — a reader sees the gap and moves

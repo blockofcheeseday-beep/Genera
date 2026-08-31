@@ -187,7 +187,49 @@ def check_cross_refs(cfg):
     return True, f"{len(cfg.get('users', []))} users, {len(cfg.get('mcc_controls', []))} mcc_controls all resolve"
 
 
-def check_invented_identifiers(config, packet_dir):
+# A name placeholder must say WHY the name is missing, in that packet's own terms.
+# "pending roster" asserts a document is coming; only use it where one actually is.
+NAME_PLACEHOLDER = re.compile(r"^\((surname|first name|given name|full name) "
+                              r"(pending roster|not stated)\)$")
+# Values that look like a decision but are really a blank.
+SUSPECT_NAME = {"", "-", "?", "n/a", "na", "unknown", "tbd", "none", "null",
+                "pending", "placeholder", "xxx", "test"}
+
+
+def check_names(config, audit):
+    """A missing name is declared in an approved form, and someone is asked for it.
+
+    An invented surname produces a person who does not exist, which is nearly as bad as an
+    invented address. Unlike an address there is no domain to check against the packet, so
+    the guard is the shape of the declaration: an approved placeholder that states why the
+    name is missing, paired with a blocking question naming that person.
+    """
+    fails = []
+    blocking = " ".join(f.get("question", "") for f in audit.get("missing_information_flags", [])
+                        if f.get("blocking"))
+    for i, u in enumerate(config.get("users", [])):
+        parts = {k: (u.get(k) or "") for k in ("first_name", "last_name")}
+        placeholders = []
+        for k, v in parts.items():
+            if v.startswith("(") or v.endswith(")"):
+                if NAME_PLACEHOLDER.match(v):
+                    placeholders.append(v)
+                else:
+                    fails.append(f"users[{i}].{k}: {v!r} is not an approved placeholder — use "
+                                 f"'(surname pending roster)' where a roster is coming, or "
+                                 f"'(surname not stated)' where the packet never gives one")
+            elif v.strip().lower() in SUSPECT_NAME:
+                fails.append(f"users[{i}].{k}: {v!r} reads as a blank, not a declaration — use an "
+                             f"approved placeholder so the reason is on the record")
+        if placeholders:
+            known = [v for v in parts.values() if v and not v.startswith("(")]
+            if known and not any(k in blocking for k in known):
+                fails.append(f"users[{i}]: name placeholder {placeholders[0]!r} but no blocking "
+                             f"missing-information flag mentions {known[0]!r}")
+    return fails
+
+
+def check_invented_identifiers(config, packet_dir, audit_doc):
     """No email may be invented. An address that looks real gets used.
 
     A placeholder like alice.smith@company.example is indistinguishable from a real
@@ -213,9 +255,11 @@ def check_invented_identifiers(config, packet_dir):
         audit(f"users[{i}].direct_manager_email", u.get("direct_manager_email"))
     for i, l in enumerate(config.get("limits", [])):
         audit(f"limits[{i}].assigned_to.user_email", (l.get("assigned_to") or {}).get("user_email"))
+    bad += check_names(config, audit_doc)
     if bad:
         return False, "\n".join("FAIL " + b for b in bad)
-    return True, f"{checked} address(es) trace to the packet; the rest declared {NA}"
+    return True, (f"{checked} address(es) trace to the packet; the rest declared {NA}; "
+                  f"{len(config.get('users', []))} name(s) declared or real")
 
 
 def check_assigned_to(config):
@@ -280,7 +324,11 @@ def verify(pkt):
         rows.append(("assigned_to exactly-one", *check_assigned_to(config)))
 
     rows.append(("config cross-references", *check_cross_refs(config)))
-    rows.append(("no invented identifiers", *check_invented_identifiers(config, pkt)))
+    try:
+        audit_doc = json.loads((OUT / name / "audit_log.json").read_text())
+    except Exception:
+        audit_doc = {}
+    rows.append(("no invented identifiers", *check_invented_identifiers(config, pkt, audit_doc)))
     rows.append(("ledger freshness", *run([sys.executable, str(SCRIPTS / "gen_ledger.py"), "--check"])[:2]))
 
     print(f"\nVERIFY {name}")
