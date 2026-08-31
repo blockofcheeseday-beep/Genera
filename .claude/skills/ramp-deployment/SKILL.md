@@ -406,6 +406,25 @@ sent onward. Packaging runs **only** when every check passes — a skipped check
 because a skip means the check did not actually happen and these copies are what a customer
 receives.
 
+## Re-render the viewer, every time the outputs change
+
+```
+python3 candidate/tools/render_config.py --config out/<packet>/ramp_config.json \
+    --audit out/<packet>/audit_log.json --out work/<packet>/view.html
+```
+
+`--verify` never looks at this page, so it goes stale silently: edit a limit after rendering
+and the reviewer reads the old number while every check stays green. Re-render it as the last
+step of any change to either output, and audit the three documents together before handing the
+work over — that is the `output-audit` skill:
+
+```
+python3 .claude/skills/output-audit/scripts/check_output_sync.py --packet <packet>
+```
+
+Run it **before** `--verify`, not after: a green verify re-runs packaging, which overwrites
+`deliverables/` and erases the drift the audit is looking for.
+
 ---
 
 # Working notes

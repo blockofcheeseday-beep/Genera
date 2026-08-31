@@ -54,6 +54,9 @@ field, an audit entry, or both. Phase 4 fails the run on any orphan — which is
     check_quotes.py         Phase 1 quotes must match their source file
     check_coverage.py       coverage invariant + both graded sweeps
     check_audit_style.py    the audit log is customer-facing; this gates that
+.claude/skills/output-audit/
+  scripts/
+    check_output_sync.py    config, audit log and view.html still describe the same thing
 candidate/                  exercise material, committed so the repo stays runnable
 work/                       intermediates (requirements.json) — not graded
 out/                        ONLY the two graded JSONs per packet
@@ -81,17 +84,36 @@ python3 .claude/skills/ramp-deployment/scripts/gen_ledger.py --check
 
 ## Verification
 
-`--verify` runs seven checks: outputs parse, both files validate against the shipped
+`--verify` runs nine checks: outputs parse, both files validate against the shipped
 schemas, every quote substring-matches its source file, the coverage invariant plus both
-graded sweeps, the `assigned_to` exactly-one rule the schema describes but does not
-enforce, config cross-references (every department, program, limit and manager name points
-at something the config actually emits), and ledger freshness.
+graded sweeps, audit-log style (pronouns, citation quality, jargon, blocking order, dated
+evidence), the `assigned_to` exactly-one rule the schema describes but does not enforce,
+config cross-references (every department, program, limit and manager name points at
+something the config actually emits), no invented identifiers (every email domain appears
+in the customer's own documents; every missing name is declared, not guessed), and ledger
+freshness.
 
 The two sweeps check the failure modes the exercise grades in both directions:
 
 - **false positive** — nothing claimed impossible that the ledger says is `SUPPORTED`
 - **false negative** — nothing silently configured as fully supported when the ledger says
   `UNSUPPORTED`, `UI_ONLY` or `PARTIAL` and the audit log is silent about it
+
+## Auditing the outputs
+
+`--verify` proves each output is internally correct. It never looks at `work/<packet>/view.html`
+and never re-reads `deliverables/`, so a packet can be green while the page a reviewer has open
+shows a limit that was corrected two commits ago. The `output-audit` skill closes that gap:
+
+```
+python3 .claude/skills/output-audit/scripts/check_output_sync.py          # every packet
+python3 .claude/skills/output-audit/scripts/check_output_sync.py --fix    # re-render stale viewers
+```
+
+It re-renders each viewer from the current JSONs and compares bytes — mtimes are useless in a
+fresh clone, where every file shares one checkout time — and checks the `deliverables/` copies
+byte-for-byte against `out/`. Run it *before* `--verify`: a green verify re-runs packaging,
+which overwrites `deliverables/` and erases the drift the audit is looking for.
 
 ## Validating outputs
 

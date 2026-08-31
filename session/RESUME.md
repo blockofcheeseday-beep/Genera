@@ -1,6 +1,6 @@
-# Session state — paused 2026-08-30 19:43 UTC
+# Session state — paused 2026-08-31 UTC
 
-Branch `claude/genera-capability-ledger-d3ygam`, everything committed and pushed.
+Branch `claude/audit-log-config-viewer-sync-prbxa1`, everything committed and pushed.
 This container is ephemeral; the repo is the only durable record.
 
 ## Done
@@ -9,26 +9,18 @@ This container is ephemeral; the repo is the only durable record.
 |---|---|
 | Capability ledger | 43 rows, 3 evidence-verified passes (snapshot -> live docs -> packet A) |
 | Pipeline | SKILL.md + run_pipeline.py + 7 scripts |
-| Packet A (Acme Corp) | complete, 8/8 checks green |
-| Packet C (Apex Health) | complete, 8/8 checks green |
+| Packet A (Acme Corp) | complete, 9/9 checks green |
+| Packet C (Apex Health) | complete, 9/9 checks green |
+| Packet D (Hypergrowth) | complete, 9/9 checks green |
+| Output audit | `output-audit` skill — the three documents must still agree at handover |
 
 Outputs in `out/<packet>/` (canonical names, for grading) and `deliverables/<Client>/`
 (customer-facing names). Packaging only fires on a fully green run.
 
 ## Next, in order
 
-1. **Packet D — `client_d_hypergrowth`.** The hard one and the last of the required three.
-   No clean documents: a Slack export and fragmented second-hand notes that disagree.
-   The headline conflict is travel approvals — February notes say tiered with a $2,500
-   auto-approve; Leo's 2026-07-30 Slack message says ALL travel needs direct approval.
-   The later source wins on recency, but the earlier one documents an agreement Leo made,
-   and the note-taker explicitly records being unable to confirm the trial was cancelled.
-   **This must stay a blocking conflict, not be resolved by recency.**
-   Also: the NetSuite/PO message is explicitly retracted ("wrong project, ignore me") —
-   do not build on it. "CS goes in Ops. final answer" DOES resolve the department question.
-   `cite.py` already handles both D formats (verified).
-2. **NOTES.md** — the graded write-up. Never cut this.
-3. B and E only if time remains. Cut order if over: E, then B.
+1. **NOTES.md** — the graded write-up. Never cut this.
+2. B and E only if time remains. Cut order if over: E, then B.
 
 ## Banked for NOTES.md
 
@@ -76,6 +68,29 @@ The tool is a prompt to look, not a guarantee that everything was found.
 **Already surfaced, unprompted:** on packet B, 2,000 MXN appears both as a per-transaction
 ceiling in the memo and as the auto-approve threshold on the call — the same straddle class
 as packet C. Worth checking properly if B gets run.
+
+## The output audit
+
+`--verify` proves each output correct on its own. It never looks at `work/<packet>/view.html`
+and never re-reads `deliverables/`, so a late edit to a config or audit log leaves a green run
+with a stale page in front of the reviewer. The `output-audit` skill checks the three documents
+against each other:
+
+```
+python3 .claude/skills/output-audit/scripts/check_output_sync.py           # every packet
+python3 .claude/skills/output-audit/scripts/check_output_sync.py --fix     # re-render stale viewers
+```
+
+Freshness is proven by re-rendering and comparing bytes, not by mtimes — in a fresh clone every
+file shares one checkout time, so an mtime check would call anything current.
+
+**Run it before `--verify`, never after.** A green verify re-runs packaging, which overwrites
+`deliverables/` from `out/` and erases the drift the audit exists to report. `--fix` re-renders
+viewers only and refuses to touch `deliverables/`, which are written only by a fully green run.
+
+The script cannot prove the documents *say* the same thing. `SKILL.md` carries the five-item
+judgement pass that goes with it — blocking flags, conflict resolutions and assumptions read
+back against the config that shipped, plus the counts quoted in prose here and in `README.md`.
 
 ## Constraints found
 
