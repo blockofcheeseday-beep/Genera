@@ -1,15 +1,14 @@
 # NOTES
 
-Five packets, nine checks each. Pointers are turn numbers from this session's transcript and
-commit hashes from this repo.
+Five packets, nine checks each. Pointers are transcript turn numbers and commit hashes.
 
 ## Decisions
 
 ### 1. The audit log is written before the config, not after it
 
 Phase 2 emits `audit_log.json` before Phase 3 emits `ramp_config.json` (`3203145`). Composing
-first and documenting after produces an audit log that rationalises a config already written.
-Flagging first makes the config the consequence of the flags.
+first and documenting after produces an audit log that rationalises a config already written,
+whereas flagging first makes the config a consequence of the flags.
 
 **Passed on:** compose, then annotate. Faster, and the output reads identically, which is the
 problem: it is how a confidently wrong config acquires a confident audit log.
@@ -22,8 +21,7 @@ problem: it is how a confidently wrong config acquires a confident audit log.
 resolving conflicts and deciding what Ramp cannot do stay with the agent.
 
 **Passed on:** a scripted extractor. It would have worked on packet A's clean roster but failed
-on packet D, which has no documents at all, only a Slack export and second-hand notes that
-disagree.
+on packet D, which has no documents at all, only a Slack export and notes that disagree.
 
 **Where:** turn 2, at the very start — "such that a fresh Claude Code or Codex session can run any packet end-to-end"
 
@@ -32,7 +30,7 @@ disagree.
 Forty-three rows keyed on what customers say, such as "the card must decline for this vendor",
 each with a verdict, dated evidence and a workaround. Each packet was cheaper than the last.
 
-**Passed on:** an endpoint-keyed API reference. Accurate, but nobody opens one mid-transcript.
+**Passed on:** an endpoint-keyed API reference. Accurate, but nobody opens one mid-packet.
 
 **Where:** turn 1, at the very start — "focusing on the capability ledger"
 
@@ -122,9 +120,9 @@ rather than full pages.
   Medical Supply and JMS Distribution, must resolve to merchant records in Ramp, because a name
   that does not resolve is not blocked. The block must also be re-applied to every card programme
   created later.
-- **Nothing can be issued until the roster arrives.** Eight questions are open that stop
-  go-live, and the largest is that we have no email address for anyone and no clinic manager is
-  named. Your three-week clinic timeline starts when that list does.
+- **Nothing can be issued until the roster arrives.** Eight open questions stop go-live, and the
+  largest is that we have no email address for anyone and no clinic manager is named. Your
+  three-week clinic timeline starts when that list does.
 
 ## One capability, one question
 
