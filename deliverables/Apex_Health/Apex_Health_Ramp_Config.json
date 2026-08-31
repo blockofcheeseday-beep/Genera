@@ -116,7 +116,7 @@
       "description": "Travel for the two regional operations directors: hotels, flights, rental cars and meals. $3,000 per month. The prohibited vendor is blocked at merchant level on this programme.",
       "permitted_spend_types": {
         "primary_card_enabled": true,
-        "reimbursements_enabled": true
+        "reimbursements_enabled": false
       },
       "issue_physical_card_if_needed": true,
       "spending_restrictions": {
@@ -140,7 +140,7 @@
       "description": "Facilities repairs and contractors. $2,500 per month. The prohibited vendor is blocked at merchant level on this programme.",
       "permitted_spend_types": {
         "primary_card_enabled": true,
-        "reimbursements_enabled": true
+        "reimbursements_enabled": false
       },
       "issue_physical_card_if_needed": true,
       "spending_restrictions": {
@@ -162,7 +162,7 @@
       "description": "Contract nurse assignment expenses: lodging near the clinic, meals and fuel. $1,500 per month. Each nurse limit carries a lock date set to the assignment end date, satisfying REQ-4. The prohibited vendor is blocked at merchant level on this programme.",
       "permitted_spend_types": {
         "primary_card_enabled": true,
-        "reimbursements_enabled": true
+        "reimbursements_enabled": false
       },
       "issue_physical_card_if_needed": false,
       "spending_restrictions": {

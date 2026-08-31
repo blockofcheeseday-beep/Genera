@@ -7,9 +7,9 @@
       "impact_if_wrong": "If Marcus Webb's spend exceeds $50,000 in a calendar month the card declines — the outcome Priya Shetty warned would define the project. Confirm the ceiling with Marcus Webb before go-live."
     },
     {
-      "assumption": "Marcus Webb is assigned the Business Admin role (full administrative access across the account). Ramp has an Owner role, but it is not among the roles this configuration can express, and Ramp does not permit inviting a user as Owner.",
-      "source": "department_roster.csv, row 2 — the roster records the job title CEO: \"Marcus Webb,marcus@acme.example,CEO,G&A,,2019-02-01,NO LIMIT\"",
-      "impact_if_wrong": "Marcus Webb receives full administrative rights over the Ramp account, which is broader than a spend-only role. If Acme Corp wants Marcus Webb to spend without administering the account, change the role to Business User before go-live."
+      "assumption": "Marcus Webb is assigned the Business User role rather than an administrative one. The call named the administrators explicitly and Marcus Webb was not among the names given.",
+      "source": "discovery_call_01.txt — Diane Marsh (VP Finance, Acme Corp), [05:41], answering who should be able to administer the Ramp instance, change limits and add users: \"Priya and me. And probably Sana in IT for the user-management side\"",
+      "impact_if_wrong": "If Acme Corp expects Marcus Webb to administer the account, the role must be raised to Business Admin. An earlier draft granted that by default on the basis of the job title; it was withdrawn, because granting administrative rights nobody asked for is not recoverable the way a missing permission is. Note the config schema has no Owner role, so Business Admin would be the mapping if administration is intended."
     },
     {
       "assumption": "Kevin O'Rourke is assigned the Guest User role, the most restricted role available, matching the request for maximum lockdown for an external contractor.",

@@ -1183,6 +1183,6 @@ Ramp Developer API specification (snapshot dated 2026-08-30) — the API user-cr
 
 Config expression: section `users`, mechanism `role`
 
-> Map a founder/owner to BUSINESS_ADMIN and log the mapping. This is the idiom the Westbrook sample demonstrates with Priti.
+> Map a founder/owner to BUSINESS_ADMIN only where the packet actually assigns administrative responsibility, and log the mapping. The Westbrook sample does this with Priti, who runs that company's finances. Do NOT infer it from the job title: Acme Corp's CEO and Hypergrowth Inc.'s CEO were both excluded from the stated administrator list, and in the Hypergrowth channel the reason given for making the executive assistant an administrator was specifically to keep account changes out of the CEO's hands. Where the packet is silent or excludes the person, BUSINESS_USER is the correct mapping — administrative rights nobody asked for are not recoverable the way a missing permission is.
 
 **Workaround.** Map owners to BUSINESS_ADMIN. Record the mapping as an assumption.

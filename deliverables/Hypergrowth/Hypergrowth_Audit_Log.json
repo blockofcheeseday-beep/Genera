@@ -70,6 +70,11 @@
       "assumption": "The software programme permits the Ramp category SaaS / Software only. Cloud computing and infrastructure spend is NOT permitted, because this packet never mentions it.",
       "source": "slack_export_finance.txt — Stan Pollard (IT), [2026-07-29 10:02], describing the software programme entirely in terms of software subscriptions, with no mention of cloud or infrastructure spend: \"whatever we set up needs to NOT let random ICs buy software\"",
       "impact_if_wrong": "If Hypergrowth Inc. runs infrastructure such as AWS, Google Cloud or Azure through this card, those charges will decline. At 340 vendor subscriptions and $30,000 a month that is a realistic possibility, and it would surface on the first billing cycle. An earlier draft of this configuration added Cloud computing on the reasoning that a company this size probably has infrastructure spend; that was withdrawn, because widening a card beyond what a customer asked for is a worse error than a decline that gets reported."
+    },
+    {
+      "assumption": "Leo Novak is assigned the Business User role rather than an administrative one, and the November offsite programme does not permit reimbursements.",
+      "source": "slack_export_finance.txt — Rachel Kim (Head of Finance), [2026-08-04 10:16], explaining why the executive assistant rather than the CEO holds administrative access: \"because leo will ask you to change things and i'd rather you do it than him\"",
+      "impact_if_wrong": "Approving travel requires no administrative rights, so nothing Leo Novak was asked to do is blocked. Granting administration would have run directly against the stated reason for making Maya Osei an administrator. Separately, reimbursements are switched off on the offsite programme because the packet never asks for reimbursements; if offsite organisers need to claim group expenses back, this must be turned on."
     }
   ],
   "missing_information_flags": [
@@ -133,6 +138,11 @@
     {
       "question": "Should the software card also cover cloud infrastructure — AWS, Google Cloud, Azure and similar? The packet describes software subscriptions only, so infrastructure is currently excluded and would decline. With 340 vendors and a $30,000 monthly budget this is worth confirming before the first billing cycle.",
       "affected_config": "spend_programs, mcc_controls",
+      "blocking": false
+    },
+    {
+      "question": "Should the November offsite budget accept reimbursement claims as well as card spend? The packet describes it as a card budget only, so reimbursements are switched off.",
+      "affected_config": "spend_programs",
       "blocking": false
     }
   ],

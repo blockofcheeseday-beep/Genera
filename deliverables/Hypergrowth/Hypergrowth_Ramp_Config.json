@@ -29,10 +29,10 @@
       "email": "N/A",
       "first_name": "Leo",
       "last_name": "Novak",
-      "role": "BUSINESS_ADMIN",
+      "role": "BUSINESS_USER",
       "department": "Exec",
       "direct_manager_email": null,
-      "notes": "CEO. Approves all travel under the standing rule recorded in the audit log. No email address appears anywhere in this packet, so the address is recorded as N/A."
+      "notes": "CEO. Approves all travel under the standing rule recorded in the audit log, which needs no administrative rights. Assigned the Business User role: the administrators named in the channel were Rachel Kim and Maya Osei, and the reason given for making Maya Osei an administrator was specifically to keep account changes out of the CEO's hands. No email address appears anywhere in this packet, so the address is recorded as N/A."
     },
     {
       "email": "N/A",
@@ -103,7 +103,7 @@
       "description": "One-time budget for the November offsite in Tahoe for roughly 30 people. Hard cap of $60,000, not a soft target. Stops working on 1 December 2026 without anyone acting.",
       "permitted_spend_types": {
         "primary_card_enabled": true,
-        "reimbursements_enabled": true
+        "reimbursements_enabled": false
       },
       "issue_physical_card_if_needed": false,
       "spending_restrictions": {

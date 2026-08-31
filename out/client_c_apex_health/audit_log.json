@@ -60,6 +60,11 @@
       "assumption": "The central finance team is treated as a group with $500 each, with an assumed size of four, since the packet gives no headcount.",
       "source": "discovery_call_apex.txt — Gordon Pryce (CFO, Apex Health Partners), [02:15], setting the central finance limit without stating how many people are on the team: \"Central finance team, minimal — five hundred each for odds and ends.\"",
       "impact_if_wrong": "Total central finance exposure scales directly with the real headcount, which is unknown. The per-person figure is stated and reliable; the total is not."
+    },
+    {
+      "assumption": "No programme permits reimbursements. The words reimbursement and expense claim appear nowhere in this packet, so card spend is the only route enabled.",
+      "source": "discovery_call_apex.txt — Sam Ionescu (Regional Operations Director, Apex Health Partners), [00:49], describing clinic spend entirely as card purchasing, with no mention of reimbursement anywhere in the packet: \"Medical supplies, cleaning supplies, small equipment, the occasional emergency repair.\"",
+      "impact_if_wrong": "Anyone who pays out of pocket cannot claim it back through Ramp. Contract nurses are the likeliest case, since mileage was named as an assignment expense and mileage is normally reimbursed rather than carded. An earlier draft enabled reimbursements on three programmes by inference; that was withdrawn, because enabling a spend route nobody asked for is not recoverable the way a missing one is."
     }
   ],
   "missing_information_flags": [
@@ -121,6 +126,11 @@
     {
       "question": "Which cardholders need physical cards rather than virtual ones, and what are the shipping addresses? REQ-2 concerns physical cards specifically, and Ramp requires a shipping address for each one.",
       "affected_config": "users, spend_programs",
+      "blocking": false
+    },
+    {
+      "question": "Should any programme accept reimbursement claims? Reimbursement is never mentioned in this packet, so every programme is card-only. Contract nursing is the likeliest exception, since mileage was named as an assignment expense.",
+      "affected_config": "spend_programs",
       "blocking": false
     }
   ],

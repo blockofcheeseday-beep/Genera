@@ -32,10 +32,10 @@
       "email": "marcus@acme.example",
       "first_name": "Marcus",
       "last_name": "Webb",
-      "role": "BUSINESS_ADMIN",
+      "role": "BUSINESS_USER",
       "department": "G&A",
       "direct_manager_email": null,
-      "notes": "CEO. Mapped to BUSINESS_ADMIN — the schema role enum has no BUSINESS_OWNER. Limit is the $50k/mo encoding of 'no limit'."
+      "notes": "CEO. Assigned the Business User role, not an administrator: the administrators named on the call were Diane Marsh and Priya Shetty, plus Sana Qureshi for user management. Limit is the $50,000/mo encoding of 'no limit'."
     },
     {
       "email": "dmarsh@acme.example",
